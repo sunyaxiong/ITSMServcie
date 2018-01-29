@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block head %}
+    <script src="/static/bower_components/ckeditor/ckeditor.js"></script>
+    <script src="/static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+    <script src="/static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+    <script>
+  $(function () {
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+    CKEDITOR.replace('editor1')
+    //bootstrap WYSIHTML5 - text editor
+    $('.textarea').wysihtml5()
+  })
+</script>
+
+
+{% endblock %}
+{% block header %}
+    <li class="active">{{ page_header }}</li>
+{% endblock %}
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+            {% include "itsm/log_errors.html" %}
+    {% endfor %}
+{% endif %}
+<section class="invoice">
+    <!-- title row -->
+    <form action="/itsm/issue/{{ issue.id }}" method="POST">{% csrf_token %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="page-header">
+                <i class="fa fa-globe"></i> 问题详情页
+                <small class="pull-right">创建时间: {{ issue.dt_created }}</small>
+            </h2>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- info row -->
+    <div class="row invoice-info">
+        <div class="col-sm-6 invoice-col">
+            <address>
+                <label>问题名称: </label>
+                <input type="text" name="name" disabled="disabled" value={{ issue.name }}><br>
+                <label>问题描述: </label>{{ issue.description }}<br>
+                <label>问题状态: </label>
+                <small class="label label-warning">
+                    <i class="fa fa-clock-o"></i>{{ issue.get_state_display }}
+                </small><br>
+                <label>问题发起人: </label>{{ issue.initiator }}
+            </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-6 invoice-col">
+            <address>
+                <label>技术员: </label>
+                <select type="text" name="technician">
+                    <option>{{ issue.technician }}</option>
+                    {% for i in user_list %}
+                        <option>{{ i }}</option>
+                    {% endfor %}
+                </select><br>
+                <label>更新时间: </label>{{ issue.dt_updated }}<br>
+                <label>紧急度: </label>
+                <select name="emergency_degree">
+                    <option value={{ issue.emergency_degree }}>{{ issue.get_emergency_degree_display }}</option>
+                    {% for k, v in degree_choice_list %}
+                        <option value={{ k }}>{{ v }}</option>
+                    {% endfor %}
+                </select><br>
+                <label>服务水平等级: </label>{{ issue.service_level }}
+            </address>
+        </div>
+    </div>
+    <div class="row">
+        <!-- accepted payments column -->
+        <div class="col-xs-8">
+            <p class="lead">流转记录:</p>
+            {% for i in solution_list %}
+            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                <label>记录: </label></br>
+                {{ i }}
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <!-- 问题处理记录提交框 -->
+        <div class="col-xs-8">
+            <textarea class="text text-blue"
+                      placeholder="此处填写处理意见"
+                      cols="90" rows="8"
+                      name="solution"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-8">
+            <br/>
+            <a href={{ issue.attach_file }}>{{ issue.attach_file }}</a>
+            <input type="file" name="attach_file">
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <!-- this row will not appear when printing -->
+    <div class="row no-print">
+        <div class="col-xs-12">
+            <a href="/itsm/issues/close/{{ issue.id }}"
+               class="btn btn-primary pull-right" style="margin-right: 5px;">
+                <i class="fa fa-close"></i> 关闭问题
+            </a>
+            <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                <i class="fa fa-save"></i> 保存
+            </button>
+        </div>
+    </div>
+    </form>
+</section>
+{% endblock %}

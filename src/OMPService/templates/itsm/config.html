@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block head %}
+    <script src="/static/js/csrf.js"></script>
+    <script>
+       function all_conf() {
+             $.ajax({
+                 type: "POST",
+                 url: "http://127.0.0.1:8000/itsm/config_overview/",
+                 data: {},
+                 success: function(ret) {
+                     $('#result0').html(ret[0])
+                     $('#result1').html(ret[1])
+                     $('#result2').html(ret[2])
+                     $('#result3').html(ret[3])
+
+                     console.log(ret)
+                 }
+             })
+         };
+    </script>
+{% endblock %}
+{% block PHeader %}
+    <h1>
+        配置管理
+    </h1>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-3">
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="/static/dist/img/VSTECS.png" alt="logo">
+
+              <h3 class="profile-username text-center">伟仕云安</h3>
+
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <a href="#flow_module" data-toggle="tab">工作流模板</a>
+                </li>
+                <li class="list-group-item">
+                  <a href="#flow_module" data-toggle="tab">事件紧急度</a>
+                </li>
+                <li class="list-group-item">
+                  <a href="#event_type" data-toggle="tab">事件类型</a>
+                </li>
+                <li class="list-group-item">
+                  <a href="#event_status" data-toggle="tab">事件状态</a>
+                </li>
+                <li class="list-group-item">
+                  <a href="#change_type" data-toggle="tab">变更类型</a>
+                </li>
+                <li class="list-group-item">
+                  <a href="#sla_conf" data-toggle="tab">SLA配置</a>
+                </li>
+                <li class="list-group-item">
+                  <a href="#overview" data-toggle="tab" id="all">配置总览</a>
+                </li>
+              </ul>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+            {% include "itsm/config_tabs.html" %}
+        </div>
+        <!-- /.col -->
+      </div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block head %}
+    <script src="/static/bower_components/ckeditor/ckeditor.js"></script>
+    <script src="/static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+    <script src="/static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+    <script>
+  $(function () {
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+    CKEDITOR.replace('editor1')
+    //bootstrap WYSIHTML5 - text editor
+    $('.textarea').wysihtml5()
+  })
+</script>
+
+
+{% endblock %}
+{% block header %}
+    <li class="active">{{ page_header }}</li>
+{% endblock %}
+{% block content %}
+<section class="invoice">
+    <!-- title row -->
+    <form action="/itsm/change/add/" method="POST">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="page-header">
+                <i class="fa fa-globe"></i> 变更详情页
+                <small class="pull-right">创建时间: {{ change.dt_created }}</small>
+            </h2>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- info row -->
+    {{ form.as_p }}
+    <!-- /.row -->
+
+    <!-- this row will not appear when printing -->
+    <div class="row no-print">
+        <div class="col-xs-12">
+            <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                <i class="fa fa-submit"></i> 提交
+            </button>
+            <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                <i class="fa fa-save"></i> 保存
+            </button>
+        </div>
+    </div>
+    </form>
+</section>
+{% endblock %}
+{% block messages %}
+    {% if messages %}
+        <script>
+            {% for msg in messages %}
+                alert('{{ msg.message }}');
+            {% endfor %}
+        </script>
+{% endif %}
+{% endblock %}

@@ -14,8 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
+from django.conf.urls import include
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
+
+
+api_patterns = [
+        url(r'', include('itsm.urls')),
+        url(r'', include('api.urls')),
+        ]
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-]
+    url(r'^itsm/', include('itsm.urls')),
+    url(r'^api/', include('api.urls')),
+    url(r'^accounts/', include('accounts.urls')),
+    url(r'^rest/', include(api_patterns, namespace='rest_api', app_name='ops')),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
