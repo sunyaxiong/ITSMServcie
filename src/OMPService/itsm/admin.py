@@ -20,7 +20,9 @@ class ChangeAdmin(admin.ModelAdmin):
 
 
 class ConfigAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        "name", "state", "event_module", "issue_module", "change_module", "sla_module"
+    )
 
 
 class TimeTreeAdmin(admin.ModelAdmin):

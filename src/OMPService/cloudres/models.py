@@ -28,3 +28,13 @@ class VMInstance(BaseModel):
     def __str__(self):
         return str(self.name)
 
+
+class ResourceInfo(BaseModel):
+    resource_id = models.CharField(verbose_name="资源ID", max_length=128)
+    hostname = models.CharField(verbose_name="资源名称", max_length=128)
+    ip = models.CharField(verbose_name="IP地址", max_length=128, null=True, blank=True)
+    cloud_name = models.CharField(verbose_name="云环境名称", max_length=128)
+    channel_name = models.CharField(verbose_name="渠道名称", max_length=128)
+
+    def __str__(self):
+        return str(self.resource_id)

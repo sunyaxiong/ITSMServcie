@@ -1,23 +1,6 @@
 {% extends "base.html" %}
 {% block head %}
-    <script src="/static/js/csrf.js"></script>
-    <script>
-       function all_conf() {
-             $.ajax({
-                 type: "POST",
-                 url: "http://127.0.0.1:8000/itsm/config_overview/",
-                 data: {},
-                 success: function(ret) {
-                     $('#result0').html(ret[0])
-                     $('#result1').html(ret[1])
-                     $('#result2').html(ret[2])
-                     $('#result3').html(ret[3])
-
-                     console.log(ret)
-                 }
-             })
-         };
-    </script>
+    <script src="/static/js/this_config.js"></script>
 {% endblock %}
 {% block PHeader %}
     <h1>

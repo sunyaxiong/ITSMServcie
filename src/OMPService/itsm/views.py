@@ -1,8 +1,12 @@
 import datetime
 import json
+import time
 
+from django.utils import timezone
 from django.shortcuts import render
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
+from lib.http import ResultResponse
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -21,6 +25,7 @@ from .forms import ChangeDetailModelForm
 from lib.views import get_module_name_list
 from lib.views import get_module_info
 from lib.views import get_structure_info
+from lib.fit2cloud import Fit2CloudClient
 
 
 @login_required
@@ -33,78 +38,6 @@ def events(request):
     page_header = "事件管理"
     data = Event.objects.filter().order_by("-dt_created")
 
-    f = open(
-        "/home/syx/workspace/JiajieOMP/src/OMPService/itsm"
-        "/flow_module/change_module.json", "r"
-    )
-    import json
-    mo = {
-          "module_list": [
-            {
-              "module_name": "事件审批",
-              "flow": [
-                {
-                  "node0": "开始"
-                },
-                {
-                  "node1": "部门主管",
-                  "notify": "邮件"
-                },
-                {
-                  "node2": "总监,变更评审委员会2;",
-                  "notify": "邮件,短信"
-                },
-                {
-                  "node3": "结束"
-                }
-              ]
-            },
-            {
-              "module_name": "变更审批",
-              "flow": [
-                {
-                  "node0": "开始"
-                },
-                {
-                  "node1": "部门主管",
-                  "notify": "邮件"
-                },
-                {
-                  "node2": "总监,变更评审委员会2;",
-                  "notify": "邮件,短信"
-                },
-                {
-                  "node3": "结束"
-                }
-              ]
-            },
-            {
-              "module_name": "问题升级",
-              "flow": [
-                {
-                  "node0": "开始"
-                },
-                {
-                  "node1": "部门主管",
-                  "notify": "邮件"
-                },
-                {
-                  "node2": "总监,变更评审委员会2;",
-                  "notify": "邮件,短信"
-                },
-                {
-                  "node3": "结束"
-                }
-              ]
-            }
-          ],
-          "event_type": Event.EVENT_CHOICE
-        }
-    cache.set("伟仕云安", mo)
-    print(type(cache.get("伟仕云安")))
-    print(cache.get("伟仕云安"))
-    print(cache.get("EVENT_CHOICE"))
-
     return render(request, 'itsm/event_list.html', locals())
 
 
@@ -114,17 +47,21 @@ def event_detail(request, pk):
     solution = event.solution
     user_list = User.objects.all()
     degree_choice_list = Event.EMERGENCY_DEGREE
+    button_submit = "保存"
     if request.method == "GET":
 
         # 解决方案列表,循环展示
         solution_list = solution.split("#")
-        return render(request, 'itsm/event_detail.html', locals())
+        if event.state == "draft":
+            button_submit = "提交"
+        return render(request, 'itsm/event_detail1.html', locals())
     elif request.method == "POST":
 
         # form收敛数据
         event_form = EventDetailForm(request.POST)
-        print(event_form.errors)
         if event_form.is_valid():
+            data = event_form.data
+            print(data)
             # 拼接最新解决方案,解决方案格式:username + time + text
             now = datetime.datetime.now()
             if event_form.data.get("solution"):
@@ -144,10 +81,13 @@ def event_detail(request, pk):
                 event.attach_file = event_form.data.get("attach_file")
 
             if event.state == "draft":
+                button_submit = "提交"
                 event.state = "processing"
             event.save()
             return HttpResponseRedirect("/itsm/event_list/")
-        return render(request, 'itsm/event_detail.html', locals())
+        else:
+            messages.warning(request, event_form.errors)
+        return render(request, 'itsm/event_detail1.html', locals())
 
 
 def event_add(request):
@@ -385,3 +325,31 @@ def config_overview(request):
     module_name_list = [i["module_name"] for i in res["module_list"]]
     if request.method == "POST":
         return HttpResponse(json.dumps(module_name_list), content_type='application/json')
+
+
+def get_vm_list(request):
+
+    # 收敛前端提交参数
+    param = {
+        "cloudAccountId": 1,
+        "time_stamp": int(round(time.time() * 1000)),
+        "cloud": "aws",
+    }
+
+    # 获取vm接口数据
+    res = Fit2CloudClient().query_vm(param)
+    return JsonResponse(res)
+
+
+def get_disk_list(request):
+
+    # 收敛前端提交参数
+    param = {
+        "cloudAccountId": 1,
+        "time_stamp": int(round(time.time() * 1000)),
+        "cloud": "aws",
+    }
+
+    # 获取disk接口数据
+    res = Fit2CloudClient().query_disk(param)
+    return JsonResponse(res)

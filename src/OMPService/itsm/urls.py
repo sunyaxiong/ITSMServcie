@@ -34,6 +34,8 @@ from .views import issues
 from .views import issue_detail
 from .views import config
 from .views import config_overview
+from .views import get_vm_list
+from .views import get_disk_list
 
 
 router = routers.DefaultRouter()
@@ -67,5 +69,9 @@ urlpatterns = [
     # 配置管理
     url(r'^config/$', config),
     url(r'^config_overview/$', config_overview),
+
+    # CMDB
+    url(r'cmdb/query_vm/$', get_vm_list),
+    url(r'cmdb/query_disk/$', get_disk_list),
 ]
 

@@ -25,7 +25,7 @@ SECRET_KEY = 'w%_kdw&9*_2filppa89j2*&&bl69je6)=$ed1nn$i9ps$@-(vg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.37.158", "127.0.0.1", "0.0.0.0", "localhost"]
+ALLOWED_HOSTS = ["192.168.37.165", "127.0.0.1", "0.0.0.0", "localhost"]
 
 
 # Application definition
@@ -188,3 +188,13 @@ CACHES = {
         }
     }
 }
+
+
+# fit2cloud api conf
+FIT2CLOUD_CONF = {
+    "access_key": "c3VwcG9ydEBmaXQyY2xvdWQuY29t",
+    "version": "v1",
+    "signature_method": "HmacSHA256",
+    "signature_version": "v1"
+}
+secret_key = '1f234efb-7d3c-46e8-bfed-edfc74012283'

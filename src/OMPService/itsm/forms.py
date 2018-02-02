@@ -34,6 +34,13 @@ class ChangeDetailModelForm(forms.ModelForm):
 
 class EventDetailModelForm(forms.ModelForm):
 
+    name = forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-group"}), label="事件名称"
+    )
+    description = forms.CharField(
+        widget=forms.Select(attrs={"class": "form-control"}), label="事件描述"
+    )
+
     class Meta:
         model = Event
         fields = "__all__"
