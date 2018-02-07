@@ -57,6 +57,10 @@
                     {% endfor %}
                 </select></td>
             </tr>
+            <tr>
+                <td><label>事件状态: </label></td>
+                <td><input class="form-control" type="text" name="name" disabled="disabled" value={{ event.state }}></td>
+            </tr>
         </div>
     </div><br>
     <div class="row">
@@ -167,23 +171,25 @@
         </div>
     </div>
     <div class="row no-print">
-        <div class="col-xs-12">
-            <a href="/itsm/events/event_close/{{ event.id }}"
-               class="btn btn-primary pull-right" style="margin-right: 5px;">
-                <i class="fa fa-success"></i> 转入变更
-            </a>
-            <a href="/itsm/events/event_to_issue/{{ event.id }}"
-               class="btn btn-primary pull-right" style="margin-right: 5px;">
-                <i class="fa fa-success"></i> 转入问题
-            </a>
-            <a href="/itsm/events/close/{{ event.id }}"
-               class="btn btn-primary pull-right" style="margin-right: 5px;">
-                <i class="fa fa-close"></i> 关闭事件
-            </a>
-            <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
-                <i class="fa fa-save"></i> {{ button_submit }}
-            </button>
-        </div>
+        {% if display %}
+            <div class="col-xs-12">
+                <a href="/itsm/events/event_close/{{ event.id }}"
+                   class="btn btn-primary pull-right" style="margin-right: 5px;">
+                    <i class="fa fa-success"></i> 转入变更
+                </a>
+                <a href="/itsm/events/event_to_issue/{{ event.id }}"
+                   class="btn btn-primary pull-right" style="margin-right: 5px;">
+                    <i class="fa fa-success"></i> 转入问题
+                </a>
+                <a href="/itsm/events/close/{{ event.id }}"
+                   class="btn btn-primary pull-right" style="margin-right: 5px;">
+                    <i class="fa fa-close"></i> 关闭事件
+                </a>
+                <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                    <i class="fa fa-save"></i> {{ button_submit }}
+                </button>
+            </div>
+        {% endif %}
     </div>
     </form>
 </section>

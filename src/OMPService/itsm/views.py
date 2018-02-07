@@ -51,9 +51,15 @@ def event_detail(request, pk):
     if request.method == "GET":
 
         # 解决方案列表,循环展示
-        solution_list = solution.split("#")
-        if event.state == "draft":
-            button_submit = "提交"
+        try:
+            solution_list = solution.split("#")
+        except Exception as e:
+            solution_list = []
+
+        # 根据事件状态控制按钮显隐和名称
+        button_submit = "提交" if event.state == "draft" else "保存"
+        display = 0 if event.state == "ended" else 1
+
         return render(request, 'itsm/event_detail1.html', locals())
     elif request.method == "POST":
 
@@ -64,21 +70,21 @@ def event_detail(request, pk):
             print(data)
             # 拼接最新解决方案,解决方案格式:username + time + text
             now = datetime.datetime.now()
-            if event_form.data.get("solution"):
+            if data.get("solution"):
                 _solution = event_form.data["technician"] \
                             + now.strftime('%Y-%m-%d %H:%M:%S') \
                             + event_form.data["solution"]
                 event.solution = solution + "#" + _solution
 
-            if event_form.data.get("emergency_degree"):
-                event.emergency_degree = event_form.data["emergency_degree"]
+            if data.get("emergency_degree"):
+                event.emergency_degree = data["emergency_degree"]
 
-            if event_form.data.get("technician"):
-                tc = User.objects.get(username=event_form.data.get("technician"))
-                event.technician = tc
+            if data.get("technician"):
+                tc = User.objects.filter(username=data.get("technician"))
+                event.technician = tc[0]
 
-            if event_form.data.get("attach_file"):
-                event.attach_file = event_form.data.get("attach_file")
+            if data.get("attach_file"):
+                event.attach_file = data.get("attach_file")
 
             if event.state == "draft":
                 button_submit = "提交"

@@ -31,4 +31,4 @@ urlpatterns = [
     url(r'^api/', include('api.urls')),
     url(r'^accounts/', include('accounts.urls')),
     url(r'^rest/', include(api_patterns, namespace='rest_api', app_name='ops')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]

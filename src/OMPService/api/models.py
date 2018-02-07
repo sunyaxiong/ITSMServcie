@@ -31,3 +31,15 @@ class DeployInstance(BaseModel):
     cpu = models.IntegerField(verbose_name="CPU", null=True, blank=True)
     mem = models.IntegerField(verbose_name="内存", null=True, blank=True)
     is_vm_instance = models.BooleanField(verbose_name="是否创建虚拟机", default=0)
+
+    def __str__(self):
+        return "{}-{}".format(self.chanel, self.app_name)
+
+    class Meta:
+        app_label = "api"
+        verbose_name = "deploy"
+        verbose_name_plural = "deploy"
+
+
+from .signals import deploy_to_event
+from .signals import alert_to_event
