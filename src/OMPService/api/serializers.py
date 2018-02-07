@@ -17,6 +17,7 @@ class AlertSerializers(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs.get("state") == "off":
             raise ValidationError("告警关闭")
+        return attrs
 
 
 class DeployInstanceSerializers(serializers.ModelSerializer):
