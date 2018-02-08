@@ -191,10 +191,19 @@ CACHES = {
 
 
 # fit2cloud api conf
-FIT2CLOUD_CONF = {
+CMDB_CONF = {
     "access_key": "c3VwcG9ydEBmaXQyY2xvdWQuY29t",
     "version": "v1",
     "signature_method": "HmacSHA256",
     "signature_version": "v1"
 }
+
+CLOUD_CONF = {
+    "access_key": "dnN0ZWNzLWl0c20=",
+    "version": "v1",
+    "signature_method": "HmacSHA256",
+    "signature_version": "v1",
+    "user": "wei@fit2cloud.com",
+}
 secret_key = '1f234efb-7d3c-46e8-bfed-edfc74012283'
+cloud_secret_key = '0f1013b0-f33f-4148-9edf-f57b1b88cf47'

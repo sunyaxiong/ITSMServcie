@@ -1,6 +1,7 @@
 import datetime
 import json
 import time
+import logging
 
 from django.utils import timezone
 from django.shortcuts import render
@@ -22,6 +23,7 @@ from .forms import EventDetailForm
 from .forms import EventDetailModelForm
 from .forms import ChangeDetailForm
 from .forms import ChangeDetailModelForm
+from .forms import IssueDetailForm
 from lib.views import get_module_name_list
 from lib.views import get_module_info
 from lib.views import get_structure_info
@@ -44,10 +46,15 @@ def events(request):
 def event_detail(request, pk):
     page_header = "事件管理"
     event = Event.objects.get(id=int(pk))
-    solution = event.solution
+    solution = event.solution if event.solution else ""
     user_list = User.objects.all()
     degree_choice_list = Event.EMERGENCY_DEGREE
     button_submit = "保存"
+
+    # 根据事件状态控制按钮显隐和名称
+    button_submit = "提交" if event.state == "draft" else "保存"
+    display = 0 if event.state == "ended" else 1
+
     if request.method == "GET":
 
         # 解决方案列表,循环展示
@@ -55,10 +62,6 @@ def event_detail(request, pk):
             solution_list = solution.split("#")
         except Exception as e:
             solution_list = []
-
-        # 根据事件状态控制按钮显隐和名称
-        button_submit = "提交" if event.state == "draft" else "保存"
-        display = 0 if event.state == "ended" else 1
 
         return render(request, 'itsm/event_detail1.html', locals())
     elif request.method == "POST":
@@ -123,6 +126,33 @@ def event_close(request, pk):
             messages.warning(request, "您不是当前处理人,无法关闭事件")
             return HttpResponseRedirect(url)
 
+        # 云管订单创建
+        param = {
+            "time_stamp": int(round(time.time() * 1000)),
+        }
+        post = {
+            "clusterRoleId": 2,
+            "count": 1,
+            "description": "需要机器配置：1c1g",
+            "expireTime": 1518451199999,
+            "installAgent": True,
+            "productId": "c8509c0d-e518-4532-90d9-be8b840b1fc9"
+        }
+        # 工作空间接口请求
+        ak, sk = Fit2CloudClient(
+            settings.CLOUD_CONF, settings.cloud_secret_key
+        ).get_work_space(param)
+
+        if ak and sk:
+            _param = {
+                "time_stamp": 1517905240318,
+            }
+            _conf = settings.CLOUD_CONF.copy()
+            _conf["access_key"] = ak
+            order = Fit2CloudClient(_conf, sk).order_create(_param, json.dumps(post))
+            print(order)
+            event.cloud_order = order.get("data")
+
         # 执行关闭
         event.state = "ended"
         event.save()
@@ -132,8 +162,21 @@ def event_close(request, pk):
         return HttpResponseRedirect(url)
 
 
-def event_to_change(request):
-    pass
+def event_to_change(request, pk):
+
+    url = request.META.get('HTTP_REFERER')
+
+    try:
+        event = Event.objects.get(id=pk)
+        Change.objects.create(
+            name=event.name,
+            state="draft",
+            node_handler=event.technician,
+        )
+        return HttpResponseRedirect("/itsm/change_list")
+    except Exception as e:
+        messages.warning(request, "事件id{}未找到: {}".format(pk, e))
+        return HttpResponseRedirect(url)
 
 
 def event_to_issue(request, pk):
@@ -143,18 +186,20 @@ def event_to_issue(request, pk):
     try:
         event = Event.objects.get(id=pk)
         Issue.objects.create(
-            name=event.name
+            name=event.name,
+            state="on",
+            handler=event.technician,
         )
         return HttpResponseRedirect("/itsm/issue_list")
     except Exception as e:
-        messages.warning(request, "事件未找到: {}".format(e))
+        messages.warning(request, "事件id{}未找到: {}".format(pk, e))
         return HttpResponseRedirect(url)
 
 
 def changes(request):
 
     page_header = "变更管理"
-    data = Change.objects.filter()
+    data = Change.objects.filter().order_by("-dt_created")
 
     return render(request, 'itsm/change_list.html', locals())
 
@@ -166,10 +211,16 @@ def change_detail(request, pk):
     user_list = User.objects.all()
     degree_choice_list = Change.EMERGENCY_DEGREE
     module_list = get_module_name_list()
+
+    # 根据事件状态控制按钮显隐和名称
+    button_submit = "提交" if change.state == "draft" else "保存"
+    display = 0 if change.state == "ended" else 1
+
     if request.method == "GET":
 
         # 解决方案列表,循环展示
-        solution_list = solution.split("#")
+        if solution:
+            solution_list = solution.split("#")
         return render(request, 'itsm/change_detail.html', locals())
     elif request.method == "POST":
 
@@ -192,6 +243,26 @@ def change_add(request):
 
         form.save()
         return HttpResponseRedirect("/itsm/change_list")
+
+
+def change_close(request, pk):
+    url = request.META.get('HTTP_REFERER')
+    try:
+        change = Change.objects.get(id=pk)
+        if change.state == "ended":
+            messages.warning(request, "当前变更已关闭")
+            return HttpResponseRedirect(url)
+        if change.node_handler_id is not request.user.id:
+            messages.warning(request, "您不是当前处理人,无法处理该变更")
+            return HttpResponseRedirect(url)
+
+        # 执行关闭
+        change.state = "ended"
+        change.save()
+        return HttpResponseRedirect(url)
+    except Exception as e:
+        messages.warning(request, "变更查询异常: {}".format(e))
+        return HttpResponseRedirect(url)
 
 
 def change_to_config(request):
@@ -271,7 +342,12 @@ def issue_detail(request, pk):
     issue = Issue.objects.get(id=int(pk))
     solution = issue.solution
     user_list = User.objects.all()
-    # degree_choice_list = Issue.EMERGENCY_DEGREE
+    degree_choice_list = Change.EMERGENCY_DEGREE
+
+    # 根据事件状态控制按钮显隐和名称
+    button_submit = "保存"
+    display = 0 if issue.state == "off" else 1
+
     if request.method == "GET":
 
         # 解决方案列表,循环展示
@@ -280,32 +356,53 @@ def issue_detail(request, pk):
     elif request.method == "POST":
 
         # form收敛数据
-        event_form = EventDetailForm(request.POST)
-        print(event_form.errors)
-        if event_form.is_valid():
+        issue_form = IssueDetailForm(request.POST)
+        if issue_form.is_valid():
+            data = issue_form.data
             # 拼接最新解决方案,解决方案格式:username + time + text
             now = datetime.datetime.now()
-            if event_form.data.get("solution"):
-                _solution = event_form.data["technician"] \
+            if data.get("solution"):
+                _solution = data["handler"] \
                             + now.strftime('%Y-%m-%d %H:%M:%S') \
-                            + event_form.data["solution"]
+                            + data["solution"]
                 issue.solution = solution + "#" + _solution
 
-            if event_form.data.get("emergency_degree"):
-                issue.emergency_degree = event_form.data["emergency_degree"]
+            if data.get("emergency_degree"):
+                issue.emergency_degree = data["emergency_degree"]
 
-            if event_form.data.get("technician"):
-                tc = User.objects.get(username=event_form.data.get("technician"))
-                issue.technician = tc
+            if data.get("handler"):
+                tc = User.objects.get(username=data.get("handler"))
+                issue.handler = tc
 
-            if event_form.data.get("attach_file"):
-                issue.attach_file = event_form.data.get("attach_file")
+            if data.get("attach_file"):
+                issue.attach_file = data.get("attach_file")
 
             if issue.state == "draft":
                 issue.state = "processing"
             issue.save()
-            return HttpResponseRedirect("/itsm/issues_list/")
+            return HttpResponseRedirect("/itsm/issue_list/")
+        messages.warning(request, issue_form.errors)
         return render(request, 'itsm/issue_detail.html', locals())
+
+
+def issue_close(request, pk):
+    url = request.META.get('HTTP_REFERER')
+    try:
+        issue = Issue.objects.get(id=pk)
+        if issue.state == "off":
+            messages.warning(request, "当前问题已关闭")
+            return HttpResponseRedirect(url)
+        if issue.handler_id is not request.user.id:
+            messages.warning(request, "您不是当前处理人,无法处理该问题")
+            return HttpResponseRedirect(url)
+
+        # 执行关闭
+        issue.state = "off"
+        issue.save()
+        return HttpResponseRedirect(url)
+    except Exception as e:
+        messages.warning(request, "问题查询异常: {}".format(e))
+        return HttpResponseRedirect(url)
 
 
 def config(request):
@@ -343,7 +440,7 @@ def get_vm_list(request):
     }
 
     # 获取vm接口数据
-    res = Fit2CloudClient().query_vm(param)
+    res = Fit2CloudClient(settings.CMDB_CONF, settings.secret_key).query_vm(param)
     return JsonResponse(res)
 
 
@@ -357,5 +454,140 @@ def get_disk_list(request):
     }
 
     # 获取disk接口数据
-    res = Fit2CloudClient().query_disk(param)
+    res = Fit2CloudClient(settings.CMDB_CONF, settings.secret_key).query_disk(param)
     return JsonResponse(res)
+
+
+def get_product_list(request):
+
+    # 工作空间接口请求
+    param = {
+        "time_stamp": int(round(time.time() * 1000)),
+    }
+    ak, sk = Fit2CloudClient(
+        settings.CLOUD_CONF, settings.cloud_secret_key
+    ).get_work_space(param)
+    logging.error("ak, sk: ", ak, sk)
+
+    # 打包生成的ak\sk
+    if ak and sk:
+        _param = {
+            "currPage": 1,
+            "pageSize": 1000,
+            "time_stamp": int(round(time.time() * 1000)),
+        }
+        _conf = settings.CLOUD_CONF.copy()
+        _conf["access_key"] = ak
+
+        res = Fit2CloudClient(
+            _conf, sk
+        ).get_product_list(_param)
+        return JsonResponse(res)
+    logging.error("not product list")
+    return JsonResponse({
+        "code": "1001",
+        "msg": "not product list"
+    })
+
+
+def get_cluster_list(request):
+
+    # 工作空间接口请求
+    param = {
+        "time_stamp": int(round(time.time() * 1000)),
+    }
+    ak, sk = Fit2CloudClient(
+        settings.CLOUD_CONF, settings.cloud_secret_key
+    ).get_work_space(param)
+    logging.error("ak, sk: ", ak, sk)
+
+    if ak and sk:
+        _param = {
+            # "currPage": 1,
+            # "pageSize": 1000,
+            "time_stamp": int(round(time.time() * 1000)),
+        }
+        _conf = settings.CLOUD_CONF.copy()
+        _conf["access_key"] = ak
+
+        res = Fit2CloudClient(_conf, sk).get_cluster_list(_param)
+
+        return JsonResponse(res)
+
+    logging.error("not cluster list")
+    return JsonResponse({
+        "code": "1001",
+        "msg": "not cluster list"
+    })
+
+
+def get_cluster_role_list(request):
+
+    # 工作空间接口请求
+    param = {
+        "time_stamp": int(round(time.time() * 1000)),
+    }
+    ak, sk = Fit2CloudClient(
+        settings.CLOUD_CONF, settings.cloud_secret_key
+    ).get_work_space(param)
+    # logging.error("ak, sk: ", ak, sk)
+
+    if ak and sk:
+        _param = {
+            # "currPage": 1,
+            # "pageSize": 1000,
+            "clusterId": 1,
+            "time_stamp": int(round(time.time() * 1000)),
+        }
+        _conf = settings.CLOUD_CONF.copy()
+        _conf["access_key"] = ak
+
+        res = Fit2CloudClient(_conf, sk).get_cluster_role_list(_param)
+
+        return JsonResponse(res)
+
+    logging.error("not cluster role list")
+    return JsonResponse({
+        "code": "1001",
+        "msg": "not cluster role list"
+    })
+
+
+def order_create(request):
+
+    param = {
+        "time_stamp": int(round(time.time() * 1000)),
+    }
+
+    post = {
+        "clusterRoleId": 2,
+        "count": 1,
+        "description": "需要机器配置：1c1g",
+        "expireTime": 1518451199999,
+        "installAgent": True,
+        "productId": "c8509c0d-e518-4532-90d9-be8b840b1fc9"
+    }
+
+    # 工作空间接口请求
+    ak, sk = Fit2CloudClient(
+        settings.CLOUD_CONF, settings.cloud_secret_key
+    ).get_work_space(param)
+    print("ak, sk : ", ak, sk)
+
+    if ak and sk:
+        _param = {
+            # "time_stamp": int(round(time.time() * 1000)),
+            "time_stamp": 1517905240318,
+        }
+        _conf = settings.CLOUD_CONF.copy()
+        _conf["access_key"] = ak
+        print("_conf: ", _conf)
+        res = Fit2CloudClient(_conf, sk).order_create(_param, json.dumps(post))
+
+        return JsonResponse(res)
+
+    logging.error("not cluster create")
+    return JsonResponse({
+        "code": "1001",
+        "msg": "not order create"
+    })

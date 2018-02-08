@@ -10,7 +10,7 @@ from itsm.models import Event
 @receiver(post_save, sender="api.DeployInstance")
 def deploy_to_event(sender, instance, created, *args, **kwargs):
     """
-
+    部署任务创建事件
     :param sender:
     :param instance:
     :param created:
@@ -25,6 +25,7 @@ def deploy_to_event(sender, instance, created, *args, **kwargs):
         initiator="portal_sys",
         event_type="request",
         service_level="100",
+        emergency_degree="common"
     )
     return None
 
@@ -32,7 +33,7 @@ def deploy_to_event(sender, instance, created, *args, **kwargs):
 @receiver(post_save, sender="api.Alert")
 def alert_to_event(sender, instance, created, *args, **kwargs):
     """
-
+    报警自动生成事件
     :param sender:
     :param instance:
     :param created:
@@ -40,10 +41,12 @@ def alert_to_event(sender, instance, created, *args, **kwargs):
     :param kwargs:
     :return:
     """
+
     event_name = "{}-{}-{}".format(instance.grade, instance.alert_type, instance.name)
     Event.objects.create(
         name=event_name,
         state="draft",
+        initiator="fit2cloud_sys",
+        emergency_degree="importance",
     )
-    print("alert signals......")
     return None

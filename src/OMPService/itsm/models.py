@@ -45,10 +45,11 @@ class Event(BaseModel):
     event_type = models.CharField(
         max_length=128, verbose_name="事件类型", choices=TYPE, null=True, blank=True
     )
-    resource = models.ForeignKey(VMInstance, verbose_name="事件源", null=True, blank=True)
+    resource = models.CharField(max_length=128, verbose_name="事件源", null=True, blank=True)
     solution = models.TextField(verbose_name="解决方法", null=True, blank=True)
     attach_file = models.FileField(verbose_name="附件", null=True, blank=True)
     flow_module = models.FileField(verbose_name="流程模板", null=True, blank=True)
+    cloud_order = models.CharField(verbose_name="云管订单", max_length=128, null=True, blank=True)
 
     def __str__(self):
         return self.name or ""
@@ -59,8 +60,9 @@ class Issue(BaseModel):
     name = models.CharField(max_length=128, verbose_name="问题名称")
     description = models.TextField(verbose_name="问题描述")
     state = models.CharField(max_length=128, verbose_name="问题状态")
-    handler = models.CharField(max_length=128, verbose_name="处理人")
-    event_from = models.ForeignKey(VMInstance, null=True, blank=True, verbose_name="事件源")
+    issue_type = models.CharField(max_length=128, null=True, blank=True, verbose_name="类型")
+    handler = models.ForeignKey(User, verbose_name="处理人", null=True, blank=True)
+    event_from = models.ForeignKey(Event, null=True, blank=True, verbose_name="事件源")
     solution = models.TextField(verbose_name="解决方法")
     attach_file = models.FileField(verbose_name="附件", null=True, blank=True)
 

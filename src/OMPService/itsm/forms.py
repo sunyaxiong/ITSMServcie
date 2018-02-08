@@ -4,6 +4,7 @@ from django import forms
 
 from .models import Event
 from .models import Change
+from .models import Issue
 
 
 class EventDetailForm(forms.Form):
@@ -44,3 +45,13 @@ class EventDetailModelForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = "__all__"
+
+
+class IssueDetailForm(forms.Form):
+
+    emergency_degree = forms.ChoiceField(choices=Change.EMERGENCY_DEGREE)
+    solution = forms.CharField(required=False)
+    handler = forms.CharField()
+    attach_file = forms.FileField(required=False)
+    description = forms.CharField(required=False)
+

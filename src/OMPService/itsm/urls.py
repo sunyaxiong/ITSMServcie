@@ -32,10 +32,15 @@ from .views import change_to_config
 from .views import flow_pass
 from .views import issues
 from .views import issue_detail
+from .views import issue_close
 from .views import config
 from .views import config_overview
 from .views import get_vm_list
 from .views import get_disk_list
+from .views import get_product_list
+from .views import get_cluster_list
+from .views import get_cluster_role_list
+from .views import order_create
 
 
 router = routers.DefaultRouter()
@@ -65,6 +70,7 @@ urlpatterns = [
     # 问题管理
     url(r'^issue_list/$', issues),
     url(r'^issue/(?P<pk>\d{1,9})', issue_detail),
+    url(r'^issue/close/(?P<pk>\d{1,9})', issue_close),
 
     # 配置管理
     url(r'^config/$', config),
@@ -73,5 +79,11 @@ urlpatterns = [
     # CMDB
     url(r'cmdb/query_vm/$', get_vm_list),
     url(r'cmdb/query_disk/$', get_disk_list),
+
+    # cloud config
+    url(r'cloud/get_product_list/$', get_product_list),
+    url(r'cloud/get_cluster_list/$', get_cluster_list),
+    url(r'cloud/get_cluster_role_list/$', get_cluster_role_list),
+    url(r'cloud/order_create/$', order_create),
 ]
 

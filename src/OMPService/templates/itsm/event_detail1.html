@@ -143,6 +143,23 @@
             </table>
         </div>
     </div><br>
+    {% if event.cloud_order %}
+    <div class="row">
+        <p><i class="fa fa-dashboard"></i><span> 云管订单信息</span></p>
+        <div class="col-md-6">
+            <table class="table-striped">
+                <tr>
+                    <td><label>订单号: </label></td>
+                    <td>
+                        <label><span>{{ event.cloud_order }}</span></label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-6">
+        </div>
+    </div><br>
+    {% endif %}
     <div class="row">
         <p class="lead">流转记录:</p>
         <div class="col-xs-8">
@@ -173,7 +190,7 @@
     <div class="row no-print">
         {% if display %}
             <div class="col-xs-12">
-                <a href="/itsm/events/event_close/{{ event.id }}"
+                <a href="/itsm/events/event_to_change/{{ event.id }}"
                    class="btn btn-primary pull-right" style="margin-right: 5px;">
                     <i class="fa fa-success"></i> 转入变更
                 </a>
