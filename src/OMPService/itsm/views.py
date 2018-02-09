@@ -172,6 +172,7 @@ def event_to_change(request, pk):
             name=event.name,
             state="draft",
             node_handler=event.technician,
+            initiator=event.technician.username,
         )
         return HttpResponseRedirect("/itsm/change_list")
     except Exception as e:
@@ -213,8 +214,13 @@ def change_detail(request, pk):
     module_list = get_module_name_list()
 
     # 根据事件状态控制按钮显隐和名称
-    button_submit = "提交" if change.state == "draft" else "保存"
+    button_submit = "提交" if change.state == "draft" else "同意"
     display = 0 if change.state == "ended" else 1
+
+    if button_submit == "提交":
+        action = "/itsm/change/{}".format(change.id)
+    elif button_submit == "同意":
+        action = "/itsm/change/pass/"
 
     if request.method == "GET":
 
@@ -227,7 +233,13 @@ def change_detail(request, pk):
         # form收敛数据
         change_form = ChangeDetailForm(request.POST)
         if change_form.is_valid():
-            pass
+            data = change_form.data
+            if change.state == "draft":
+                change.state = "ing"
+            if data.get("emergency_degree"):
+                change.emergency_degree = data.get("emergency_degree")
+
+            change.save()
             return HttpResponseRedirect("/itsm/change_list/")
         return render(request, 'itsm/change_detail.html', locals())
 
@@ -277,15 +289,17 @@ def flow_pass(request):
     """
     传入流程实例,根据流程实例状态判断下一步动作
     :param request:
-    :param instance:
     :return:
     """
 
     url = request.META.get('HTTP_REFERER')
+    print(url)
     if request.method == "POST":
         form = ChangeDetailForm(request.POST)
+        print(form.errors)
         if form.is_valid():
             data = form.data
+            print(data)
             try:
                 change_id = data.get("id")
 
@@ -328,6 +342,8 @@ def flow_pass(request):
                 return HttpResponseRedirect(url)
             messages.info(request, "跳转成功")
             return HttpResponseRedirect(url)
+        messages.warning(request, form.errors)
+        return HttpResponseRedirect(url)
 
 
 def issues(request):

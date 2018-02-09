@@ -15,7 +15,7 @@
     {% endfor %}
 {% endif %}
 <section class="invoice">
-    <form class="bs-example bs-example-form" role="form" action="/itsm/change/{{ change.id }}" method="POST">{% csrf_token %}
+    <form class="bs-example bs-example-form" role="form" method="POST" action={{ action }}>{% csrf_token %}
     <div class="row">
         <div class="col-xs-12">
             <h2 class="page-header">
@@ -33,6 +33,7 @@
             <div class="col-md-8">
                 <label for="name">变更名称: </label>
                 <input class="form-control" type="text" name="name" disabled="disabled" value={{ change.name }}><br>
+                <input type="text" name="id" hidden="hidden" value={{ change.id }}><br>
             </div>
         </div>
         <div class="col-md-6">
@@ -90,8 +91,8 @@
                 <tr>
                     <td><label>处理人: </label></td>
                     <td>
-                        <select class="form-control" disabled="disabled" name="technician" >
-                            <option value={{ change.technician }}>{{ change.technician.username }}</option>
+                        <select class="form-control" disabled="disabled" name="node_handler" >
+                            <option value={{ change.node_handler }}>{{ change.node_handler.username }}</option>
                             {% for i in user_list %}
                                 <option value={{ i }}>{{ i.username }}</option>
                             {% endfor %}
@@ -102,7 +103,7 @@
                     <td><label>处理人邮箱: </label></td>
                     <td>
                         <input class="form-control" type="text" name="technician_mail"
-                               disabled="disabled" value={{ change.technician.email }}>
+                               disabled="disabled" value={{ change.node_handler.email }}>
                     </td>
                 </tr>
                 <tr>
@@ -173,21 +174,20 @@
     <div class="row no-print">
         {% if display %}
             <div class="col-xs-12">
-                <a href="/itsm/changes/change_to_change/{{ change.id }}"
-                   class="btn btn-primary pull-right" style="margin-right: 5px;">
-                    <i class="fa fa-success"></i> 转入变更
-                </a>
-                <a href="/itsm/changes/change_to_issue/{{ change.id }}"
-                   class="btn btn-primary pull-right" style="margin-right: 5px;">
-                    <i class="fa fa-success"></i> 转入问题
-                </a>
                 <a href="/itsm/changes/close/{{ change.id }}"
                    class="btn btn-primary pull-right" style="margin-right: 5px;">
                     <i class="fa fa-close"></i> 关闭变更
                 </a>
+                {% if button_submit == "提交" %}
                 <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
                     <i class="fa fa-save"></i> {{ button_submit }}
                 </button>
+                {% endif %}
+                {% if button_submit == "同意" %}
+                <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                    <i class="fa fa-save"></i> {{ button_submit }}
+                </button>
+                {% endif %}
             </div>
         {% endif %}
     </div>
