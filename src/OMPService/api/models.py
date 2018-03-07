@@ -5,16 +5,19 @@ from lib.models import BaseModel
 
 class Alert(BaseModel):
 
-    alert_id = models.CharField(verbose_name="告警ID", max_length=128)
-    name = models.CharField(verbose_name="告警名称", max_length=128)
-    grade = models.CharField(verbose_name="告警等级", max_length=128, default="common")
-    alert_type = models.CharField(verbose_name="告警类型", max_length=128)
-    state = models.CharField(verbose_name="告警状态", max_length=128)
-    timestamp = models.CharField(verbose_name="时间戳", max_length=128)
-    resource_id = models.CharField(verbose_name="资源ID", max_length=128)
-    resource_name = models.CharField(verbose_name="资源名称", max_length=128, null=True, blank=True)
-    resource_ip = models.CharField(verbose_name="资源IP", max_length=128, null=True, blank=True)
-    technician = models.CharField(verbose_name="技术员", max_length=128, null=True, blank=True)
+    alertId = models.CharField("告警ID", max_length=128)
+    alertName = models.CharField("告警名称", max_length=128)
+    alertGrade = models.CharField("告警等级", max_length=128, default="1")
+    f2cServerId = models.CharField("服务器在云管平台的ID", max_length=128)
+    instanceId = models.CharField("实例ID", max_length=128, null=True, blank=True)
+    instanceName = models.CharField("实例名称", max_length=128, null=True, blank=True)
+    privateIp = models.GenericIPAddressField("私有IP", null=True, blank=True)
+    publicIp = models.GenericIPAddressField("公有IP", null=True, blank=True)
+    cloudAccountId = models.CharField("云账户ID", max_length=128)
+    userId = models.CharField("用户ID", max_length=128)
+    userName = models.CharField("用户名", max_length=128)
+    alertMsg = models.TextField("告警信息")
+    created = models.CharField("告警时间", max_length=128)
 
     def __str__(self):
         return self.name

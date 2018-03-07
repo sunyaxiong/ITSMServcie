@@ -41,6 +41,7 @@ from .views import get_product_list
 from .views import get_cluster_list
 from .views import get_cluster_role_list
 from .views import order_create
+from .views import order_get
 
 
 router = routers.DefaultRouter()
@@ -85,5 +86,6 @@ urlpatterns = [
     url(r'cloud/get_cluster_list/$', get_cluster_list),
     url(r'cloud/get_cluster_role_list/$', get_cluster_role_list),
     url(r'cloud/order_create/$', order_create),
+    url(r'cloud/order_get/$', order_get),
 ]
 

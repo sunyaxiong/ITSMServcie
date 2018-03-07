@@ -18,7 +18,7 @@ def login(request):
             user = auth.authenticate(username=username, password=password)
             if user is not None and user.is_active:
                 auth.login(request, user)
-                return HttpResponseRedirect("/itsm/")
+                return HttpResponseRedirect("/itsm/event_list/")
             else:
                 # TODO 补全报错提醒
                 return render(request, "login.html")

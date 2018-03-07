@@ -9,4 +9,8 @@ class Channel(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     channel = models.ForeignKey(Channel, max_length=30, null=True, blank=True, verbose_name="渠道")
+    phone = models.BigIntegerField("手机号", null=True, blank=True)
+    email = models.EmailField("邮箱", null=True, blank=True)
 
+    def __str__(self):
+        return self.user.username

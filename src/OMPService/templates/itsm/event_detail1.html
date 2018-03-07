@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block head %}
-    <script src="/static/js/this_config.js"></script>
-    <script src="/static/bower_components/ckeditor/ckeditor.js"></script>
-    <script src="/static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-    <script src="/static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+{#    <script src="/static/js/this_config.js"></script>#}
+{#    <script src="/static/bower_components/ckeditor/ckeditor.js"></script>#}
+{#    <script src="/static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>#}
+{#    <script src="/static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>#}
 {% endblock %}
 {% block header %}
     <li class="active">{{ page_header }}</li>
@@ -151,12 +151,20 @@
                 <tr>
                     <td><label>订单号: </label></td>
                     <td>
-                        <label><span>{{ event.cloud_order }}</span></label>
+                        <label><span id="order_id">{{ event.cloud_order }}</span></label>
                     </td>
                 </tr>
             </table>
         </div>
         <div class="col-md-6">
+            <table class="table-striped">
+                <tr>
+                    <td><label>订单状态: </label></td>
+                    <td>
+                        <label><span id="order_status"></span></label>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div><br>
     {% endif %}

@@ -607,3 +607,36 @@ def order_create(request):
         "code": "1001",
         "msg": "not order create"
     })
+
+
+def order_get(request):
+
+    param = {
+        "time_stamp": int(round(time.time() * 1000)),
+    }
+
+    ak, sk = Fit2CloudClient(
+        settings.CLOUD_CONF, settings.cloud_secret_key
+    ).get_work_space(param)
+
+    if ak and sk:
+        _param = {
+            "orderId": request.GET.get("order_id"),
+            "time_stamp": int(round(time.time() * 1000)),
+            # "time_stamp": 1517905240318,
+        }
+        _conf = settings.CLOUD_CONF.copy()
+        _conf["access_key"] = ak
+        _res = Fit2CloudClient(_conf, sk).order_get(_param)
+
+        print(_res["success"])
+        if _res["success"]:
+            res = {
+                "status": _res.get("data")["status"],
+            }
+        else:
+            res = {
+                "status": "NONE",
+            }
+
+        return JsonResponse(res)

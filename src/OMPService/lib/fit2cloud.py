@@ -36,6 +36,7 @@ class Fit2CloudClient(object):
         self.vm_query_url = "http://47.97.100.104:28080/rest/api/v1/vm/list"
         self.disk_query_url = "http://47.97.100.104:28080/rest/api/v1/disk/list"
         self.order_create_url = "http://vstecs.fit2cloud.com:28888/rest/api/v1/order/apply/product"
+        self.order_get_url = "http://vstecs.fit2cloud.com:28888/rest/api/v1/order/get"
         self.get_work_space_url = "http://vstecs.fit2cloud.com:28888/rest/api/v1/group/list"
         self.product_list_url = "http://vstecs.fit2cloud.com:28888/rest/api/v1/catalog/product/list"
         self.cluster_list_url = "http://vstecs.fit2cloud.com:28888/rest/api/v1/cluster/list"
@@ -148,6 +149,22 @@ class Fit2CloudClient(object):
         url = "{}?{}".format(self.order_create_url, urllib.urlencode(attrs))
         headers = {'Content-Type': 'application/json'}
         res = requests.post(url, post, headers=headers)
+
+        return res.json()
+
+    def order_get(self, attrs):
+        """
+        云管平台订单查询接口
+        :param attrs: dict
+        :return:
+        """
+        attrs.update(self.conf)
+
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+
+        url = "{}?{}".format(self.order_get_url, urllib.urlencode(attrs))
+        res = requests.get(url)
 
         return res.json()
 

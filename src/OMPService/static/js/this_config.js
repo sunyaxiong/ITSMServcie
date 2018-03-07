@@ -23,3 +23,20 @@ function input_enable() {
     $("select").removeAttr("disabled");
     console.log(123123)
 }
+
+$(document).ready(function () {
+        var order_id = $("#order_id").html();
+        console.log(123123)
+        console.log(order_id)
+        $.ajax({
+            type:"GET",
+            url:"http://127.0.0.1:8000/itsm/cloud/order_get/",
+            data:{"order_id": order_id},
+            success: function (ret) {
+                console.log(order_id);
+                console.log(ret["status"])
+                $("#order_status").html(ret["status"])
+            }
+        })
+})
+

@@ -14,12 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
+from django.conf.urls import include
+from rest_framework import routers
 
 from .views import login
 from .views import logout
+from .viewsets import ProfileViewSet
+
+
+router = routers.DefaultRouter()
+router.register("profile", ProfileViewSet, base_name="profileViewset")
 
 
 urlpatterns = [
+    url(r'', include(router.urls, namespace='profile')),
     url(r'^login/$', login),
     url(r'^logout/$', logout),
 ]
