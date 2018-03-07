@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'itsm',
     'accounts',
     'api',
+    'django_cas_ng',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +56,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'django_cas_ng.backends.CASBackend',
+)
+
+CAS_SERVER_URL = "https://52.83.173.240:8443/cas/"
+CAS_REDIRECT_URL = "http://127.0.0.1:8000/accounts/login/"
 
 ROOT_URLCONF = 'OMPService.urls'
 
