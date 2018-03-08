@@ -35,6 +35,7 @@ def index(request):
     return render(request, 'base.html')
 
 
+@login_required
 def events(request):
 
     page_header = "事件管理"
