@@ -151,7 +151,12 @@
                 <tr>
                     <td><label>订单号: </label></td>
                     <td>
-                        <label><span id="order_id">{{ event.cloud_order }}</span></label>
+                        <label>
+                            <a href="http://vstecs.fit2cloud.com/self-service/#/order/list">
+                                <span id="order_id">{{ event.cloud_order }}</span>
+                            </a>
+                        </label><br>
+                        <label><span class="strong" style="color: #3C510C">点击链接修改订单明细</span></label>
                     </td>
                 </tr>
             </table>

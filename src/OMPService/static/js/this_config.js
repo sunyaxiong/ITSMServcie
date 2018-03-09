@@ -30,7 +30,7 @@ $(document).ready(function () {
         console.log(order_id)
         $.ajax({
             type:"GET",
-            url:"http://127.0.0.1:8000/itsm/cloud/order_get/",
+            url:"/itsm/cloud/order_get/",
             data:{"order_id": order_id},
             success: function (ret) {
                 console.log(order_id);
