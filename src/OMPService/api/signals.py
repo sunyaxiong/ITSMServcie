@@ -42,7 +42,7 @@ def alert_to_event(sender, instance, created, *args, **kwargs):
     :return:
     """
 
-    event_name = "{}-{}-{}".format(instance.grade, instance.alert_type, instance.name)
+    event_name = "{}-{}-{}".format(instance.alertId, instance.alertGrade, instance.alertName)
     Event.objects.create(
         name=event_name,
         state="draft",
