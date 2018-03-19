@@ -19,7 +19,9 @@ from rest_framework import routers
 
 from .viewsets import EventViewSet
 from .views import index
+from .views import request_list
 from .views import events
+from .views import incident_list
 from .views import event_detail
 from .views import event_add
 from .views import event_close
@@ -56,6 +58,8 @@ urlpatterns = [
 
     # 事件管理
     url(r'^event_list/$', events),
+    url(r'^request_list/$', request_list),
+    url(r'^incident_list/$', incident_list),
     url(r'^event/(?P<pk>\d{1,9})', event_detail),
     url(r'^events/add/$', event_add),
     url(r'^events/close/(?P<pk>\d{1,9})', event_close),

@@ -46,6 +46,7 @@ def alert_to_event(sender, instance, created, *args, **kwargs):
     Event.objects.create(
         name=event_name,
         state="draft",
+        event_type="incident",
         initiator="fit2cloud_sys",
         emergency_degree="importance",
     )

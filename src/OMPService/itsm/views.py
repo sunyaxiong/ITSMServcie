@@ -45,6 +45,23 @@ def events(request):
     return render(request, 'itsm/event_list.html', locals())
 
 
+@login_required
+def request_list(request):
+
+    page_header = "事件管理"
+    data = Event.objects.filter(event_type="request").order_by("-dt_created")
+
+    return render(request, 'itsm/event_list.html', locals())
+
+@login_required
+def incident_list(request):
+
+    page_header = "事件管理"
+    data = Event.objects.filter(event_type="incident").order_by("-dt_created")
+
+    return render(request, 'itsm/event_list.html', locals())
+
+
 def event_detail(request, pk):
     page_header = "事件管理"
     event = Event.objects.get(id=int(pk))
