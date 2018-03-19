@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import Event
+from .models import EventProcessLog
 from .models import Issue
 from .models import Change
 from .models import Config
@@ -9,6 +10,10 @@ from .models import TimeTree
 
 class EventAdmin(admin.ModelAdmin):
     list_display = ("name", "state", "technician")
+
+
+class EventLogAdmin(admin.ModelAdmin):
+    list_display = ("event_obj", "username", "content")
 
 
 class IssueAdmin(admin.ModelAdmin):
@@ -30,6 +35,7 @@ class TimeTreeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Event, EventAdmin)
+admin.site.register(EventProcessLog, EventLogAdmin)
 admin.site.register(Issue, IssueAdmin)
 admin.site.register(Change, ChangeAdmin)
 admin.site.register(Config, ConfigAdmin)

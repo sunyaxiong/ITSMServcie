@@ -24,17 +24,32 @@ function input_enable() {
     console.log(123123)
 }
 
+function event_upgrade() {
+
+    var username=$('#upgradeUsername').val();
+    var event_id=$("#event_id").val();
+
+    $.ajax({
+        type: "GET",
+        url: "/itsm/events/event_upgrade/",
+        data: {
+            "username": username,
+            "event_id": event_id
+        },
+        success: function (ret) {
+            // console.log(ret)
+            window.location.href=window.location.pathname;
+        }
+    })
+}
+
 $(document).ready(function () {
         var order_id = $("#order_id").html();
-        console.log(123123)
-        console.log(order_id)
         $.ajax({
             type:"GET",
             url:"/itsm/cloud/order_get/",
             data:{"order_id": order_id},
             success: function (ret) {
-                console.log(order_id);
-                console.log(ret["status"])
                 $("#order_status").html(ret["status"])
             }
         })

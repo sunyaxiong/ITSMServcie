@@ -1,18 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from django import forms
+from django.forms import ValidationError
 
-from .models import Event
+from .models import Event, EventProcessLog
 from .models import Change
 from .models import Issue
 
 
 class EventDetailForm(forms.Form):
 
-    emergency_degree = forms.ChoiceField(choices=Event.EMERGENCY_DEGREE)
+    emergency_degree = forms.ChoiceField(required=False, choices=Event.EMERGENCY_DEGREE)
     solution = forms.CharField(required=False)
-    technician = forms.CharField()
+    technician = forms.CharField(required=False)
     attach_file = forms.FileField(required=False)
+
+    def clean_technician(self):
+        if self.data.get("technician") == "None":
+            raise ValidationError("请指派处理人")
 
 
 class ChangeDetailForm(forms.Form):

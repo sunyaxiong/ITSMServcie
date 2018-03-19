@@ -25,6 +25,7 @@ from .views import event_add
 from .views import event_close
 from .views import event_to_change
 from .views import event_to_issue
+from .views import event_upgrade
 from .views import changes
 from .views import change_detail
 from .views import change_add
@@ -60,6 +61,7 @@ urlpatterns = [
     url(r'^events/close/(?P<pk>\d{1,9})', event_close),
     url(r'^events/event_to_change/(?P<pk>\d{1,9})', event_to_change),
     url(r'^events/event_to_issue/(?P<pk>\d{1,9})', event_to_issue),
+    url(r'^events/event_upgrade/$', event_upgrade),
 
     # 变更管理
     url(r'^change_list/$', changes),

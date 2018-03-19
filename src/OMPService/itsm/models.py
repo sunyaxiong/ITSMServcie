@@ -139,3 +139,10 @@ class TimeTree(BaseModel):
 
 class Sla(BaseModel):
     pass
+
+
+class EventProcessLog(BaseModel):
+
+    event_obj = models.ForeignKey(Event, related_name="logs", verbose_name="关联事件")
+    username = models.CharField("用户名", max_length=256, blank=True, null=True)
+    content = models.TextField("处理记录", blank=True, null=True)

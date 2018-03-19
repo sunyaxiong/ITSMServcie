@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.conf.urls import include
 from rest_framework import routers
-from rest_framework.documentation import include_docs_urls
+# from rest_framework.documentation import include_docs_urls
 
 from .viewsets import AlertViewSet
 from .viewsets import DeployInstanceViewSet
@@ -29,6 +29,6 @@ router.register("deploy", DeployInstanceViewSet, base_name="DeployInstanceViewSe
 
 urlpatterns = [
     url(r'', include(router.urls, namespace='api')),
-    url(r'^docs/', include_docs_urls(title='My API title')),
+    # url(r'^docs/', include_docs_urls(title='My API title')),
 ]
 

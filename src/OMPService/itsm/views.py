@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from OMPService import settings
 from .models import Event
+from .models import EventProcessLog
 from .models import Change
 from .models import Issue
 from .models import Config
@@ -47,22 +48,16 @@ def events(request):
 def event_detail(request, pk):
     page_header = "事件管理"
     event = Event.objects.get(id=int(pk))
-    solution = event.solution if event.solution else ""
+    solution_list = event.logs.all() if event.logs else []
     user_list = User.objects.all()
     degree_choice_list = Event.EMERGENCY_DEGREE
     button_submit = "保存"
 
-    # 根据事件状态控制按钮显隐和名称
+    # 根据事件状态控制前端显示
     button_submit = "提交" if event.state == "draft" else "保存"
     display = 0 if event.state == "ended" else 1
 
     if request.method == "GET":
-
-        # 解决方案列表,循环展示
-        try:
-            solution_list = solution.split("#")
-        except Exception as e:
-            solution_list = []
 
         return render(request, 'itsm/event_detail1.html', locals())
     elif request.method == "POST":
@@ -71,19 +66,11 @@ def event_detail(request, pk):
         event_form = EventDetailForm(request.POST)
         if event_form.is_valid():
             data = event_form.data
-            print(data)
-            # 拼接最新解决方案,解决方案格式:username + time + text
-            now = datetime.datetime.now()
-            if data.get("solution"):
-                _solution = event_form.data["technician"] \
-                            + now.strftime('%Y-%m-%d %H:%M:%S') \
-                            + event_form.data["solution"]
-                event.solution = solution + "#" + _solution
 
             if data.get("emergency_degree"):
                 event.emergency_degree = data["emergency_degree"]
 
-            if data.get("technician"):
+            if not data.get("technician") == "None":
                 tc = User.objects.filter(username=data.get("technician"))
                 event.technician = tc[0]
 
@@ -93,10 +80,17 @@ def event_detail(request, pk):
             if event.state == "draft":
                 button_submit = "提交"
                 event.state = "processing"
+
+            # 更新解决方案
+            if data.get("solution"):
+                EventProcessLog.objects.create(
+                    event_obj=event,
+                    username=data.get("technician"),
+                    content=data.get("solution"),
+                )
             event.save()
             return HttpResponseRedirect("/itsm/event_list/")
-        else:
-            messages.warning(request, event_form.errors)
+        messages.warning(request, event_form.errors)
         return render(request, 'itsm/event_detail1.html', locals())
 
 
@@ -196,6 +190,21 @@ def event_to_issue(request, pk):
     except Exception as e:
         messages.warning(request, "事件id{}未找到: {}".format(pk, e))
         return HttpResponseRedirect(url)
+
+
+def event_upgrade(request):
+
+    url = request.META.get('HTTP_REFERER')
+    username = request.GET.get("username")
+    event_id = request.GET.get("event_id")
+    logging.info("ajax test: {}: {}: {}".format(url, username, event_id))
+
+    technician = User.objects.filter(username=username)
+    event = Event.objects.filter(id=event_id)[0]
+    event.technician = technician[0]
+    event.save()
+
+    return HttpResponseRedirect(url)
 
 
 def changes(request):

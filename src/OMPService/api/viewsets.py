@@ -15,6 +15,7 @@ class AlertViewSet(viewsets.ModelViewSet):
 
     model = Alert
     serializer_class = AlertSerializers
+    filter_fields = ("cloudAccountId", )
 
     def get_queryset(self):
         queryset = Alert.objects.filter()

@@ -81,7 +81,7 @@
                 </tr>
                 <tr>
                     <td><label>发起人电话: </label></td>
-                    <td><input class="form-control" type="text" name="name" disabled="disabled" value="18922222222"></td>
+                    <td><input class="form-control" type="text" name="name" value="18922222222"></td>
                 </tr>
             </table>
         </div>
@@ -90,7 +90,7 @@
                 <tr>
                     <td><label>处理人: </label></td>
                     <td>
-                        <select class="form-control" disabled="disabled" name="technician" >
+                        <select class="form-control" name="technician" >
                             <option value={{ event.technician }}>{{ event.technician.username }}</option>
                             {% for i in user_list %}
                                 <option value={{ i }}>{{ i.username }}</option>
@@ -179,7 +179,8 @@
             {% for i in solution_list %}
             <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
                 <label>记录: </label></br>
-                {{ i }}
+                {{ i.username }}<span>: </span>{{ i.dt_created }}<br>
+                {{ i.content }}
             </p>
             {% endfor %}
         </div>
@@ -215,6 +216,10 @@
                    class="btn btn-primary pull-right" style="margin-right: 5px;">
                     <i class="fa fa-close"></i> 关闭事件
                 </a>
+                <a class="btn btn-primary pull-right" style="margin-right: 5px;"
+                    data-toggle="modal" data-target="#eventUpdateModal">
+                    <i class="fa fa-save"></i> 事件升级
+                </a>
                 <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
                     <i class="fa fa-save"></i> {{ button_submit }}
                 </button>
@@ -223,4 +228,5 @@
     </div>
     </form>
 </section>
+{% include "itsm/modal/event_upgrade.html" %}
 {% endblock %}
