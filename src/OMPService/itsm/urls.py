@@ -36,6 +36,7 @@ from .views import flow_pass
 from .views import issues
 from .views import issue_detail
 from .views import issue_close
+from .views import issue_upgrade
 from .views import config
 from .views import config_overview
 from .views import get_vm_list
@@ -78,6 +79,7 @@ urlpatterns = [
     url(r'^issue_list/$', issues),
     url(r'^issue/(?P<pk>\d{1,9})', issue_detail),
     url(r'^issue/close/(?P<pk>\d{1,9})', issue_close),
+    url(r'^issue/upgrade/$', issue_upgrade),
 
     # 配置管理
     url(r'^config/$', config),

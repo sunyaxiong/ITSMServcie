@@ -53,6 +53,7 @@ def request_list(request):
 
     return render(request, 'itsm/event_list.html', locals())
 
+
 @login_required
 def incident_list(request):
 
@@ -214,7 +215,7 @@ def event_upgrade(request):
     url = request.META.get('HTTP_REFERER')
     username = request.GET.get("username")
     event_id = request.GET.get("event_id")
-    logging.info("ajax test: {}: {}: {}".format(url, username, event_id))
+    logging.warning("ajax test: {}: {}: {}".format(url, username, event_id))
 
     technician = User.objects.filter(username=username)
     event = Event.objects.filter(id=event_id)[0]
@@ -446,6 +447,21 @@ def issue_close(request, pk):
     except Exception as e:
         messages.warning(request, "问题查询异常: {}".format(e))
         return HttpResponseRedirect(url)
+
+
+def issue_upgrade(request):
+
+    url = request.META.get('HTTP_REFERER')
+    username = request.GET.get("username")
+    issue_id = request.GET.get("issue_id")
+    logging.warning("ajax test: {}: {}: {}".format(url, username, issue_id))
+
+    handler = User.objects.filter(username=username)
+    issue = Issue.objects.filter(id=issue_id)[0]
+    issue.handler = handler[0]
+    issue.save()
+
+    return HttpResponseRedirect(url)
 
 
 def config(request):

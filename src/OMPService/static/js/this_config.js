@@ -43,6 +43,25 @@ function event_upgrade() {
     })
 }
 
+function issue_upgrade() {
+
+    var username=$('#upgradeUsername').val();
+    var issue_id=$("#issue_id").val();
+
+    $.ajax({
+        type: "GET",
+        url: "/itsm/issue/upgrade/",
+        data: {
+            "username": username,
+            "issue_id": issue_id
+        },
+        success: function (ret) {
+            // console.log(ret)
+            window.location.href=window.location.pathname;
+        }
+    })
+}
+
 $(document).ready(function () {
         var order_id = $("#order_id").html();
         $.ajax({

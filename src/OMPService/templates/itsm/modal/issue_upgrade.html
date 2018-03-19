@@ -1,4 +1,4 @@
-<div class="modal fade" id="eventUpdateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="issueUpdateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -6,17 +6,17 @@
 					&times;
 				</button>
 				<h4 class="modal-title" id="myModalLabel">
-					事件升级指派
+					问题升级指派
 				</h4>
 			</div>
 			<div class="modal-body">
-                <input id="event_id"  class="hidden" value={{ event.id }}>
+                <input id="issue_id"  class="hidden" value={{ issue.id }}>
 				<table class="table-striped">
                     <tr>
                         <td><label>处理人: </label></td>
                         <td>
                             <select id="upgradeUsername" class="select2-container--classic" >
-                                <option selected="selected" value={{ event.technician }}>{{ event.technician.username }}</option>
+                                <option selected="selected" value={{ issue.handler }}>{{ issue.handler.username }}</option>
                                 {% for i in user_list %}
                                     <option value={{ i }}>{{ i.username }}</option>
                                 {% endfor %}
@@ -28,7 +28,7 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">取消
 				</button>
-				<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="event_upgrade()">
+				<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="issue_upgrade()">
 					确定升级
 				</button>
 			</div>
