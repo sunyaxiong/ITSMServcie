@@ -63,7 +63,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 CAS_SERVER_URL = "https://52.83.173.240:8443/cas/"
-CAS_REDIRECT_URL = "http://127.0.0.1:8000/itsm/event_list/"
+CAS_REDIRECT_URL = "/itsm/event_list/"
 
 ROOT_URLCONF = 'OMPService.urls'
 

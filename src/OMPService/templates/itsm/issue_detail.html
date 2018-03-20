@@ -149,7 +149,8 @@
             {% for i in solution_list %}
             <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
                 <label>记录: </label></br>
-                {{ i }}
+                {{ i.username }}<span>: </span>{{ i.dt_created }}<br>
+                {{ i.content }}
             </p>
             {% endfor %}
         </div>

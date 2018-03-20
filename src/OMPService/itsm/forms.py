@@ -60,3 +60,7 @@ class IssueDetailForm(forms.Form):
     attach_file = forms.FileField(required=False)
     description = forms.CharField(required=False)
 
+    def clean_handler(self):
+        if self.data.get("handler") == "None":
+            raise ValidationError("请指派处理人")
+

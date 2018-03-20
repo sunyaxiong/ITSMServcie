@@ -19,6 +19,7 @@ from .models import Event
 from .models import EventProcessLog
 from .models import Change
 from .models import Issue
+from .models import IssueProcessLog
 from .models import Config
 from .forms import EventDetailForm
 from .forms import EventDetailModelForm
@@ -384,7 +385,7 @@ def issues(request):
 def issue_detail(request, pk):
     page_header = "问题管理"
     issue = Issue.objects.get(id=int(pk))
-    solution = issue.solution
+    solution_list = issue.logs.all() if issue.logs else []
     user_list = User.objects.all()
     degree_choice_list = Change.EMERGENCY_DEGREE
 
@@ -395,7 +396,7 @@ def issue_detail(request, pk):
     if request.method == "GET":
 
         # 解决方案列表,循环展示
-        solution_list = solution.split("#")
+        # solution_list = solution.split("#")
         return render(request, 'itsm/issue_detail.html', locals())
     elif request.method == "POST":
 
@@ -403,13 +404,14 @@ def issue_detail(request, pk):
         issue_form = IssueDetailForm(request.POST)
         if issue_form.is_valid():
             data = issue_form.data
+
             # 拼接最新解决方案,解决方案格式:username + time + text
-            now = datetime.datetime.now()
-            if data.get("solution"):
-                _solution = data["handler"] \
-                            + now.strftime('%Y-%m-%d %H:%M:%S') \
-                            + data["solution"]
-                issue.solution = solution + "#" + _solution
+            # now = datetime.datetime.now()
+            # if data.get("solution"):
+            #     _solution = data["handler"] \
+            #                 + now.strftime('%Y-%m-%d %H:%M:%S') \
+            #                 + data["solution"]
+            #     issue.solution = solution + "#" + _solution
 
             if data.get("emergency_degree"):
                 issue.emergency_degree = data["emergency_degree"]
@@ -423,6 +425,14 @@ def issue_detail(request, pk):
 
             if issue.state == "draft":
                 issue.state = "processing"
+
+                # 更新解决方案
+            if data.get("solution"):
+                IssueProcessLog.objects.create(
+                    issue_obj=issue,
+                    username=data.get("handler"),
+                    content=data.get("solution"),
+                )
             issue.save()
             return HttpResponseRedirect("/itsm/issue_list/")
         messages.warning(request, issue_form.errors)
