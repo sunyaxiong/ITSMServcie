@@ -4,6 +4,7 @@ from .models import Event
 from .models import EventProcessLog
 from .models import Issue
 from .models import Change
+from .models import ChangeProcessLog
 from .models import Config
 from .models import TimeTree
 
@@ -24,6 +25,10 @@ class ChangeAdmin(admin.ModelAdmin):
     list_display = ("name", "state")
 
 
+class ChangeLogAdmin(admin.ModelAdmin):
+    list_display = ("change_obj", "username", "content")
+
+
 class ConfigAdmin(admin.ModelAdmin):
     list_display = (
         "name", "state", "event_module", "issue_module", "change_module", "sla_module"
@@ -38,5 +43,6 @@ admin.site.register(Event, EventAdmin)
 admin.site.register(EventProcessLog, EventLogAdmin)
 admin.site.register(Issue, IssueAdmin)
 admin.site.register(Change, ChangeAdmin)
+admin.site.register(ChangeProcessLog, ChangeLogAdmin)
 admin.site.register(Config, ConfigAdmin)
 admin.site.register(TimeTree, TimeTreeAdmin)

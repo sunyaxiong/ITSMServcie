@@ -15,21 +15,18 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.conf.urls import include
-from django.contrib import admin
-from django.conf import settings
-from django.conf.urls.static import static
 
+from .views import asset
+from .views import asset_list
+from .views import asset_add
 
-api_patterns = [
-        url(r'', include('itsm.urls')),
-        url(r'', include('api.urls')),
-        ]
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^itsm/', include('itsm.urls')),
-    url(r'^asset/', include('asset.urls')),
-    url(r'^api/', include('api.urls')),
-    url(r'^accounts/', include('accounts.urls')),
-    url(r'^rest/', include(api_patterns, namespace='rest_api', app_name='ops')),
+    # url(r'', include(router.urls, namespace='restapi')),
+    url(r'^$', asset),
+    url(r'asset_list/$', asset_list),
+    url(r'asset_add/$', asset_add),
+    url(r'detail/$', asset_list),
+
 ]
+

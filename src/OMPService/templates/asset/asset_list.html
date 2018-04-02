@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block header %}
-    <li class="active">{{ page_header }}</li>
+    <li class="active">资产管理</li>
 {% endblock %}
 {% block PHeader %}
 <h1>
-    事件列表
+    资产列表
 </h1>
 {% endblock %}
 {% block content %}
@@ -13,8 +13,8 @@
         <!-- /.box -->
         <div class="box">
             <div class="box-header">
-                <a href="/admin/itsm/event/add/">
-                    <i class="glyphicon glyphicon-plus"></i><span>新增事件</span></a>
+                <a href="/admin/asset/asset/add/">
+                    <i class="glyphicon glyphicon-plus"></i><span>新增资产</span></a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -45,29 +45,29 @@
                                 <tr role="row">
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
                                         aria-label="CSS grade: activate to sort column ascending" style="width: 112px;">
-                                        事件名称
+                                        设备名称
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
                                         aria-label="CSS grade: activate to sort column ascending" style="width: 112px;">
-                                        事件状态
+                                        设备类型
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
                                         aria-label="CSS grade: activate to sort column ascending" style="width: 112px;">
-                                        处理人
+                                        机房名称
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
                                         aria-label="CSS grade: activate to sort column ascending" style="width: 112px;">
-                                        事件类型
+                                        机柜位置
                                     </th>
                                 </tr>
                                 </thead>
                                 {% for i in data %}
                                 <tbody>
                                 <tr role="row" class="odd">
-                                    <td class="sorting_1"><a href="/itsm/event/{{ i.id }}">{{ i.name }}</a></td>
-                                    <td class="sorting_1">{{ i.state }}</td>
-                                    <td class="sorting_1">{{ i.technician }}</td>
-                                    <td class="sorting_1">{{ i.event_type }}</td>
+                                    <td class="sorting_1"><a href="/asset/{{ i.id }}">{{ i.deviceName }}</a></td>
+                                    <td class="sorting_1">{{ i.deviceType }}</td>
+                                    <td class="sorting_1">{{ i.computerRoomName }}</td>
+                                    <td class="sorting_1">{{ i.positionAtRoom }}</td>
                                 </tr>
                                 </tbody>
                                 {% endfor %}

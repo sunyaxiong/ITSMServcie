@@ -1,0 +1,16 @@
+<div class="tab-pane" id="mem">
+     <form action="" method="post" class="form-group">{% csrf_token %}
+         <div class="row">
+             <div class="col-md-9">
+             <table>
+                {{ mem_form.as_table }}
+             </table>
+             </div>
+         </div>
+         <div class="row">
+             <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                 <i class="fa fa-save"></i>保存
+             </button>
+         </div>
+    </form>
+</div>

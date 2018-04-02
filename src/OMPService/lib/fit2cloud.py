@@ -9,6 +9,8 @@ import hmac
 import logging
 import urllib.parse as urllib
 import json
+from OMPService.settings import CMDB_CONF, secret_key
+from OMPService.settings import CLOUD_HOST, CMDB_HOST
 
 
 def my_replace(str):
@@ -33,14 +35,19 @@ class Fit2CloudClient(object):
         """
         self.conf = conf
         self.secret_key = sk
-        self.vm_query_url = "http://47.97.100.104:28080/rest/api/v1/vm/list"
-        self.disk_query_url = "http://47.97.100.104:28080/rest/api/v1/disk/list"
-        self.order_create_url = "http://vstecs.fit2cloud.com:28888/rest/api/v1/order/apply/product"
-        self.order_get_url = "http://vstecs.fit2cloud.com:28888/rest/api/v1/order/get"
-        self.get_work_space_url = "http://vstecs.fit2cloud.com:28888/rest/api/v1/group/list"
-        self.product_list_url = "http://vstecs.fit2cloud.com:28888/rest/api/v1/catalog/product/list"
-        self.cluster_list_url = "http://vstecs.fit2cloud.com:28888/rest/api/v1/cluster/list"
-        self.cluster_role_list_url = "http://vstecs.fit2cloud.com:28888/rest/api/v1/cluster/role/list"
+        self.vm_query_url = "http://{}:28080/rest/api/v1/vm/list".format(CMDB_HOST)
+        self.disk_query_url = "http://{}:28080/rest/api/v1/disk/list".format(CMDB_HOST)
+        self.order_create_url = "http://{}:28888/rest/api/v1/order/apply/product".format(CLOUD_HOST)
+        self.order_get_url = "http://{}:28888/rest/api/v1/order/get".format(CLOUD_HOST)
+        self.get_work_space_url = "http://{}:28888/rest/api/v1/group/list".format(CLOUD_HOST)
+        self.product_list_url = "http://{}:28888/rest/api/v1/catalog/product/list".format(CLOUD_HOST)
+        self.cluster_list_url = "http://{}:28888/rest/api/v1/cluster/list".format(CLOUD_HOST)
+        self.cluster_role_list_url = "http://{}:28888/rest/api/v1/cluster/role/list".format(CLOUD_HOST)
+        self.ph_device_list_url = "http://{}:28080/rest/api/v1/physical/device/list".format(CMDB_HOST)
+        self.ph_cpu_add_url = "http://{}:28080/rest/api/v1/physical/cpu/add".format(CMDB_HOST)
+        self.ph_disk_add_url = "http://{}:28080/rest/api/v1/physical/disk/add".format(CMDB_HOST)
+        self.ph_device_add_url = "http://{}:28080/rest/api/v1/physical/device/add".format(CMDB_HOST)
+        self.ph_device_delete_url = "http://{}:28080/rest/api/v1/physical/device/delete".format(CMDB_HOST)
 
     def build_signature(self, attrs):
         """
@@ -75,6 +82,103 @@ class Fit2CloudClient(object):
     #     signature = base64.b64encode(hash_obj.digest())
     #     print(signature)
     #     return signature
+
+    def query_ph_device(self, attrs):
+        """
+        查询物理设备接口
+        :param attrs:
+        :return:
+        """
+        attrs.update(self.conf)
+
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+        print(attrs)
+
+        url = "{}?{}".format(self.ph_device_list_url, urllib.urlencode(attrs))
+
+        res = requests.get(url)
+        return res.json()
+
+    def ph_device_add(self, attrs, post):
+        """
+        增加物理设备接口
+        :param attrs:
+        :return:
+        """
+        # 打包参数
+        attrs.update(self.conf)
+
+        # 计算签名
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+
+        # 发起请求
+        url = "{}?{}".format(self.ph_device_add_url, urllib.urlencode(attrs))
+        headers = {'Content-Type': 'application/json'}
+        res = requests.post(url, post, headers=headers)
+
+        return res.json()
+
+    def ph_device_delete(self, attrs, post):
+        """
+        增加物理设备接口
+        :param attrs:
+        :return:
+        """
+        # 打包参数
+        attrs.update(self.conf)
+
+        # 计算签名
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+
+        # 发起请求
+        url = "{}?{}".format(self.ph_device_delete_url, urllib.urlencode(attrs))
+        headers = {'Content-Type': 'application/json'}
+        res = requests.post(url, post, headers=headers)
+
+        return res.json()
+
+    def ph_cpu_add(self, attrs, post):
+        """
+        增加cpu接口
+        :param attrs:
+        :return:
+        """
+        # 打包参数
+        attrs.update(self.conf)
+
+        # 计算动态签名
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+
+        # 发起请求
+        url = "{}?{}".format(self.ph_cpu_add_url, urllib.urlencode(attrs))
+        headers = {'Content-Type': 'application/json'}
+        res = requests.post(url, post, headers=headers)
+
+        return res.json()
+
+    def ph_disk_add(self, attrs, post):
+        """
+        增加disk接口
+        :param attrs:
+        :return:
+        """
+        # 打包参数
+        attrs.update(self.conf)
+
+        # 计算动态签名
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+
+        # 发起请求
+        url = "{}?{}".format(self.ph_disk_add_url, urllib.urlencode(attrs))
+        headers = {'Content-Type': 'application/json'}
+        res = requests.post(url, post, headers=headers)
+
+        return res.json()
 
     def query_vm(self, attrs):
         """
@@ -123,8 +227,12 @@ class Fit2CloudClient(object):
 
         # 发起请求
         url = "{}?{}".format(self.get_work_space_url, urllib.urlencode(attrs))
+        print(url)
         res = requests.get(url)
+        print(res)
+        print(res.json())
         data = res.json().get("data")[0]
+        print(":::: ", data)
         logging.warning(data)
         if data:
             return data["accessKey"], data["secretKey"]
@@ -224,7 +332,9 @@ class Fit2CloudClient(object):
 
 
 if __name__ == "__main__":
-    pass
+    # from OMPService.settings import CMDB_CONF, secret_key
+    run = Fit2CloudClient(CMDB_CONF, secret_key)
+    print(run)
     # import hashlib
     # import hmac
     # import base64

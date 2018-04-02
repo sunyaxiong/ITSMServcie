@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block PHeader %}
+    <h1>
+        资产管理
+        <small></small>
+    </h1>
+{% endblock %}
+
+{% block header %}
+    <li class="active">资产管理</li>
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+            {% include "itsm/log_errors.html" %}
+    {% endfor %}
+{% endif %}
+    <div class="row">
+        <div class="col-md-9">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#asset" data-toggle="tab">设备主表</a>
+                    </li>
+                    <li>
+                        <a href="#cpu" data-toggle="tab">CPU表</a>
+                    </li>
+                    <li>
+                        <a href="#mem" data-toggle="tab">内存表</a>
+                    </li>
+                    <li>
+                        <a href="#disk" data-toggle="tab">磁盘表</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    {% include "asset/modal/device_tags.html" %}
+                    {% include "asset/modal/cpu_tags.html" %}
+                    {% include "asset/modal/mem_tags.html" %}
+                    {% include "asset/modal/disk_tags.html" %}
+                    <div class="tab-pane" id="mem">
+                        内存信息
+                    </div>
+                    <div class="tab-pane" id="disk">
+                        磁盘挂载信息
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

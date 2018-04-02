@@ -62,6 +62,24 @@ function issue_upgrade() {
     })
 }
 
+function change_reject() {
+
+    var change_id=$("#id").val();
+
+    $.ajax({
+        type: "GET",
+        url: "/itsm/change/reject/",
+        data: {
+            "id": change_id
+        },
+        success: function (ret) {
+            // console.log(ret)
+            window.location.href=window.location.pathname;
+        }
+    })
+}
+
+
 $(document).ready(function () {
         var order_id = $("#order_id").html();
         $.ajax({

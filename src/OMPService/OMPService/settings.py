@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'itsm',
     'accounts',
     'api',
+    'asset',
     'django_cas_ng',
 ]
 
@@ -200,19 +201,22 @@ CACHES = {
 
 
 # fit2cloud api conf
+CLOUD_HOST = "111.13.61.173"
+CMDB_HOST = "111.13.61.173"
+
 CMDB_CONF = {
-    "access_key": "c3VwcG9ydEBmaXQyY2xvdWQuY29t",
+    "access_key": "My00ZjRkMzVkZA==",
     "version": "v1",
     "signature_method": "HmacSHA256",
     "signature_version": "v1"
 }
 
 CLOUD_CONF = {
-    "access_key": "dnN0ZWNzLWl0c20=",
+    "access_key": "My00ZjRkMzVkZA==",
     "version": "v1",
     "signature_method": "HmacSHA256",
     "signature_version": "v1",
-    "user": "wei@fit2cloud.com",
+    "user": "test@vstecs.com",
 }
-secret_key = '1f234efb-7d3c-46e8-bfed-edfc74012283'
-cloud_secret_key = '0f1013b0-f33f-4148-9edf-f57b1b88cf47'
+secret_key = '228e1f50-3b39-4213-a8d8-17e8bf2aeb1e'
+cloud_secret_key = '228e1f50-3b39-4213-a8d8-17e8bf2aeb1e'

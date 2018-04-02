@@ -15,9 +15,11 @@ from django.core.cache import cache
 from django.views.decorators.csrf import csrf_exempt
 
 from OMPService import settings
+from accounts.models import Profile
 from .models import Event
 from .models import EventProcessLog
 from .models import Change
+from .models import ChangeProcessLog
 from .models import Issue
 from .models import IssueProcessLog
 from .models import Config
@@ -145,12 +147,12 @@ def event_close(request, pk):
             "time_stamp": int(round(time.time() * 1000)),
         }
         post = {
-            "clusterRoleId": 2,
+            "clusterRoleId": 1,
             "count": 1,
             "description": "需要机器配置：1c1g",
             "expireTime": 1518451199999,
             "installAgent": True,
-            "productId": "c8509c0d-e518-4532-90d9-be8b840b1fc9"
+            "productId": "ed220437-3acb-48ff-82ec-4d57e413a7f7"
         }
         # 工作空间接口请求
         ak, sk = Fit2CloudClient(
@@ -164,7 +166,7 @@ def event_close(request, pk):
             _conf = settings.CLOUD_CONF.copy()
             _conf["access_key"] = ak
             order = Fit2CloudClient(_conf, sk).order_create(_param, json.dumps(post))
-            print(order)
+            print("order:  ", order)
             event.cloud_order = order.get("data")
 
         # 执行关闭
@@ -237,10 +239,9 @@ def changes(request):
 def change_detail(request, pk):
     page_header = "变更管理"
     change = Change.objects.get(id=int(pk))
-    solution = change.solution
+    solution_list = change.logs.all().order_by("-dt_created") if change.logs else []
     user_list = User.objects.all()
     degree_choice_list = Change.EMERGENCY_DEGREE
-    module_list = get_module_name_list()
 
     # 根据事件状态控制按钮显隐和名称
     button_submit = "提交" if change.state == "draft" else "同意"
@@ -253,9 +254,6 @@ def change_detail(request, pk):
 
     if request.method == "GET":
 
-        # 解决方案列表,循环展示
-        if solution:
-            solution_list = solution.split("#")
         return render(request, 'itsm/change_detail.html', locals())
     elif request.method == "POST":
 
@@ -311,7 +309,22 @@ def change_to_config(request):
 
 
 def change_reject_back(request):
-    pass
+
+    url = request.META.get('HTTP_REFERER')
+
+    change_id = request.GET.get("id")
+
+    # 获取变更对象,并修改状态
+    change = Change.objects.filter(id=change_id).first()
+    if change.state == "draft":
+        messages.warning(request, "事件未提交")
+        return HttpResponseRedirect(url)
+    change.state = "draft"
+    change.flow_node = 0
+    change.node_name = "开始"
+    change.save()
+
+    return HttpResponseRedirect(url)
 
 
 def flow_pass(request):
@@ -322,49 +335,58 @@ def flow_pass(request):
     """
 
     url = request.META.get('HTTP_REFERER')
-    print(url)
+
     if request.method == "POST":
         form = ChangeDetailForm(request.POST)
-        print(form.errors)
         if form.is_valid():
             data = form.data
-            print(data)
             try:
                 change_id = data.get("id")
-
                 # 当前流程节点信息
-                now = datetime.datetime.now()
                 change = Change.objects.get(id=change_id)
                 now_node = int(change.flow_node)
-                solution = change.solution
 
                 # 获取模板信息
-                module_name = change.flow_module
-                module_info = get_module_info(module_name)
+                try:
+                    module = change.node_handler.profile.channel.change_module
+                    module_name = module.get("name")
+                except Exception as e:
+                    messages.warning(request, "模板获取失败")
+                    return HttpResponseRedirect(url)
 
-                # 获取组织结构信息
-                channel_name = "伟仕云安"
-                organization_structure_info = get_structure_info(channel_name)
-
-                # 下一环节
-                _solution = "syx" + now.strftime('%Y-%m-%d %H:%M:%S') \
-                            + data["solution"]
                 next_node = now_node + 1
-                next_node_name = module_info["flow"][next_node]["node{}".format(next_node)]
+                next_node_name = module["flow"][next_node]["name"] if module else ""
+
                 if next_node_name == "结束":
-                    change.state = "ended   "
+                    change.state = "ended"
+
+                # TODO 环节处理人,根据模板查询
+                channel = change.node_handler.profile.channel
+                try:
+                    next_node_handler_profile = Profile.objects.get(channel=channel, position=next_node_name)
+                except Exception as e:
+                    messages.warning(request, "岗位信息未维护")
+                    return HttpResponseRedirect(url)
                 next_node_handler_name = "syx"
-                next_node_user = User.objects.get(username=next_node_handler_name)
+                next_node_handler = User.objects.get(username=next_node_handler_name)
 
                 # 修改
                 if change.state == "draft":
                     change.state = "ing"
+                if next_node == len(module["flow"]):
+                    change.state = "ended"
 
-                change.node_handler = next_node_user
+                # 更新操作记录 节点加1
+                if data.get("solution"):
+                    ChangeProcessLog.objects.create(
+                        change_obj=change,
+                        username=request.user.username,
+                        content=data.get("solution")
+                    )
+                change.node_handler = next_node_handler
                 change.flow_node = next_node
                 change.node_name = next_node_name
-                change.node_handler = next_node_user
-                change.solution = solution + "#" + _solution
+                change.node_handler = next_node_handler_profile.user
                 change.save()
             except Exception as e:
                 messages.info(request, "debug: {}".format(e))

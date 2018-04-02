@@ -33,18 +33,22 @@
             <div class="col-md-8">
                 <label for="name">变更名称: </label>
                 <input class="form-control" type="text" name="name" disabled="disabled" value={{ change.name }}><br>
-                <input type="text" name="id" hidden="hidden" value={{ change.id }}><br>
+                <input type="text" id="id" name="id" hidden="hidden" value={{ change.id }}><br>
             </div>
         </div>
         <div class="col-md-6">
             <table class="table-striped">
                 <tr>
                     <td><label for="name">服务水平等级: </label></td>
-                    <td><input class="form-control" type="text" name="name" disabled="disabled" value={{ change.service_level }}></td>
+                    <td><input class="form-control" type="text" name="emergency_degree" disabled="disabled" value={{ change.service_level }}></td>
                 </tr>
                 <tr>
                     <td><label>更新时间: </label></td>
-                    <td><input class="form-control" type="text" name="name" disabled="disabled" value={{ change.dt_updated }}></td>
+                    <td><input class="form-control" type="text" name="dt_created" disabled="disabled" value={{ change.dt_updated }}></td>
+                </tr>
+                <tr>
+                    <td><label>当前环节名称: </label></td>
+                    <td><input class="form-control" type="text" name="node_name" disabled="disabled" value={{ change.node_name }}></td>
                 </tr>
             </table>
         </div>
@@ -150,7 +154,8 @@
             {% for i in solution_list %}
             <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
                 <label>记录: </label></br>
-                {{ i }}
+                {{ i.username }}<span>: </span>{{ i.dt_created }}<br>
+                {{ i.content }}
             </p>
             {% endfor %}
         </div>
@@ -178,15 +183,20 @@
                    class="btn btn-primary pull-right" style="margin-right: 5px;">
                     <i class="fa fa-close"></i> 关闭变更
                 </a>
+                {% if change.state == "ing" %}
+                    <a class="btn btn-primary pull-right" style="margin-right: 5px;" onclick="change_reject()">
+                        <i class="fa fa-save"></i> 驳回
+                    </a>
+                {% endif %}
                 {% if button_submit == "提交" %}
-                <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
-                    <i class="fa fa-save"></i> {{ button_submit }}
-                </button>
+                    <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                        <i class="fa fa-save"></i> {{ button_submit }}
+                    </button>
                 {% endif %}
                 {% if button_submit == "同意" %}
-                <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
-                    <i class="fa fa-save"></i> {{ button_submit }}
-                </button>
+                    <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                        <i class="fa fa-save"></i> {{ button_submit }}
+                    </button>
                 {% endif %}
             </div>
         {% endif %}
