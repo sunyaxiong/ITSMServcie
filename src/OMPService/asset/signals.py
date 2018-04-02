@@ -23,7 +23,7 @@ def asset_sync(sender, instance, created, *args, **kwargs):
     :return:
     """
     if created:
-        data = instance.__dict__
+        data = instance.__dict__.copy()
         data.pop("dt_created")
         data.pop("dt_updated")
         data.pop("_state")
