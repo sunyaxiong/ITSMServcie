@@ -30,7 +30,23 @@ class DiskAdmin(admin.ModelAdmin):
     ]
 
 
+class NetworkAdapterAdmin(admin.ModelAdmin):
+
+    list_display = [
+        "device", "ip", "front_device", "front_port", "port_state", "remote_manage"
+    ]
+
+
+class PortAdmin(admin.ModelAdmin):
+
+    list_display = [
+        "device", "vlanId", "portState", "connectedDevice", "port_num"
+    ]
+
+
 admin.site.register(Asset, AssetAdmin)
 admin.site.register(Cpu, CpuAdmin)
 admin.site.register(Mem, MemAdmin)
 admin.site.register(Disk, DiskAdmin)
+admin.site.register(NetworkAdapter, NetworkAdapterAdmin)
+admin.site.register(Port, PortAdmin)
