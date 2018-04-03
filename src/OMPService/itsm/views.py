@@ -161,7 +161,7 @@ def event_close(request, pk):
 
         if ak and sk:
             _param = {
-                "time_stamp": 1517905240318,
+                "time_stamp": int(round(time.time() * 1000)),
             }
             _conf = settings.CLOUD_CONF.copy()
             _conf["access_key"] = ak

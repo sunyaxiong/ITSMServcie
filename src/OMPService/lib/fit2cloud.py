@@ -35,6 +35,8 @@ class Fit2CloudClient(object):
         """
         self.conf = conf
         self.secret_key = sk
+        self.user_add_url = "http://{}:28888/rest/api/v1/admin/user/add".format(CLOUD_HOST)
+        self.workspace_add_url = "http://{}:28888/rest/api/v1/admin/group/add".format(CLOUD_HOST)
         self.vm_query_url = "http://{}:28080/rest/api/v1/vm/list".format(CMDB_HOST)
         self.disk_query_url = "http://{}:28080/rest/api/v1/disk/list".format(CMDB_HOST)
         self.order_create_url = "http://{}:28888/rest/api/v1/order/apply/product".format(CLOUD_HOST)
@@ -65,23 +67,60 @@ class Fit2CloudClient(object):
         signature = base64.b64encode(hash_obj.digest())
         return signature
 
-    # def cloud_conf_build_signature(self, attrs):
-    #     """
-    #     生成签名
-    #     :param attrs: dict
-    #     :return:
-    #     """
-    #     temp_str = "&".join(
-    #         ["{}={}".format(my_replace(k), my_replace(str(v)))
-    #          for k, v in sorted(attrs.items())]
-    #     )
-    #     print("签名: {}".format(temp_str))
-    #     hash_obj = hmac.new(
-    #         cloud_secret_key.encode(), msg=temp_str.encode(), digestmod=hashlib.sha256
-    #     )
-    #     signature = base64.b64encode(hash_obj.digest())
-    #     print(signature)
-    #     return signature
+    def get_work_space(self, attrs):
+        """
+        云管平台获取工作空间动态ak和sk
+        :param attrs: dict
+        :return:
+        """
+        attrs.update(self.conf)
+
+        # 计算签名
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+
+        # 发起请求
+        url = "{}?{}".format(self.get_work_space_url, urllib.urlencode(attrs))
+        res = requests.get(url)
+        data = res.json().get("data")[0]
+        logging.warning(data)
+        print(data)
+        if data:
+            return data["accessKey"], data["secretKey"]
+        logging.error(res.json)
+        return 0, 0
+
+    def user_add(self, attrs, post):
+        """
+        用户新增接口
+        :param attrs:
+        :param post:
+        :return:
+        """
+        attrs.update(self.conf)
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+
+        url = "{}?{}".format(self.user_add_url, urllib.urlencode(attrs))
+        headers = {'Content-Type': 'application/json'}
+        res = requests.post(url, post, headers=headers)
+        return res.json()
+
+    def workspace_add(self, attrs, post):
+        """
+        工作空间新增
+        :param attrs: url 拼接参数 合并后计算签名
+        :param post: 接口参数
+        :return:
+        """
+        attrs.update(self.conf)
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+
+        url = "{}?{}".format(self.workspace_add_url, urllib.urlencode(attrs))
+        headers = {'Content-Type': 'application/json'}
+        res = requests.post(url, post, headers=headers)
+        return res.json()
 
     def query_ph_device(self, attrs):
         """
@@ -212,32 +251,6 @@ class Fit2CloudClient(object):
         res = requests.get(url)
 
         return res.json()
-
-    def get_work_space(self, attrs):
-        """
-        云管平台获取工作空间动态ak和sk
-        :param attrs: dict
-        :return:
-        """
-        attrs.update(self.conf)
-
-        # 计算签名
-        signature = self.build_signature(attrs).decode()
-        attrs["signature"] = signature
-
-        # 发起请求
-        url = "{}?{}".format(self.get_work_space_url, urllib.urlencode(attrs))
-        print(url)
-        res = requests.get(url)
-        print(res)
-        print(res.json())
-        data = res.json().get("data")[0]
-        print(":::: ", data)
-        logging.warning(data)
-        if data:
-            return data["accessKey"], data["secretKey"]
-        logging.error(res.json)
-        return 0, 0
 
     def order_create(self, attrs, post):
         """

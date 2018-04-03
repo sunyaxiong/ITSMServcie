@@ -7,7 +7,7 @@ from lib.models import BaseModel
 
 
 class Channel(models.Model):
-    name = models.CharField(max_length=128, verbose_name="名称")
+    name = models.CharField(max_length=128, verbose_name="名称", unique=True)
     event_module = jsonfield.JSONField(verbose_name="事件模板", null=True, blank=True)
     issue_module = jsonfield.JSONField(verbose_name="问题模板", null=True, blank=True)
     change_module = jsonfield.JSONField(verbose_name="变更模板", null=True, blank=True)
@@ -35,3 +35,7 @@ class MessageAlert(BaseModel):
     ins = models.CharField("流程类型", max_length=128, null=True, blank=True)
     ins_id = models.CharField("流程id", max_length=128, null=True, blank=True)
     action_type = models.CharField("动作类型", max_length=128, null=True, blank=True)
+
+
+from .signals import user_sync
+from .signals import channel_sync
