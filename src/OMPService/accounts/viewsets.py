@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from .models import Profile
-from .serializers import ProfileSerializer
+from .models import Profile, Channel
+from .serializers import ProfileSerializer, ChannelSerializer
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -14,3 +14,14 @@ class ProfileViewSet(viewsets.ModelViewSet):
         # if self.kwargs.get('city'):
         #     queryset = queryset.filter(city=self.kwargs['city'])
         return queryset
+
+
+class ChannelViewSet(viewsets.ModelViewSet):
+
+    model = Channel
+    serializer_class = ChannelSerializer
+
+    def get_queryset(self):
+        queryset = Channel.objects.filter()
+        return queryset
+

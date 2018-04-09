@@ -84,7 +84,6 @@ class Fit2CloudClient(object):
         res = requests.get(url)
         data = res.json().get("data")[0]
         logging.warning(data)
-        print(data)
         if data:
             return data["accessKey"], data["secretKey"]
         logging.error(res.json)
@@ -132,7 +131,6 @@ class Fit2CloudClient(object):
 
         signature = self.build_signature(attrs).decode()
         attrs["signature"] = signature
-        print(attrs)
 
         url = "{}?{}".format(self.ph_device_list_url, urllib.urlencode(attrs))
 

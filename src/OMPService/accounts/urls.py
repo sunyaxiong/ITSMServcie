@@ -20,11 +20,12 @@ import django_cas_ng.views
 
 from .views import login
 from .views import logout
-from .viewsets import ProfileViewSet
+from .viewsets import ProfileViewSet, ChannelViewSet
 
 
 router = routers.DefaultRouter()
 router.register("profile", ProfileViewSet, base_name="profileViewset")
+router.register("channel", ChannelViewSet, base_name="channelViewset")
 
 
 urlpatterns = [

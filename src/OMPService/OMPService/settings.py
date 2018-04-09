@@ -63,7 +63,7 @@ AUTHENTICATION_BACKENDS = (
     'django_cas_ng.backends.CASBackend',
 )
 
-CAS_SERVER_URL = "https://52.83.173.240:8443/cas/"
+CAS_SERVER_URL = "http://52.83.173.240:8080/cas/"
 CAS_REDIRECT_URL = "/itsm/event_list/"
 
 ROOT_URLCONF = 'OMPService.urls'
@@ -216,7 +216,7 @@ CLOUD_CONF = {
     "version": "v1",
     "signature_method": "HmacSHA256",
     "signature_version": "v1",
-    "user": "syx@s.com",
+    "user": "sunyaxiong@ecschina.com",
 }
 secret_key = '228e1f50-3b39-4213-a8d8-17e8bf2aeb1e'
 cloud_secret_key = '228e1f50-3b39-4213-a8d8-17e8bf2aeb1e'
