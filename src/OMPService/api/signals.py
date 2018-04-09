@@ -3,6 +3,7 @@
 from django.db.models.signals import post_save
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django.contrib.auth.models import User
 
 from itsm.models import Event
 
@@ -18,6 +19,8 @@ def deploy_to_event(sender, instance, created, *args, **kwargs):
     :param kwargs:
     :return:
     """
+
+    default_user = User.objects.filter(username="admin")[0]
     event_name = "{}申请部署{}".format(instance.chanel, instance.app_name)
     Event.objects.create(
         name=event_name,
@@ -25,7 +28,8 @@ def deploy_to_event(sender, instance, created, *args, **kwargs):
         initiator="portal_sys",
         event_type="request",
         service_level="100",
-        emergency_degree="common"
+        emergency_degree="common",
+        technician=default_user,
     )
     return None
 
@@ -42,6 +46,7 @@ def alert_to_event(sender, instance, created, *args, **kwargs):
     :return:
     """
 
+    default_user = User.objects.filter(username="admin")[0]
     event_name = "{}-{}-{}".format(instance.alertId, instance.alertGrade, instance.alertName)
     Event.objects.create(
         name=event_name,
@@ -49,5 +54,6 @@ def alert_to_event(sender, instance, created, *args, **kwargs):
         event_type="incident",
         initiator="fit2cloud_sys",
         emergency_degree="importance",
+        technician=default_user,
     )
     return None
