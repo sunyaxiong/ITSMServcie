@@ -5,7 +5,7 @@ from .models import Channel
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ("user", "phone", "email")
+    list_display = ("username", "phone", "email")
 
 
 class ChannelAdmin(admin.ModelAdmin):

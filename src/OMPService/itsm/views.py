@@ -142,32 +142,33 @@ def event_close(request, pk):
             messages.warning(request, "您不是当前处理人,无法关闭事件")
             return HttpResponseRedirect(url)
 
-        # 云管订单创建
-        param = {
-            "time_stamp": int(round(time.time() * 1000)),
-        }
-        post = {
-            "clusterRoleId": 1,
-            "count": 1,
-            "description": "需要机器配置：1c1g",
-            "expireTime": 1518451199999,
-            "installAgent": True,
-            "productId": "ed220437-3acb-48ff-82ec-4d57e413a7f7"
-        }
-        # 工作空间接口请求
-        ak, sk = Fit2CloudClient(
-            settings.CLOUD_CONF, settings.cloud_secret_key
-        ).get_work_space(param)
-
-        if ak and sk:
-            _param = {
+        if event.event_type == "request":
+            # 云管订单创建
+            param = {
                 "time_stamp": int(round(time.time() * 1000)),
             }
-            _conf = settings.CLOUD_CONF.copy()
-            _conf["access_key"] = ak
-            order = Fit2CloudClient(_conf, sk).order_create(_param, json.dumps(post))
-            print("order:  ", order)
-            event.cloud_order = order.get("data")
+            post = {
+                "clusterRoleId": 1,
+                "count": 1,
+                "description": "需要机器配置：1c1g",
+                "expireTime": 1518451199999,
+                "installAgent": True,
+                "productId": "ed220437-3acb-48ff-82ec-4d57e413a7f7"
+            }
+            # 工作空间接口请求
+            ak, sk = Fit2CloudClient(
+                settings.CLOUD_CONF, settings.cloud_secret_key
+            ).get_work_space(param)
+
+            if ak and sk:
+                _param = {
+                    "time_stamp": int(round(time.time() * 1000)),
+                }
+                _conf = settings.CLOUD_CONF.copy()
+                _conf["access_key"] = ak
+                order = Fit2CloudClient(_conf, sk).order_create(_param, json.dumps(post))
+                print("order:  ", order)
+                event.cloud_order = order.get("data")
 
         # 执行关闭
         event.state = "ended"

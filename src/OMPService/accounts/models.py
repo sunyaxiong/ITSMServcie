@@ -17,14 +17,16 @@ class Channel(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    channel = models.ForeignKey(Channel, max_length=30, null=True, blank=True, verbose_name="渠道")
+    username = models.CharField("用户名", max_length=128)
+    channel_name = models.CharField("渠道名称", max_length=128)
+    # user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    # channel = models.ForeignKey(Channel, max_length=30, null=True, blank=True, verbose_name="渠道")
     phone = models.BigIntegerField("手机号", null=True, blank=True)
     email = models.EmailField("邮箱", null=True, blank=True)
     position = models.CharField("岗位", max_length=128, null=True, blank=True)
 
     def __str__(self):
-        return self.user.username
+        return self.username
 
 
 class MessageAlert(BaseModel):

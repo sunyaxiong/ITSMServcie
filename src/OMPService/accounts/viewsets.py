@@ -1,7 +1,8 @@
 from rest_framework import viewsets
+from django.contrib.auth.models import User
 
 from .models import Profile, Channel
-from .serializers import ProfileSerializer, ChannelSerializer
+from .serializers import ProfileSerializer, ChannelSerializer, UserSerializer
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -25,3 +26,12 @@ class ChannelViewSet(viewsets.ModelViewSet):
         queryset = Channel.objects.filter()
         return queryset
 
+
+class UserViewSet(viewsets.ModelViewSet):
+
+    model = User
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        queryset = User.objects.filter()
+        return queryset

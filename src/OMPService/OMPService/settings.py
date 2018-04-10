@@ -216,7 +216,7 @@ CLOUD_CONF = {
     "version": "v1",
     "signature_method": "HmacSHA256",
     "signature_version": "v1",
-    "user": "sunyaxiong@ecschina.com",
+    "user": "sunyaxiong@vstecs.com",
 }
 secret_key = '228e1f50-3b39-4213-a8d8-17e8bf2aeb1e'
 cloud_secret_key = '228e1f50-3b39-4213-a8d8-17e8bf2aeb1e'
