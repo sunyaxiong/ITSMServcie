@@ -24,6 +24,7 @@ class Profile(models.Model):
     phone = models.BigIntegerField("手机号", null=True, blank=True)
     email = models.EmailField("邮箱", null=True, blank=True)
     position = models.CharField("岗位", max_length=128, null=True, blank=True)
+    department = models.CharField("部门", max_length=128, null=True, blank=True)
 
     def __str__(self):
         return self.username
