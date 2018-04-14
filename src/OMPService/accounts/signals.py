@@ -25,10 +25,7 @@ def user_sync(sender, instance, created, *args, **kwargs):
     """
     if created:
 
-        # 时间戳,公共参数,实例化
-        _param = {
-            "time_stamp": int(round(time.time() * 1000)),
-        }
+        # 公共参数,实例化
         _conf = settings.CLOUD_CONF.copy()
         _conf.pop("user")  # 不传user,查询全部组织
         client = Fit2CloudClient(_conf, settings.cloud_secret_key)
@@ -42,7 +39,7 @@ def user_sync(sender, instance, created, *args, **kwargs):
             print("itsm组织创建成功")
 
         # 当前组织信息查询打包
-        org_res = client.org_get(_param)
+        org_res = client.org_get({"time_stamp": int(round(time.time() * 1000))})
         if org_res.get("success"):
             org_list = org_res.get("data")
             org_info = {i.get("name"): i for i in org_list}
@@ -55,7 +52,7 @@ def user_sync(sender, instance, created, *args, **kwargs):
                 "costCenterId": org_id
             }
             workspace_add_res = client.workspace_add(
-                _param, json.dumps(post)
+                {"time_stamp": int(round(time.time() * 1000))}, json.dumps(post)
             )
         else:
             print("组织信息获取失败")
@@ -74,8 +71,7 @@ def user_sync(sender, instance, created, *args, **kwargs):
         print("useraddres: ", user_add_res)
         user_id = 0
         if user_add_res.get("success"):
-            print("lll: ", user_add_res.get("data"))
-            user_data= user_add_res.get("data")
+            user_data = user_add_res.get("data")
             user_id = user_data["id"]
 
         # 4 授权 工作空间id 查询用户id 加上组织ID  角色ID 通过授权接口授权
