@@ -33,7 +33,10 @@ class Event(BaseModel):
     name = models.CharField(max_length=128, verbose_name="事件名称", null=True, blank=True)
     description = models.TextField(verbose_name="事件描述", null=True, blank=True)
     state = models.CharField(max_length=128, choices=EVENT_CHOICE, verbose_name="事件状态", null=True, blank=True)
-    initiator = models.CharField(max_length=128, null=True, blank=True, verbose_name="发起人")
+    initiator = models.CharField("发起人", max_length=128, null=True, blank=True)
+    initiator_phone = models.CharField("发起人电话", max_length=128, null=True, blank=True)
+    initiator_email = models.CharField("发起人邮箱", max_length=128, null=True, blank=True)
+    initiator_channel = models.CharField("发起人渠道", max_length=128, null=True, blank=True)
     department = models.CharField(max_length=128, verbose_name="部门", null=True, blank=True)
     technician = models.ForeignKey(
         User, verbose_name="处理人", null=True, blank=True
@@ -50,6 +53,7 @@ class Event(BaseModel):
     attach_file = models.FileField(verbose_name="附件", null=True, blank=True)
     flow_module = models.FileField(verbose_name="流程模板", null=True, blank=True)
     cloud_order = models.CharField(verbose_name="云管订单", max_length=128, null=True, blank=True)
+    app_name = models.CharField("产品名称", max_length=128, null=True, blank=True)
 
     def __str__(self):
         return self.name or ""
@@ -139,6 +143,18 @@ class TimeTree(BaseModel):
 
 class Sla(BaseModel):
     pass
+
+
+class ProductInfo(BaseModel):
+
+    app_name = models.CharField("应用名称", max_length=128)
+    product_id = models.CharField("云管产品ID", max_length=128, default=0)
+    cloud_flag = models.CharField("云归属", max_length=128, default=0)
+    standard = jsonfield.JSONField("规格", null=True, blank=True)
+    vswitch = models.CharField("网络组", max_length=128, null=True, blank=True)
+
+    def __str__(self):
+        return self.app_name
 
 
 class EventProcessLog(BaseModel):

@@ -25,7 +25,10 @@ def deploy_to_event(sender, instance, created, *args, **kwargs):
     Event.objects.create(
         name=event_name,
         state="draft",
-        initiator="portal_sys",
+        initiator=instance.consumer_name,
+        initiator_phone=instance.consumer_number,
+        initiator_email=instance.consumer_email,
+        initiator_channel=instance.chanel,
         event_type="request",
         service_level="100",
         emergency_degree="common",

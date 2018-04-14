@@ -7,10 +7,11 @@ from .models import Change
 from .models import ChangeProcessLog
 from .models import Config
 from .models import TimeTree
+from .models import ProductInfo
 
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ("name", "state", "technician")
+    list_display = ("name", "state", "technician", "event_type", "app_name")
 
 
 class EventLogAdmin(admin.ModelAdmin):
@@ -35,6 +36,12 @@ class ConfigAdmin(admin.ModelAdmin):
     )
 
 
+class ProductInfoAdmin(admin.ModelAdmin):
+    list_display = (
+        "app_name", "product_id", "cloud_flag", "standard", "vswitch"
+    )
+
+
 class TimeTreeAdmin(admin.ModelAdmin):
     pass
 
@@ -46,3 +53,4 @@ admin.site.register(Change, ChangeAdmin)
 admin.site.register(ChangeProcessLog, ChangeLogAdmin)
 admin.site.register(Config, ConfigAdmin)
 admin.site.register(TimeTree, TimeTreeAdmin)
+admin.site.register(ProductInfo, ProductInfoAdmin)

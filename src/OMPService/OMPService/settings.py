@@ -25,7 +25,7 @@ SECRET_KEY = 'w%_kdw&9*_2filppa89j2*&&bl69je6)=$ed1nn$i9ps$@-(vg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.37.165", "127.0.0.1", "0.0.0.0", "localhost"]
+ALLOWED_HOSTS = ["192.168.37.165", "127.0.0.1", "0.0.0.0", "localhost", "111.13.61.171"]
 
 
 # Application definition
@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'accounts',
     'api',
     'asset',
-    'django_cas_ng',
+    'lib.django_cas_ng',
 ]
 
 MIDDLEWARE = [

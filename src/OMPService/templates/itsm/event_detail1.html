@@ -77,11 +77,15 @@
                 </tr>
                 <tr>
                     <td><label>发起人邮箱: </label></td>
-                    <td><input class="form-control" type="text" name="name" disabled="disabled" value="s@s.com"></td>
+                    <td><input class="form-control" type="text" name="name" disabled="disabled" value={{ event.initiator_email }}></td>
                 </tr>
                 <tr>
                     <td><label>发起人电话: </label></td>
-                    <td><input class="form-control" type="text" name="name" value="18922222222"></td>
+                    <td><input class="form-control" type="text" name="name" value={{ event.initiator_phone }}></td>
+                </tr>
+                <tr>
+                    <td><label>发起人渠道: </label></td>
+                    <td><input class="form-control" type="text" name="name" value={{ event.initiator_channel }}></td>
                 </tr>
             </table>
         </div>

@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.conf.urls import include
 from rest_framework import routers
-import django_cas_ng.views
+import lib.django_cas_ng.views
 
 from .views import login
 from .views import logout
@@ -33,8 +33,8 @@ urlpatterns = [
     url(r'', include(router.urls, namespace='profile')),
     # url(r'^login/$', login),
     # url(r'^logout/$', logout),
-    url(r'^login/$', django_cas_ng.views.login, name='cas_ng_login'),
-    url(r'^logout/$', django_cas_ng.views.logout, name='cas_ng_logout'),
-    url(r'^callback/$', django_cas_ng.views.callback, name='cas_ng_proxy_callback'),
+    url(r'^login/$', lib.django_cas_ng.views.login, name='cas_ng_login'),
+    url(r'^logout/$', lib.django_cas_ng.views.logout, name='cas_ng_logout'),
+    url(r'^callback/$', lib.django_cas_ng.views.callback, name='cas_ng_proxy_callback'),
 ]
 

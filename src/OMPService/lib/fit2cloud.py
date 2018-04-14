@@ -37,6 +37,9 @@ class Fit2CloudClient(object):
         self.secret_key = sk
         self.user_add_url = "http://{}:28888/rest/api/v1/admin/user/add".format(CLOUD_HOST)
         self.workspace_add_url = "http://{}:28888/rest/api/v1/admin/group/add".format(CLOUD_HOST)
+        self.org_add_url = "http://{}:28888/rest/api/v1/admin/organize/add".format(CLOUD_HOST)
+        self.org_get_url = "http://{}:28888/rest/api/v1/admin/organize/list".format(CLOUD_HOST)
+        self.co_permission_url = "http://{}:28888/rest/api/v1/admin/group/permission/add".format(CLOUD_HOST)
         self.vm_query_url = "http://{}:28080/rest/api/v1/vm/list".format(CMDB_HOST)
         self.disk_query_url = "http://{}:28080/rest/api/v1/disk/list".format(CMDB_HOST)
         self.order_create_url = "http://{}:28888/rest/api/v1/order/apply/product".format(CLOUD_HOST)
@@ -89,6 +92,24 @@ class Fit2CloudClient(object):
         logging.error(res.json)
         return 0, 0
 
+    def get_all_work_space(self, attrs):
+        """
+        云管平台获取工作空间动态ak和sk
+        :param attrs: dict
+        :return:
+        """
+        attrs.update(self.conf)
+
+        # 计算签名
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+
+        # 发起请求
+        url = "{}?{}".format(self.get_work_space_url, urllib.urlencode(attrs))
+        res = requests.get(url)
+
+        return res.json()
+
     def user_add(self, attrs, post):
         """
         用户新增接口
@@ -117,6 +138,56 @@ class Fit2CloudClient(object):
         attrs["signature"] = signature
 
         url = "{}?{}".format(self.workspace_add_url, urllib.urlencode(attrs))
+        headers = {'Content-Type': 'application/json'}
+        res = requests.post(url, post, headers=headers)
+        return res.json()
+
+    def org_get(self, attrs):
+        """
+        组织查询
+        :param attrs: url 拼接参数 合并后计算签名
+        :param post: 接口参数
+        :return:
+        """
+        attrs.update(self.conf)
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+
+        url = "{}?{}".format(self.org_get_url, urllib.urlencode(attrs))
+        res = requests.get(url)
+        return res.json()
+
+    def org_add(self, attrs, post):
+        """
+        组织新增
+        :param attrs: url 拼接参数 合并后计算签名
+        :param post: 接口参数
+        :return:
+        """
+        attrs.update(self.conf)
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+
+        url = "{}?{}".format(self.org_add_url, urllib.urlencode(attrs))
+        headers = {'Content-Type': 'application/json'}
+        res = requests.post(url, post, headers=headers)
+        return res.json()
+
+    def co_permission(self, attrs, post):
+        """
+        工作空间授权,自动绑定组织用户角色
+        :param attrs:
+        :param post:
+        :return:
+        """
+        attrs.update(self.conf)
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+
+        url = "{}?{}".format(self.co_permission_url, urllib.urlencode(attrs))
+        print("co_url: ", url)
+        print("co_attrs: ", attrs)
+        print("co_post: ", post)
         headers = {'Content-Type': 'application/json'}
         res = requests.post(url, post, headers=headers)
         return res.json()

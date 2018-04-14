@@ -23,6 +23,7 @@ from .models import ChangeProcessLog
 from .models import Issue
 from .models import IssueProcessLog
 from .models import Config
+from .models import ProductInfo
 from .forms import EventDetailForm
 from .forms import EventDetailModelForm
 from .forms import ChangeDetailForm
@@ -43,7 +44,9 @@ def index(request):
 def events(request):
 
     page_header = "事件管理"
-    data = Event.objects.filter().order_by("-dt_created")
+    data = Event.objects.filter(
+        technician=request.user
+    ).order_by("-dt_created")
 
     return render(request, 'itsm/event_list.html', locals())
 
@@ -143,6 +146,14 @@ def event_close(request, pk):
             return HttpResponseRedirect(url)
 
         if event.event_type == "request":
+
+            # 应用对照信息查询
+            app_name = event.app_name
+            product_info = ProductInfo.objects.filter(app_name=app_name)
+            if not product_info:
+                messages.warning(request, "当前应用名称无法部署,请联系管理员维护应用对照信息")
+                return HttpResponseRedirect(url)
+
             # 云管订单创建
             param = {
                 "time_stamp": int(round(time.time() * 1000)),
@@ -151,9 +162,9 @@ def event_close(request, pk):
                 "clusterRoleId": 1,
                 "count": 1,
                 "description": "需要机器配置：1c1g",
-                "expireTime": 1518451199999,
+                "expireTime": 4679277169,
                 "installAgent": True,
-                "productId": "ed220437-3acb-48ff-82ec-4d57e413a7f7"
+                "productId": product_info[0].product_id
             }
             # 工作空间接口请求
             ak, sk = Fit2CloudClient(
@@ -169,7 +180,9 @@ def event_close(request, pk):
                 order = Fit2CloudClient(_conf, sk).order_create(_param, json.dumps(post))
                 print("order:  ", order)
                 event.cloud_order = order.get("data")
-
+        else:
+            # TODO 故障报修事件关闭逻辑
+            pass
         # 执行关闭
         event.state = "ended"
         event.save()
