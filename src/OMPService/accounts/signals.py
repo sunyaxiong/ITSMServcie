@@ -23,7 +23,7 @@ def user_sync(sender, instance, created, *args, **kwargs):
     :param kwargs:
     :return:
     """
-    if not created:
+    if created:
 
         # 时间戳,公共参数,实例化
         _param = {
