@@ -24,7 +24,7 @@ from .views import events
 from .views import incident_list
 from .views import event_detail
 from .views import event_add
-from .views import event_close
+from .views import event_create_order
 from .views import event_to_change
 from .views import event_to_issue
 from .views import event_upgrade
@@ -64,7 +64,7 @@ urlpatterns = [
     url(r'^incident_list/$', incident_list),
     url(r'^event/(?P<pk>\d{1,9})', event_detail),
     url(r'^events/add/$', event_add),
-    url(r'^events/close/(?P<pk>\d{1,9})', event_close),
+    url(r'^events/create_order/(?P<pk>\d{1,9})', event_create_order),
     url(r'^events/event_to_change/(?P<pk>\d{1,9})', event_to_change),
     url(r'^events/event_to_issue/(?P<pk>\d{1,9})', event_to_issue),
     url(r'^events/event_upgrade/$', event_upgrade),

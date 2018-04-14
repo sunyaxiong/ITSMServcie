@@ -134,7 +134,7 @@ def event_add(request):
         return HttpResponseRedirect("/itsm/event_list/")
 
 
-def event_close(request, pk):
+def event_create_order(request, pk):
     url = request.META.get('HTTP_REFERER')
     try:
         event = Event.objects.get(id=pk)

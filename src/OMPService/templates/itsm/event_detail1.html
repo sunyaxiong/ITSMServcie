@@ -220,6 +220,12 @@
                    class="btn btn-primary pull-right" style="margin-right: 5px;">
                     <i class="fa fa-close"></i> 关闭事件
                 </a>
+                {% if checked %}
+                    <a href="/itsm/events/create_order/{{ event.id }}"
+                       class="btn btn-primary pull-right" style="margin-right: 5px;">
+                        <i class="fa fa-close"></i> 创建订单
+                    </a>
+                {% endif %}
                 <a class="btn btn-primary pull-right" style="margin-right: 5px;"
                     data-toggle="modal" data-target="#eventUpdateModal">
                     <i class="fa fa-save"></i> 事件升级

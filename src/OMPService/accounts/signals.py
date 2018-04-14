@@ -90,17 +90,18 @@ def user_sync(sender, instance, created, *args, **kwargs):
             workspace_list = workspace_res.get("data")
             workspace_info = {i.get("name"): i for i in workspace_list}
             workspace_id = workspace_info[instance.department]["id"]
-            print("wp: ", workspace_info[instance.department])
 
         # 工作空间授权授权
         if user_id and workspace_id:
+            print(type(user_id), type(workspace_id))
             co_permission_post = {
                 "groupId": workspace_id,
                 "userId": user_id,
                 "groupRoleId": 3,
             }
             co_permission_res = client.co_permission(
-                {"time_stamp": int(round(time.time() * 1000))}, co_permission_post
+                {"time_stamp": int(round(time.time() * 1000))},
+                json.dumps(co_permission_post),
             )
             print("co_permission_res: ", co_permission_res)
 

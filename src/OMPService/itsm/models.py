@@ -16,6 +16,7 @@ class Event(BaseModel):
         ('processing', '处理中'),
         ('issued', '转入问题'),
         ('changed', '转入变更'),
+        ('checked', '审批完成'),
         ('ended', '结束')
     )
 
@@ -54,9 +55,19 @@ class Event(BaseModel):
     flow_module = models.FileField(verbose_name="流程模板", null=True, blank=True)
     cloud_order = models.CharField(verbose_name="云管订单", max_length=128, null=True, blank=True)
     app_name = models.CharField("产品名称", max_length=128, null=True, blank=True)
+    auto_deploy = models.BooleanField("是否自动化部署订单", default=0)
 
     def __str__(self):
         return self.name or ""
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None, *args, **kwargs):
+        name = self.app_name
+        query_set = ProductInfo.objects.filter(app_name=name).values("app_name")
+        app_name_list = [i["app_name"] for i in query_set]
+        if name in app_name_list:
+            self.auto_deploy = 1
+        super(Event, self).save(*args, **kwargs)
 
 
 class Issue(BaseModel):
