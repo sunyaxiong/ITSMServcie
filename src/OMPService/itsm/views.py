@@ -34,6 +34,7 @@ from lib.views import get_module_info
 from lib.views import get_structure_info
 from lib.fit2cloud import Fit2CloudClient
 
+logger = logging.getLogger("django")
 
 @login_required
 def index(request):
@@ -80,6 +81,7 @@ def event_detail(request, pk):
     # 根据事件状态控制前端显示
     button_submit = "提交" if event.state == "draft" else "保存"
     display = 0 if event.state == "ended" else 1
+    checked = 1 if event.state == "checked" else 0
 
     if request.method == "GET":
 
@@ -166,20 +168,30 @@ def event_create_order(request, pk):
                 "installAgent": True,
                 "productId": product_info[0].product_id
             }
-            # 工作空间接口请求
-            ak, sk = Fit2CloudClient(
-                settings.CLOUD_CONF, settings.cloud_secret_key
-            ).get_work_space(param)
+            # 用户信息查询
+            _conf = settings.CLOUD_CONF.copy()
+            user_res = Fit2CloudClient(_conf, settings.cloud_secret_key).user_get(
+                {"time_stamp": int(round(time.time() * 1000))}
+            )
+            if user_res.get("success"):
+                user_data = user_res.get("data")
+                user_info = {i["name"]: i for i in user_data}
+                user_email = user_info[request.user.username]["email"]
+                _conf["user"] = user_email
+                # 工作空间接口请求
+                ak, sk = Fit2CloudClient(
+                    _conf, settings.cloud_secret_key
+                ).get_work_space(param)
 
-            if ak and sk:
-                _param = {
-                    "time_stamp": int(round(time.time() * 1000)),
-                }
-                _conf = settings.CLOUD_CONF.copy()
-                _conf["access_key"] = ak
-                order = Fit2CloudClient(_conf, sk).order_create(_param, json.dumps(post))
-                print("order:  ", order)
-                event.cloud_order = order.get("data")
+                if ak and sk:
+                    _param = {
+                        "time_stamp": int(round(time.time() * 1000)),
+                    }
+                    # _conf = settings.CLOUD_CONF.copy()
+                    _conf["access_key"] = ak
+                    order = Fit2CloudClient(_conf, sk).order_create(_param, json.dumps(post))
+                    logger.info("新生成订单:  ", order)
+                    event.cloud_order = order.get("data")
         else:
             # TODO 故障报修事件关闭逻辑
             pass
@@ -729,3 +741,15 @@ def order_get(request):
             }
 
         return JsonResponse(res)
+
+
+def user_get(request):
+    param = {
+        "time_stamp": int(round(time.time() * 1000)),
+    }
+    _conf = settings.CLOUD_CONF.copy()
+    _conf.pop("user")
+    client = Fit2CloudClient(_conf, settings.cloud_secret_key)
+    res = client.user_get(param)
+
+    return JsonResponse(res)

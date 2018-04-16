@@ -11,6 +11,8 @@ from OMPService import settings
 from lib.fit2cloud import Fit2CloudClient
 from .models import Profile, Channel
 
+logger = logging.getLogger("django")
+
 
 @receiver(post_save, sender="accounts.Profile")
 def user_sync(sender, instance, created, *args, **kwargs):
@@ -89,7 +91,7 @@ def user_sync(sender, instance, created, *args, **kwargs):
 
         # 工作空间授权授权
         if user_id and workspace_id:
-            print(type(user_id), type(workspace_id))
+            logger.info("用户id: {}, 工作空间id()正常生成".format(user_id, workspace_id))
             co_permission_post = {
                 "groupId": workspace_id,
                 "userId": user_id,
@@ -99,7 +101,7 @@ def user_sync(sender, instance, created, *args, **kwargs):
                 {"time_stamp": int(round(time.time() * 1000))},
                 json.dumps(co_permission_post),
             )
-            print("co_permission_res: ", co_permission_res)
+            logger.info("授权成功{}".format(co_permission_res))
 
         # 用户同步创建到itsm
         user_obj, user_created = User.objects.get_or_create(

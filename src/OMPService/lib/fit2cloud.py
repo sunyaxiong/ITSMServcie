@@ -36,6 +36,7 @@ class Fit2CloudClient(object):
         self.conf = conf
         self.secret_key = sk
         self.user_add_url = "http://{}:28888/rest/api/v1/admin/user/add".format(CLOUD_HOST)
+        self.user_get_url = "http://{}:28888/rest/api/v1/admin/user/list".format(CLOUD_HOST)
         self.workspace_add_url = "http://{}:28888/rest/api/v1/admin/group/add".format(CLOUD_HOST)
         self.org_add_url = "http://{}:28888/rest/api/v1/admin/organize/add".format(CLOUD_HOST)
         self.org_get_url = "http://{}:28888/rest/api/v1/admin/organize/list".format(CLOUD_HOST)
@@ -106,6 +107,24 @@ class Fit2CloudClient(object):
 
         # 发起请求
         url = "{}?{}".format(self.get_work_space_url, urllib.urlencode(attrs))
+        res = requests.get(url)
+
+        return res.json()
+
+    def user_get(self, attrs):
+        """
+        获取用户信息
+        :param attrs: dict
+        :return:
+        """
+        attrs.update(self.conf)
+
+        # 计算签名
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+
+        # 发起请求
+        url = "{}?{}".format(self.user_get_url, urllib.urlencode(attrs))
         res = requests.get(url)
 
         return res.json()
