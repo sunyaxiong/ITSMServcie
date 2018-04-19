@@ -82,7 +82,7 @@ def register(request):
             if org_first_regist:
                 # TODO 邮件激活 send mail
                 subject = "{}您好,欢迎注册,请点击链接激活账户".format(data.get("username"))
-                message = "点击激活: http://111.13.61.171:9999/?active_code={}".format(user.id)
+                message = "点击激活: http://111.13.61.171:9999/accounts/active/{}".format(user.id)
                 send_mail(subject, message, settings.EMAIL_HOST_USER, [data.get("email")])
                 logger.info("itsm组织创建成功")
             else:
