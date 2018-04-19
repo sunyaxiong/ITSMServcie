@@ -107,7 +107,7 @@ def active(request, active_code):
         user = User.objects.get(id=int(active_code))
         user.is_active = 1
         user.save()
-        return HttpResponseRedirect("/itsm/event_list")
+        return HttpResponse("激活成功,请访问{}".format("http://111.13.61.171:9999/itsm/event_list"))
     except Exception as e:
         logger.info(e)
         return HttpResponse("激活失败,请联系管理员")
