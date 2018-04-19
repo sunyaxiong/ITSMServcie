@@ -33,6 +33,8 @@ urlpatterns = [
     url(r'', include(router.urls, namespace='profile')),
     # url(r'^login/$', login),
     # url(r'^logout/$', logout),
+    url(r'^register/$', lib.django_cas_ng.views.register, name='cas_ng_register'),
+    url(r'^active/(?P<active_code>\d{1,9})', lib.django_cas_ng.active, name='cas_ng_active'),
     url(r'^login/$', lib.django_cas_ng.views.login, name='cas_ng_login'),
     url(r'^logout/$', lib.django_cas_ng.views.logout, name='cas_ng_logout'),
     url(r'^callback/$', lib.django_cas_ng.views.callback, name='cas_ng_proxy_callback'),

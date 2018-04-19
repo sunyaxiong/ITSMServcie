@@ -8,3 +8,13 @@ class UserForm(forms.Form):
     password = forms.CharField(label='密码', widget=forms.PasswordInput())
     # password2 = forms.CharField(label='确认密码',widget=forms.PasswordInput())
     # email = forms.EmailField(label='电子邮件')
+
+
+class RegisterForm(forms.Form):
+
+    username = forms.CharField(label="用户名", max_length=128)
+    email = forms.EmailField(label="邮箱")
+    org = forms.CharField(label="组织", max_length=128)
+    position = forms.CharField(label="岗位角色", max_length=128)
+    password = forms.CharField(label="用户名", max_length=128)
+    password2 = forms.CharField(label="用户名", max_length=128)

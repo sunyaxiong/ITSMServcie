@@ -36,9 +36,9 @@ def user_sync(sender, instance, created, *args, **kwargs):
         _, channel_created = Channel.objects.get_or_create(
             name=instance.channel_name,
         )
-        print("{}已经创建了".format(_))
+        logger.info("{}已经创建了".format(_))
         if channel_created:
-            print("itsm组织创建成功")
+            logger.info("itsm组织创建成功")
 
         # 当前组织信息查询打包
         org_res = client.org_get({"time_stamp": int(round(time.time() * 1000))})
@@ -57,7 +57,7 @@ def user_sync(sender, instance, created, *args, **kwargs):
                 {"time_stamp": int(round(time.time() * 1000))}, json.dumps(post)
             )
         else:
-            print("组织信息获取失败")
+            logger.info("组织信息获取失败")
 
         # 3 用户sync到云管 TODO
         post = {
@@ -70,7 +70,7 @@ def user_sync(sender, instance, created, *args, **kwargs):
         user_add_res = Fit2CloudClient(_conf, settings.cloud_secret_key).user_add(
             {"time_stamp": int(round(time.time() * 1000))}, json.dumps(post)
         )
-        print("useraddres: ", user_add_res)
+        logger.info("useraddres: ", user_add_res)
         user_id = 0
         if user_add_res.get("success"):
             user_data = user_add_res.get("data")
@@ -102,18 +102,20 @@ def user_sync(sender, instance, created, *args, **kwargs):
                 json.dumps(co_permission_post),
             )
             logger.info("授权成功{}".format(co_permission_res))
-
-        # 用户同步创建到itsm
-        user_obj, user_created = User.objects.get_or_create(
-            username=instance.username,
-            email=instance.email,
-            is_staff=1,
-            is_active=1,
-        )
-        if user_created:
-            print("ITSM用户: {} 创建成功".format(user_obj))
         else:
-            print("ITSM用户: {} 已经存在".format(user_obj))
+            logger.info("授权失败,请检查")
+
+        # # 用户同步创建到itsm, drop此功能,创建改到用户注册方法内
+        # user_obj, user_created = User.objects.get_or_create(
+        #     username=instance.username,
+        #     email=instance.email,
+        #     is_staff=1,
+        #     is_active=1,
+        # )
+        # if user_created:
+        #     print("ITSM用户: {} 创建成功".format(user_obj))
+        # else:
+        #     print("ITSM用户: {} 已经存在".format(user_obj))
 
 
 @receiver(post_save, sender="accounts.Channel")

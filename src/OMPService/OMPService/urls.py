@@ -31,5 +31,6 @@ urlpatterns = [
     url(r'^asset/', include('asset.urls')),
     url(r'^api/', include('api.urls')),
     url(r'^accounts/', include('accounts.urls')),
+    url(r'^/', include('accounts.urls')),
     url(r'^rest/', include(api_patterns, namespace='rest_api', app_name='ops')),
 ]
