@@ -22,18 +22,34 @@ def deploy_to_event(sender, instance, created, *args, **kwargs):
 
     default_user = User.objects.filter(username="admin")[0]
     event_name = "{}申请部署{}".format(instance.chanel, instance.app_name)
-    Event.objects.create(
-        name=event_name,
-        state="draft",
-        initiator=instance.consumer_name,
-        initiator_phone=instance.consumer_number,
-        initiator_email=instance.consumer_email,
-        initiator_channel=instance.chanel,
-        event_type="request",
-        service_level="100",
-        emergency_degree="common",
-        technician=default_user,
-    )
+    if instance.order_number:
+        Event.objects.create(
+            name=event_name,
+            state="draft",
+            initiator=instance.consumer_name,
+            initiator_phone=instance.consumer_number,
+            initiator_email=instance.consumer_email,
+            initiator_channel=instance.chanel,
+            event_type="request",
+            service_level="100",
+            emergency_degree="common",
+            technician=default_user,
+            cloud_order=instance.order_number,
+            auto_deploy=1,
+        )
+    else:
+        Event.objects.create(
+            name=event_name,
+            state="draft",
+            initiator=instance.consumer_name,
+            initiator_phone=instance.consumer_number,
+            initiator_email=instance.consumer_email,
+            initiator_channel=instance.chanel,
+            event_type="request",
+            service_level="100",
+            emergency_degree="common",
+            technician=default_user,
+        )
     return None
 
 

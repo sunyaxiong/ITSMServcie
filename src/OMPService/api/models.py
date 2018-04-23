@@ -34,6 +34,7 @@ class DeployInstance(BaseModel):
     cpu = models.IntegerField(verbose_name="CPU", null=True, blank=True)
     mem = models.IntegerField(verbose_name="内存", null=True, blank=True)
     is_vm_instance = models.BooleanField(verbose_name="是否创建虚拟机", default=0)
+    order_number = models.CharField("订单号", max_length=128, default=0, null=True, blank=True)
 
     def __str__(self):
         return "{}-{}".format(self.chanel, self.app_name)
