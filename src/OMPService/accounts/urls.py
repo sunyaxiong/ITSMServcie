@@ -30,7 +30,7 @@ router.register("channel", ChannelViewSet, base_name="channelViewSet")
 
 
 urlpatterns = [
-    url(r'', include(router.urls, namespace='profile')),
+    url(r'', include(router.urls)),
     # url(r'^login/$', login),
     # url(r'^logout/$', logout),
     url(r'^register/$', lib.django_cas_ng.views.register, name='cas_ng_register'),

@@ -31,7 +31,7 @@ SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from datetime import timedelta
 
 from accounts.forms import RegisterForm
-from accounts.models import Profile, Channel
+from accounts.models import Profile, Channel, MessageAlert
 from .signals import cas_user_logout
 from .models import ProxyGrantingTicket, SessionTicket
 from .utils import (get_cas_client, get_service_url,
@@ -51,13 +51,14 @@ def register(request):
 
         if form.is_valid():
             logger.info("用户注册数据收敛成功")
-            logger.info(form.data)
             data = form.data
             channels = Channel.objects.all().values("name")
+            channel_name_list = [i["name"] for i in channels]
+            print(channels)
 
             # 是否首次注册组织
             org_first_regist = True
-            if data.get("org") in channels:
+            if data.get("org") in channel_name_list:
                 org_first_regist = False
 
             Profile.objects.create(
@@ -78,16 +79,26 @@ def register(request):
             if user:
                 logger.info("本地用户创建成功")
 
-            # TODO 组织首次创建邮件激活;已存在组织创建用户,需要组织管理员审核
+            # 组织首次创建邮件激活;已存在组织创建用户,需要组织管理员审核
             if org_first_regist:
-                # TODO 邮件激活 send mail
+                # 邮件激活 send mail
                 subject = "{}您好,欢迎注册,请点击链接激活账户".format(data.get("username"))
                 message = "点击激活: http://111.13.61.171:9999/accounts/active/{}".format(user.id)
                 send_mail(subject, message, settings.EMAIL_HOST_USER, [data.get("email")])
                 logger.info("itsm组织创建成功")
             else:
-                # TODO 管理员审核消息MessageAlert创建
-                pass
+                # 管理员审核消息MessageAlert创建
+                content = "{}-{}-{}-申请注册云管账户".format(
+                    data.get("org"), data.get("department"), data.get("username")
+                )
+                admin_username = Profile.objects.filter(channel_name=data.get("org")).first()
+                admin_user = User.objects.filter(username=admin_username).first()
+                reg_info = MessageAlert.objects.create(
+                    user=admin_user,
+                    content=content,
+                    action_type="reg_info"
+                )
+                logger.info("{}用户审核消息已创建".format(content))
 
             return HttpResponseRedirect("/")
         else:
@@ -131,7 +142,7 @@ def login(request, next_page=None, required=False):
         clean_sessions(client, request)
         return HttpResponseRedirect(next_page)
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated() and request.user.is_active:
         if settings.CAS_LOGGED_MSG is not None:
             message = settings.CAS_LOGGED_MSG % request.user.get_username()
             messages.success(request, message)

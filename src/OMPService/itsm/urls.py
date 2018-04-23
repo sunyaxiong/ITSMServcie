@@ -38,6 +38,9 @@ from .views import issues
 from .views import issue_detail
 from .views import issue_close
 from .views import issue_upgrade
+from .views import user_confirm
+from .views import user_confirm_accept
+from .views import user_confirm_reject
 from .views import config
 from .views import config_overview
 from .views import get_vm_list
@@ -56,8 +59,8 @@ router.register("event", EventViewSet, base_name="EventViewSet")
 
 
 urlpatterns = [
-    url(r'', include(router.urls, namespace='restapi')),
-    url(r'^$', index),
+    url(r'^rest/', include(router.urls, namespace='restapi')),
+    url(r'^$', events),
 
     # 事件管理
     url(r'^event_list/$', events),
@@ -99,5 +102,10 @@ urlpatterns = [
     url(r'cloud/order_create/$', order_create),
     url(r'cloud/order_get/$', order_get),
     url(r'cloud/user_get/$', user_get),
+
+    # message alert
+    url(r'^user_confirm/(?P<pk>\d{1,9})', user_confirm),
+    url(r'^user_confirm/accept/', user_confirm_accept),
+    url(r'^user_confirm/reject/', user_confirm_accept),
 ]
 

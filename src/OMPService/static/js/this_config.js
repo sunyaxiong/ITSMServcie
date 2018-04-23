@@ -79,6 +79,41 @@ function change_reject() {
     })
 }
 
+function user_confirm() {
+
+    var message_id=$("#messageId").val();
+
+    $.ajax({
+        type: "GET",
+        url: "/itsm/user_confirm/accept/",
+        data: {
+            "id": message_id
+        },
+        success: function (ret) {
+            // console.log(ret);
+            window.location.href="/itsm/event_list/";
+        }
+    })
+}
+
+
+function user_reject() {
+
+    var message_id=$("#messageId").val();
+
+    $.ajax({
+        type: "GET",
+        url: "/itsm/user_confirm/reject/",
+        data: {
+            "id": message_id
+        },
+        success: function (ret) {
+            // console.log(ret);
+            window.location.href="/itsm/event_list/";
+        }
+    })
+}
+
 
 $(document).ready(function () {
         var order_id = $("#order_id").html();

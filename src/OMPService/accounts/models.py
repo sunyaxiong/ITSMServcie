@@ -32,12 +32,21 @@ class Profile(models.Model):
 
 class MessageAlert(BaseModel):
     """
+    账户注册审核提醒;
     """
+    ACTION_TYPE = (
+        ("reg_info", "新用户审核提醒"),
+    )
+
     user = models.ForeignKey(User)
+    initiator = models.CharField("发起人", max_length=128, null=True, blank=True)
     content = models.TextField("提醒内容", null=True, blank=True)
     ins = models.CharField("流程类型", max_length=128, null=True, blank=True)
     ins_id = models.CharField("流程id", max_length=128, null=True, blank=True)
-    action_type = models.CharField("动作类型", max_length=128, null=True, blank=True)
+    action_type = models.CharField(
+        "动作类型", max_length=128, null=True, blank=True, choices=ACTION_TYPE
+    )
+    checked = models.BooleanField("是否查看", default=0)
 
 
 from .signals import user_sync
