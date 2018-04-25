@@ -8,6 +8,7 @@ from .models import ChangeProcessLog
 from .models import Config
 from .models import TimeTree
 from .models import ProductInfo
+from .models import SatisfactionLog
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -42,6 +43,11 @@ class ProductInfoAdmin(admin.ModelAdmin):
     )
 
 
+class SatisfactionAdmin(admin.ModelAdmin):
+    list_display = (
+        "event", "comment", "checked", "dt_created"
+    )
+
 class TimeTreeAdmin(admin.ModelAdmin):
     pass
 
@@ -54,3 +60,4 @@ admin.site.register(ChangeProcessLog, ChangeLogAdmin)
 admin.site.register(Config, ConfigAdmin)
 admin.site.register(TimeTree, TimeTreeAdmin)
 admin.site.register(ProductInfo, ProductInfoAdmin)
+admin.site.register(SatisfactionLog, SatisfactionAdmin)

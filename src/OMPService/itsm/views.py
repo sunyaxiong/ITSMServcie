@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.cache import cache
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import EmailMultiAlternatives, send_mail
 
 from OMPService import settings
 from accounts.models import Profile, MessageAlert
@@ -24,11 +25,13 @@ from .models import Issue
 from .models import IssueProcessLog
 from .models import Config
 from .models import ProductInfo
+from .models import SatisfactionLog
 from .forms import EventDetailForm
 from .forms import EventDetailModelForm
 from .forms import ChangeDetailForm
 from .forms import ChangeDetailModelForm
 from .forms import IssueDetailForm
+from .forms import SatisfactionForm
 from lib.views import get_module_name_list
 from lib.views import get_module_info
 from lib.views import get_structure_info
@@ -258,6 +261,33 @@ def event_upgrade(request):
     event.save()
 
     return HttpResponseRedirect(url)
+
+
+def event_to_close(request, pk):
+    url = request.META.get("HTTP_REFERER")
+
+    event = Event.objects.filter(id=pk)
+    if event:
+        # 根据事件创建满意度调查
+        sati_log = SatisfactionLog.objects.create(
+            event=event[0]
+        )
+        # 组织邮件
+        mail_to = event[0].initiator_email
+        link = "http://111.13.61.171:9999/itsm/satisfaction/?log_id={}".format(sati_log.id)
+        message = "您好,您的事件:{}已经处理完成,请对我们的服务做出评价,感谢您的支持. {}".format(
+            event[0].name, link
+        )
+        send_mail("满意度调查", message, settings.EMAIL_HOST_USER, [mail_to])
+        logger.info("满意度调查发送成功")
+
+        # 修改事件状态
+        event[0].state = "ended"
+        event[0].save()
+        return HttpResponseRedirect(url)
+    else:
+        messages.warning(request, "事件不存在,无法关闭,请联系管理员")
+        return HttpResponseRedirect(url)
 
 
 def changes(request):
@@ -592,6 +622,39 @@ def user_confirm_reject(request):
     except Exception as e:
         logger.info(e)
         return HttpResponseRedirect(url)
+
+
+def satisfaction_log(request):
+
+    if request.method == "POST":
+        form = SatisfactionForm(request.POST)
+        if form.is_valid():
+            logger.info("满意度数据收敛成功")
+            data = form.data
+            sati_id = data.get("sati_id")
+            comment = data.get("comment")
+            content = data.get("content")
+            sati_info = SatisfactionLog.objects.filter(id=int(sati_id), checked=0)
+            if sati_info:
+                sati = sati_info.first()
+                sati.comment = comment
+                sati.content = content
+                sati.checked = 1
+                sati.save()
+            return HttpResponse("评价成功")
+        else:
+            logger.info(form.errors)
+    else:
+        sati_log_id = request.GET.get("log_id")
+        print(sati_log_id)
+        try:
+            sati_info = SatisfactionLog.objects.get(id=sati_log_id, checked=0)
+            event = sati_info.event
+        except Exception as e:
+            logger.info(e)
+            return HttpResponse("满意度调查已回复或者不存在")
+        form = SatisfactionForm()
+        return render(request, "satisfaction.html", locals())
 
 
 @csrf_exempt

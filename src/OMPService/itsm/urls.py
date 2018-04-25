@@ -28,6 +28,7 @@ from .views import event_create_order
 from .views import event_to_change
 from .views import event_to_issue
 from .views import event_upgrade
+from .views import event_to_close
 from .views import changes
 from .views import change_detail
 from .views import change_add
@@ -41,6 +42,7 @@ from .views import issue_upgrade
 from .views import user_confirm
 from .views import user_confirm_accept
 from .views import user_confirm_reject
+from .views import satisfaction_log
 from .views import config
 from .views import config_overview
 from .views import get_vm_list
@@ -59,7 +61,7 @@ router.register("event", EventViewSet, base_name="EventViewSet")
 
 
 urlpatterns = [
-    url(r'^rest/', include(router.urls, namespace='restapi')),
+    url(r'^rest/', include(router.urls)),
     url(r'^$', events),
 
     # 事件管理
@@ -72,6 +74,7 @@ urlpatterns = [
     url(r'^events/event_to_change/(?P<pk>\d{1,9})', event_to_change),
     url(r'^events/event_to_issue/(?P<pk>\d{1,9})', event_to_issue),
     url(r'^events/event_upgrade/$', event_upgrade),
+    url(r'^events/close/(?P<pk>\d{1,9})', event_to_close),
 
     # 变更管理
     url(r'^change_list/$', changes),
@@ -107,5 +110,8 @@ urlpatterns = [
     url(r'^user_confirm/(?P<pk>\d{1,9})', user_confirm),
     url(r'^user_confirm/accept/', user_confirm_accept),
     url(r'^user_confirm/reject/', user_confirm_accept),
+
+    # 满意度
+    url(r'^satisfaction/', satisfaction_log),
 ]
 

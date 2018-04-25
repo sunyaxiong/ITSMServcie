@@ -115,6 +115,7 @@ class Change(BaseModel):
     rollback_plan = models.FileField(verbose_name="回滚计划", null=True, blank=True)
     flow_node = models.IntegerField(verbose_name="当前流程节点", default=0)
     flow_module = models.CharField(verbose_name="流程模板", max_length=128, null=True, blank=True)
+    leak_checked = models.BooleanField("漏洞扫描", default=0)
 
     def __str__(self):
         return self.name or ""
@@ -185,3 +186,10 @@ class ChangeProcessLog(BaseModel):
     change_obj = models.ForeignKey(Change, related_name="logs", verbose_name="关联变更")
     username = models.CharField("用户名", max_length=256, blank=True, null=True)
     content = models.TextField("处理记录", blank=True, null=True)
+
+
+class SatisfactionLog(BaseModel):
+    event = models.ForeignKey(Event, related_name="sati_logs", verbose_name="关联事件")
+    comment = models.CharField("满意度", max_length=128, null=True, blank=True)
+    content = models.TextField("评价", null=True, blank=True)
+    checked = models.BooleanField("状态", default=0)

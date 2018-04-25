@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.contrib import auth
+from django.contrib import auth,messages
 from django.contrib.auth.decorators import login_required
 
 from .forms import UserForm
+from .forms import ProfileForm
+from .models import Profile
 
 
 def login(request):
@@ -30,3 +32,20 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect("/accounts/login/")
+
+
+def user_profile(request):
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST)
+        if form.is_valid():
+            data = form.data
+    else:
+        user = request.user
+        try:
+            profile = Profile.objects.get(username=user.username)
+        except Exception as e:
+            messages.warning(request, "用户配置文件加载失败,请维护配置信息")
+        form = ProfileForm()
+        return render(request, "user_profile.html", locals())
+

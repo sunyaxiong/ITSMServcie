@@ -6,6 +6,7 @@ from django.forms import ValidationError
 from .models import Event, EventProcessLog
 from .models import Change
 from .models import Issue
+from .models import SatisfactionLog
 
 
 class EventDetailForm(forms.Form):
@@ -63,4 +64,12 @@ class IssueDetailForm(forms.Form):
     def clean_handler(self):
         if self.data.get("handler") == "None":
             raise ValidationError("请指派处理人")
+
+
+class SatisfactionForm(forms.Form):
+
+    # event = forms.CharField(required=False)
+    sati_id = forms.IntegerField(required=True)
+    comment = forms.CharField(required=True)
+    content = forms.CharField(required=False)
 
