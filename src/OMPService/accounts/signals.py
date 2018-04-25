@@ -48,8 +48,9 @@ def user_sync(sender, instance, created, *args, **kwargs):
             org_id = org_info[instance.channel_name]["id"]
 
             # 2 工作空间sync到云管 TODO 绑定组织,先查询
+            name = "{}-{}".format(instance.channel_name, instance.department)
             post = {
-                "name": instance.department,
+                "name": name,
                 "description": "sync",
                 "costCenterId": org_id
             }
