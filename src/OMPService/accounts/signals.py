@@ -31,6 +31,7 @@ def user_sync(sender, instance, created, *args, **kwargs):
         _conf = settings.CLOUD_CONF.copy()
         _conf.pop("user")  # 不传user,查询全部组织
         client = Fit2CloudClient(_conf, settings.cloud_secret_key)
+        workspace_name = "{}-{}".format(instance.channel_name, instance.department)
 
         # 1 组织同步创建到itsm,优先创建组织; 信号控制sync到云管
         _, channel_created = Channel.objects.get_or_create(
@@ -48,9 +49,8 @@ def user_sync(sender, instance, created, *args, **kwargs):
             org_id = org_info[instance.channel_name]["id"]
 
             # 2 工作空间sync到云管 TODO 绑定组织,先查询
-            name = "{}-{}".format(instance.channel_name, instance.department)
             post = {
-                "name": name,
+                "name": workspace_name,
                 "description": "sync",
                 "costCenterId": org_id
             }
@@ -88,7 +88,7 @@ def user_sync(sender, instance, created, *args, **kwargs):
         if workspace_res.get("success"):
             workspace_list = workspace_res.get("data")
             workspace_info = {i.get("name"): i for i in workspace_list}
-            workspace_id = workspace_info[instance.department]["id"]
+            workspace_id = workspace_info[workspace_name]["id"]
 
         # 工作空间授权授权
         if user_id and workspace_id:
