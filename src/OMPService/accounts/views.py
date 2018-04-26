@@ -1,3 +1,5 @@
+import logging
+
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib import auth,messages
@@ -6,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import UserForm
 from .forms import ProfileForm
 from .models import Profile
+
+logger = logging.getLogger("django")
 
 
 def login(request):
@@ -35,16 +39,26 @@ def logout(request):
 
 
 def user_profile(request):
+    user = request.user
+    url = request.META.get("HTTP_REFERER")
+    no_profile = False
+    try:
+        profile = Profile.objects.get(username=user.username)
+    except Exception as e:
+        logger.info("没有该用户配置文件")
+        no_profile = True
 
     if request.method == "POST":
         form = ProfileForm(request.POST)
         if form.is_valid():
             data = form.data
+            email = data.get("emal")
+            phone = data.get("phone")
+            profile.email = email
+            profile.phone = phone
+            profile.save()
     else:
-        user = request.user
-        try:
-            profile = Profile.objects.get(username=user.username)
-        except Exception as e:
+        if no_profile:
             messages.warning(request, "用户配置文件加载失败,请维护配置信息")
         form = ProfileForm()
         return render(request, "user_profile.html", locals())

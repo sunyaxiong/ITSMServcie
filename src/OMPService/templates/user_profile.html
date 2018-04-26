@@ -10,7 +10,7 @@
 </h4>
 <div class="row">
 <div class="col-md-8">
-    <form class="form-horizontal">
+    <form action="/accounts/user_profile/" class="form-horizontal" method="post">{% csrf_token %}
       <div class="box-body">
         <div class="form-group">
           <input hidden id="messageId" value={{ confirm_message.id }}>

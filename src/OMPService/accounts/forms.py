@@ -23,5 +23,5 @@ class RegisterForm(forms.Form):
 class ProfileForm(forms.Form):
 
     email = forms.EmailField(label="邮箱")
-    org = forms.CharField(label="组织", max_length=128)
-    position = forms.CharField(label="岗位角色", max_length=128)
+    # org = forms.CharField(label="组织", max_length=128)
+    phone = forms.CharField(label="电话", max_length=128)
