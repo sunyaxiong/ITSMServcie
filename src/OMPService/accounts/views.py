@@ -52,11 +52,12 @@ def user_profile(request):
         form = ProfileForm(request.POST)
         if form.is_valid():
             data = form.data
-            email = data.get("emal")
+            email = data.get("email")
             phone = data.get("phone")
             profile.email = email
             profile.phone = phone
             profile.save()
+            return HttpResponseRedirect(url)
     else:
         if no_profile:
             messages.warning(request, "用户配置文件加载失败,请维护配置信息")

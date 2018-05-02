@@ -25,3 +25,8 @@ class ProfileForm(forms.Form):
     email = forms.EmailField(label="邮箱")
     # org = forms.CharField(label="组织", max_length=128)
     phone = forms.CharField(label="电话", max_length=128)
+
+    def clean_phone(self):
+        if self.data.get("phone") == "None":
+            # raise ValidationError("请指派处理人")
+            [].sort()

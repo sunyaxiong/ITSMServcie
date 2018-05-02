@@ -284,7 +284,9 @@ desired effect
         <li><a href="/admin/asset/asset/"><i class="fa fa-database"></i> <span>资产管理(CMDB)</span></a></li>
         <li><a href="#"><i class="fa fa-bar-chart"></i> <span>SLA水平分析</span></a></li>
         <li><a href="http://111.13.61.173"><i class="fa fa-link"></i> <span>云管平台</span></a></li>
-
+        {% if request.user.is_superuser %}
+        <li><a href="/admin"><i class="fa fa-link"></i> <span>admin后台管理</span></a></li>
+        {% endif %}
       </ul>
       <!-- /.sidebar-menu -->
     </section>

@@ -35,7 +35,11 @@
 
   <div class="register-box-body">
     <p class="login-box-msg">注册新用户</p>
-
+    {% if messages %}
+    {% for message in messages %}
+            {% include "itsm/log_errors.html" %}
+    {% endfor %}
+    {% endif %}
     <form action="/accounts/register/" method="post">{% csrf_token %}
       <div class="form-group has-feedback">
         <label>用户名</label>

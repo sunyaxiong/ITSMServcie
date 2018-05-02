@@ -45,6 +45,103 @@ __all__ = ['login', 'logout', 'callback', 'register']
 
 @require_http_methods(["GET", "POST"])
 def register(request):
+    url = request.META.get("HTTP_REFERER")
+    form = RegisterForm()
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+            logger.info("用户注册数据收敛成功")
+            data = form.data
+            # TODO 执行注册逻辑前,有必要检查用户是否存在,防止用户创建异常
+            user_queryset = User.objects.filter(username=data.get("username"))
+            username_list = [i.username for i in user_queryset]
+            if data.get("username") in username_list:
+                messages.warning(request, "用户已存在")
+                return HttpResponseRedirect(url)
+
+            # 组织查询或创建
+            org, org_created = Channel.objects.get_or_create(
+                name=data.get("org")
+            )
+            profile = Profile.objects.create(
+                username=data.get("username"),
+                channel_name=data.get("org"),
+                position=data.get("position"),
+                department=data.get("department"),
+                email=data.get("email"),
+                phone=data.get("phone"),
+            )
+            user = User.objects.create(
+                username=data.get("username"),
+                password=data.get("password"),
+                email=data.get("email"),
+                is_staff=1,
+                is_active=0,
+            )
+            logger.info("ITSM用户创建成功")
+
+            # 组织首次创建需要系统管理审核;已存在组织创建用户,需要组织管理员审核
+            content = "{}-{}-{}-申请注册云管账户".format(
+                data.get("org"), data.get("department"), data.get("username")
+            )
+            subject = "伟仕云安云平台账号审核提醒"
+            mail_to = [data.get("email")]
+
+            if org_created:
+                # 生成系统管理员审核消息
+                admin = User.objects.get(username="admin")
+                MessageAlert.objects.create(
+                    user=admin,
+                    initiator=data.get("username"),
+                    content=content,
+                    action_type="org_first_register"
+                )
+                # 首次注册默认为组织管理员
+                profile.org_admin = 1
+                profile.save()
+
+                logger.info("{}组织审核消息生成成功".format(content))
+
+                # 邮件提醒message
+                message = "组织及账号已创建,等待管理员审核,通过后会邮件通知您,请耐心等待"
+            else:
+                # 生成组织管理员审核消息MessageAlert
+                org_admin_profile = Profile.objects.filter(
+                    channel_name=data.get("org"),
+                    org_admin=1,
+                ).first()
+                org_admin = User.objects.filter(
+                    username=org_admin_profile.username
+                ).first()
+                reg_info = MessageAlert.objects.create(
+                    user=org_admin,
+                    content=content,
+                    initiator=data.get("username"),
+                    action_type="register_info",
+                )
+                logger.info("{}用户审核消息已创建".format(content))
+
+                # 邮件提醒message
+                message = "账号已创建,组织管理员审核通过后收到邮件反馈即可以正常登录," \
+                          "请耐心等待,如有异常请联系组织管理员"
+
+            # 最终发送邮件提醒
+            try:
+                send_mail(subject, message, settings.EMAIL_HOST_USER, mail_to)
+                logger.info("邮件发送成功")
+            except Exception as e:
+                logger.info("邮件发送失败: ", e)
+
+            return HttpResponseRedirect("/")
+        else:
+            return HttpResponse(form.errors)
+    else:
+        return render(request, "register.html")
+
+
+@require_http_methods(["GET", "POST"])
+def register1(request):
     form = RegisterForm()
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -54,7 +151,6 @@ def register(request):
             data = form.data
             channels = Channel.objects.all().values("name")
             channel_name_list = [i["name"] for i in channels]
-            print(channels)
 
             # 是否首次注册组织
             org_first_regist = True
