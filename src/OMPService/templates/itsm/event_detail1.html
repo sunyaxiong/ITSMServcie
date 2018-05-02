@@ -178,6 +178,18 @@
     </div><br>
     {% endif %}
     <div class="row">
+        <p><i class="fa fa-dashboard"></i><span>检查项</span></p>
+        <div class="col-xs-4">
+            <tr>
+            <td><label>是否执行漏洞扫描: </label></td>
+            <td><select class="form-control" name="leak_checked" >
+                <option>否</option>
+                <option>是</option>
+            </select></td>
+            </tr>
+        </div>
+    </div>
+    <div class="row">
         <p class="lead">流转记录:</p>
         <div class="col-xs-8">
             {% for i in solution_list %}

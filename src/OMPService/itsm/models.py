@@ -56,6 +56,7 @@ class Event(BaseModel):
     cloud_order = models.CharField(verbose_name="云管订单", max_length=128, null=True, blank=True)
     app_name = models.CharField("产品名称", max_length=128, null=True, blank=True)
     auto_deploy = models.BooleanField("是否自动化部署订单", default=0)
+    leak_checked = models.BooleanField("是否执行漏洞扫描", default=0)
 
     def __str__(self):
         return self.name or ""

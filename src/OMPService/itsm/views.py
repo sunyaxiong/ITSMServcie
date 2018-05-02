@@ -102,6 +102,9 @@ def event_detail(request, pk):
         if event_form.is_valid():
             data = event_form.data
 
+            if data.get("leak_checked") == "是":
+                event.leak_checked = 1
+
             if data.get("emergency_degree"):
                 event.emergency_degree = data["emergency_degree"]
 
@@ -124,7 +127,7 @@ def event_detail(request, pk):
                     content=data.get("solution"),
                 )
             event.save()
-            return HttpResponseRedirect("/itsm/event_list/")
+            return HttpResponseRedirect("/itsm/request_list/")
         messages.warning(request, event_form.errors)
         return render(request, 'itsm/event_detail1.html', locals())
 
@@ -268,6 +271,12 @@ def event_to_close(request, pk):
 
     event = Event.objects.filter(id=pk)
     if event:
+
+        #检查漏扫
+        if not event.first().leak_checked:
+            messages.warning(request, "请执行漏洞扫描")
+            return HttpResponseRedirect(url)
+
         # 根据事件创建满意度调查
         sati_log = SatisfactionLog.objects.create(
             event=event[0]

@@ -31,33 +31,63 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/django_cas_ng/views.py">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/itsm/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="569">
-              <caret line="60" column="48" selection-start-line="60" selection-start-column="48" selection-end-line="60" selection-end-column="48" />
+            <state relative-caret-position="1059">
+              <caret line="129" column="54" selection-start-line="129" selection-start-column="54" selection-end-line="129" selection-end-column="54" />
               <folding>
-                <element signature="e#42#80#0" expanded="true" />
+                <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#4062#4587#0" expanded="false" />
+                <element signature="e#4631#7145#0" expanded="false" />
+                <element signature="e#7187#7655#0" expanded="false" />
+                <element signature="e#7696#8105#0" expanded="false" />
+                <element signature="e#8141#8540#0" expanded="false" />
+                <element signature="e#8580#9524#0" expanded="false" />
+                <element signature="e#9554#9696#0" expanded="false" />
+                <element signature="e#9735#10888#0" expanded="false" />
+                <element signature="e#10920#11248#0" expanded="false" />
+                <element signature="e#11941#11945#0" expanded="false" />
+                <element signature="e#15025#15140#0" expanded="false" />
+                <element signature="e#15178#17094#0" expanded="false" />
+                <element signature="e#17131#17733#0" expanded="false" />
+                <element signature="e#21143#21476#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="register.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/register.html">
+      <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/itsm/forms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="41" column="4" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="4" />
+            <state relative-caret-position="105">
+              <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="event_detail.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/itsm/event_detail.html">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/itsm/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="26" column="11" selection-start-line="22" selection-start-column="0" selection-end-line="26" selection-end-column="11" />
+            <state relative-caret-position="420">
+              <caret line="58" column="61" selection-start-line="58" selection-start-column="61" selection-end-line="58" selection-end-column="61" />
+              <folding>
+                <element signature="e#2964#3534#0" expanded="false" />
+                <element signature="e#5436#6296#0" expanded="false" />
+                <element signature="e#6331#7132#0" expanded="false" />
+                <element signature="e#7161#7165#0" expanded="false" />
+                <element signature="e#7203#7587#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="event_detail1.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/itsm/event_detail1.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="336">
+              <caret line="184" column="63" selection-start-line="184" selection-start-column="51" selection-end-line="184" selection-end-column="63" />
               <folding />
             </state>
           </provider>
@@ -77,7 +107,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/templates/itsm/issue_list.html" />
         <option value="$PROJECT_DIR$/itsm/event/views.py" />
         <option value="$PROJECT_DIR$/../venv/lib/python3.5/site-packages/cas.py" />
         <option value="$PROJECT_DIR$/api/viewsets.py" />
@@ -102,7 +131,6 @@
         <option value="$PROJECT_DIR$/asset/admin.py" />
         <option value="$PROJECT_DIR$/accounts/viewsets.py" />
         <option value="$PROJECT_DIR$/accounts/serializers.py" />
-        <option value="$PROJECT_DIR$/templates/itsm/event_detail1.html" />
         <option value="$PROJECT_DIR$/itsm/tests.py" />
         <option value="$PROJECT_DIR$/lib/fit2cloud.py" />
         <option value="$PROJECT_DIR$/OMPService/settings.py" />
@@ -113,10 +141,8 @@
         <option value="$PROJECT_DIR$/templates/itsm/user_info_confirm.html" />
         <option value="$PROJECT_DIR$/OMPService/urls.py" />
         <option value="$PROJECT_DIR$/itsm/admin.py" />
-        <option value="$PROJECT_DIR$/itsm/models.py" />
         <option value="$PROJECT_DIR$/itsm/forms.py" />
         <option value="$PROJECT_DIR$/templates/satisfaction.html" />
-        <option value="$PROJECT_DIR$/itsm/views.py" />
         <option value="$PROJECT_DIR$/accounts/signals.py" />
         <option value="$PROJECT_DIR$/itsm/urls.py" />
         <option value="$PROJECT_DIR$/accounts/urls.py" />
@@ -128,6 +154,10 @@
         <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/lib/django_cas_ng/views.py" />
         <option value="$PROJECT_DIR$/templates/register.html" />
+        <option value="$PROJECT_DIR$/templates/itsm/event_detail.html" />
+        <option value="$PROJECT_DIR$/itsm/models.py" />
+        <option value="$PROJECT_DIR$/templates/itsm/event_detail1.html" />
+        <option value="$PROJECT_DIR$/itsm/views.py" />
       </list>
     </option>
   </component>
@@ -248,6 +278,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="django_cas_ng" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="OMPService" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="OMPService" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="itsm" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1982,6 +2026,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.61290324" sideWeight="0.48784313" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="manage.py@OMPService" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45483872" sideWeight="0.48784313" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1990,7 +2035,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="manage.py@OMPService" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45483872" sideWeight="0.48784313" order="11" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -2174,13 +2218,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="294">
           <caret line="14" column="24" selection-start-line="0" selection-start-column="0" selection-end-line="36" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/itsm/event_detail1.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="12" column="27" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
           <folding />
         </state>
       </provider>
@@ -2240,20 +2277,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/itsm/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="38" column="19" selection-start-line="38" selection-start-column="4" selection-end-line="38" selection-end-column="19" />
-          <folding>
-            <element signature="e#2902#3472#0" expanded="false" />
-            <element signature="e#5374#6234#0" expanded="false" />
-            <element signature="e#6269#7070#0" expanded="false" />
-            <element signature="e#7099#7103#0" expanded="false" />
-            <element signature="e#7141#7525#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/itsm/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="401">
@@ -2268,6 +2291,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="861">
           <caret line="41" column="4" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="4" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2325,13 +2349,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/itsm/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="20" column="43" selection-start-line="19" selection-start-column="8" selection-end-line="20" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../venv/lib/python3.5/site-packages/django/db/models/query.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1288">
@@ -2372,31 +2389,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/itsm/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="594" column="63" selection-start-line="594" selection-start-column="54" selection-end-line="594" selection-end-column="63" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-            <element signature="e#2280#3941#0" expanded="false" />
-            <element signature="e#3972#4497#0" expanded="false" />
-            <element signature="e#4541#7055#0" expanded="false" />
-            <element signature="e#7097#7565#0" expanded="false" />
-            <element signature="e#7606#8015#0" expanded="false" />
-            <element signature="e#8051#8450#0" expanded="false" />
-            <element signature="e#8490#9281#0" expanded="false" />
-            <element signature="e#9311#9453#0" expanded="false" />
-            <element signature="e#9492#10645#0" expanded="false" />
-            <element signature="e#10677#11005#0" expanded="false" />
-            <element signature="e#11698#11702#0" expanded="false" />
-            <element signature="e#14782#14897#0" expanded="false" />
-            <element signature="e#14935#16851#0" expanded="false" />
-            <element signature="e#16888#17490#0" expanded="false" />
-            <element signature="e#20900#21233#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../venv/lib/python3.5/site-packages/django/contrib/auth/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="301">
@@ -2429,6 +2421,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/register.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="47" column="12" selection-start-line="47" selection-start-column="12" selection-end-line="47" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/itsm/event_detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="79" column="10" selection-start-line="75" selection-start-column="4" selection-end-line="79" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/django_cas_ng/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="569">
@@ -2439,19 +2447,57 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/itsm/event_detail.html">
+    <entry file="file://$PROJECT_DIR$/templates/itsm/event_detail1.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="26" column="11" selection-start-line="22" selection-start-column="0" selection-end-line="26" selection-end-column="11" />
+        <state relative-caret-position="336">
+          <caret line="184" column="63" selection-start-line="184" selection-start-column="51" selection-end-line="184" selection-end-column="63" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/register.html">
+    <entry file="file://$PROJECT_DIR$/itsm/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="41" column="4" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="4" />
+        <state relative-caret-position="420">
+          <caret line="58" column="61" selection-start-line="58" selection-start-column="61" selection-end-line="58" selection-end-column="61" />
+          <folding>
+            <element signature="e#2964#3534#0" expanded="false" />
+            <element signature="e#5436#6296#0" expanded="false" />
+            <element signature="e#6331#7132#0" expanded="false" />
+            <element signature="e#7161#7165#0" expanded="false" />
+            <element signature="e#7203#7587#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/itsm/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/itsm/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1059">
+          <caret line="129" column="54" selection-start-line="129" selection-start-column="54" selection-end-line="129" selection-end-column="54" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#4062#4587#0" expanded="false" />
+            <element signature="e#4631#7145#0" expanded="false" />
+            <element signature="e#7187#7655#0" expanded="false" />
+            <element signature="e#7696#8105#0" expanded="false" />
+            <element signature="e#8141#8540#0" expanded="false" />
+            <element signature="e#8580#9524#0" expanded="false" />
+            <element signature="e#9554#9696#0" expanded="false" />
+            <element signature="e#9735#10888#0" expanded="false" />
+            <element signature="e#10920#11248#0" expanded="false" />
+            <element signature="e#11941#11945#0" expanded="false" />
+            <element signature="e#15025#15140#0" expanded="false" />
+            <element signature="e#15178#17094#0" expanded="false" />
+            <element signature="e#17131#17733#0" expanded="false" />
+            <element signature="e#21143#21476#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
