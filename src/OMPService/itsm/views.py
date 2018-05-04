@@ -23,6 +23,7 @@ from .models import Change
 from .models import ChangeProcessLog
 from .models import Issue
 from .models import IssueProcessLog
+from .models import Release
 from .models import Config
 from .models import ProductInfo
 from .models import SatisfactionLog
@@ -565,6 +566,23 @@ def issue_upgrade(request):
     issue.save()
 
     return HttpResponseRedirect(url)
+
+
+@login_required
+def releases(request):
+
+    page_header = "发布管理"
+    data = Release.objects.filter(
+        technician=request.user
+    ).order_by("-dt_created")
+
+    message_alert_queryset = MessageAlert.objects.filter(
+        user=request.user,
+        checked=0,
+    )
+    message_alert_count = message_alert_queryset.count()
+
+    return render(request, 'itsm/release_list.html', locals())
 
 
 def config(request):

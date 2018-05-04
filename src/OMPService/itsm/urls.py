@@ -39,6 +39,7 @@ from .views import issues
 from .views import issue_detail
 from .views import issue_close
 from .views import issue_upgrade
+from .views import releases
 from .views import user_confirm
 from .views import user_confirm_accept
 from .views import user_confirm_reject
@@ -93,6 +94,10 @@ urlpatterns = [
     # 配置管理
     url(r'^config/$', config),
     url(r'^config_overview/$', config_overview),
+
+    # 发布管理
+    url(r'^release_list/$', releases),
+    url(r'^release/(?P<pk>\d{1,9})', config_overview),
 
     # CMDB
     url(r'cmdb/query_vm/$', get_vm_list),
