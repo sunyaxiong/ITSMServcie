@@ -1,0 +1,43 @@
+<div class="modal fade" id="issueToKnowledgeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					问题转入知识库
+				</h4>
+			</div>
+            <form action="/itsm/issue/issue_to_knowledge/"
+                  enctype="multipart/form-data" method="post">{% csrf_token %}
+			<div class="modal-body">
+                <input name="issue_id"  class="hidden" value={{ issue.id }}>
+                <input name="issue_name"  class="hidden" value={{ issue.name }}>
+                <input name="classify"  class="hidden" value={{ issue.issue_type }}>
+				<table class="table-striped">
+                    <tr>
+                        <td><label>名称: </label></td>
+                        <td><input type="text" name="title"></td>
+                    </tr>
+                    <tr>
+                        <td><label>内容: </label></td>
+                        <td><textarea name="content" rows="20" cols="60"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><label>附件: </label></td>
+                        <td><input type="file" name="attach_file"></td>
+                    </tr>
+                </table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消
+				</button>
+				<button type="submit" class="btn btn-primary">
+					确定升级
+				</button>
+			</div>
+            </form>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>

@@ -37,6 +37,7 @@ class MessageAlert(BaseModel):
     """
     ACTION_TYPE = (
         ("reg_info", "新用户审核提醒"),
+        ("knowledge_info", "知识库审核提醒"),
     )
 
     user = models.ForeignKey(User)

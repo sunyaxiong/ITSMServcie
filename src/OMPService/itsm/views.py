@@ -24,6 +24,7 @@ from .models import ChangeProcessLog
 from .models import Issue
 from .models import IssueProcessLog
 from .models import Release
+from .models import Knowledge
 from .models import Config
 from .models import ProductInfo
 from .models import SatisfactionLog
@@ -33,6 +34,7 @@ from .forms import ChangeDetailForm
 from .forms import ChangeDetailModelForm
 from .forms import IssueDetailForm
 from .forms import SatisfactionForm
+from .forms import IssueToKnowForm
 from lib.views import get_module_name_list
 from lib.views import get_module_info
 from lib.views import get_structure_info
@@ -568,6 +570,53 @@ def issue_upgrade(request):
     return HttpResponseRedirect(url)
 
 
+def issue_to_knowledge(request):
+    url = request.META.get('HTTP_REFERER')
+
+    if request.method == "POST":
+        form = IssueToKnowForm(request.POST, request.FILES)
+        if form.is_valid():
+            logger.info("问题转换知识库收据收敛成功")
+            data = form.cleaned_data
+            print("clean_data: ", form.cleaned_data)
+
+            knowledge = Knowledge.objects.create(
+                issue_id=data.get("issue_id"),
+                issue_name=data.get("issue_name"),
+                title=data.get("title"),
+                content=data.get("content"),
+                attach_file=data.get("attach_file"),
+                creater=request.user.username,
+                creater_id=request.user.id,
+                classify=data.get("classify")
+            )
+
+            # 创建消息提醒组织管理员或者系统管理员
+            if knowledge:
+                try:
+                    creater = Profile.objects.get(username=request.user.username)
+                    org_admin = Profile.objects.filter(
+                        channel_name=creater.channel_name,
+                        org_admin=1,
+                    ).first()
+                    user = User.objects.filter(username=org_admin.username)
+                except Exception as e:
+                    logger.info("知识库审核消息异常: ", e)
+                    user = User.objects.get(username="admin")
+
+                content = "有新的知识库被创建,请审核"
+                MessageAlert.objects.create(
+                    user=user,
+                    initiator=request.user.username,
+                    content=content,
+                    action_type="knowledge_info",
+                )
+
+            return HttpResponseRedirect("/itsm/knowledge_list/")
+        messages.warning(request, form.errors)
+        return HttpResponseRedirect(url)
+
+
 @login_required
 def releases(request):
 
@@ -583,6 +632,37 @@ def releases(request):
     message_alert_count = message_alert_queryset.count()
 
     return render(request, 'itsm/release_list.html', locals())
+
+
+def knowledges(request):
+    page_header = "知识库"
+    data = Knowledge.objects.filter(
+    ).order_by("-dt_created")
+
+    if request.GET.get("state") == "1":
+        data = data.filter(state=1)
+
+    message_alert_queryset = MessageAlert.objects.filter(
+        user=request.user,
+        checked=0,
+    )
+    message_alert_count = message_alert_queryset.count()
+
+    return render(request, 'itsm/knowledge_list.html', locals())
+
+
+def knowledge_detail(request, pk):
+    page_header = "事件管理"
+    knowledge = Knowledge.objects.get(id=int(pk))
+    if request.method == "GET":
+
+        return render(request, 'itsm/knowledge_detail.html', locals())
+    elif request.method == "POST":
+
+        event_form = EventDetailForm(request.POST)
+
+        messages.warning(request, event_form.errors)
+        return render(request, 'itsm/knowledge_detail.html', locals())
 
 
 def config(request):

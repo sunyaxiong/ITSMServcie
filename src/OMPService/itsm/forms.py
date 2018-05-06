@@ -73,3 +73,13 @@ class SatisfactionForm(forms.Form):
     comment = forms.CharField(required=True)
     content = forms.CharField(required=False)
 
+
+class IssueToKnowForm(forms.Form):
+
+    title = forms.CharField()
+    content = forms.CharField(widget=forms.Textarea)
+    attach_file = forms.FileField()
+    issue_id = forms.IntegerField(required=False)
+    issue_name = forms.CharField(required=False)
+    classify = forms.CharField(required=False)
+

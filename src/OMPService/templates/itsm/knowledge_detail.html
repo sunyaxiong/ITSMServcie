@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block head %}
+{#    <script src="/static/js/this_config.js"></script>#}
+{#    <script src="/static/bower_components/ckeditor/ckeditor.js"></script>#}
+{#    <script src="/static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>#}
+{#    <script src="/static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>#}
+{% endblock %}
+{% block header %}
+    <li class="active">{{ page_header }}</li>
+{% endblock %}
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+            {% include "itsm/log_errors.html" %}
+    {% endfor %}
+{% endif %}
+<section class="invoice">
+    <form class="bs-example bs-example-form" role="form" action="/itsm/event/{{ knowledge.id }}" method="POST">
+        {% csrf_token %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="page-header">
+                <i class="fa fa-globe"></i> 知识详情
+                <a class="button">
+                    <span class="button small" style="color: blue" onclick="input_enable()">编辑</span></a>
+                <small class="pull-right">创建时间: {{ knowledge.dt_created }}</small>
+            </h2>
+        </div>
+        <!-- /.col -->
+    </div>
+    <div class="row">
+        <p><i class="fa fa-dashboard"></i><span> 知识属性</span></p>
+        <div class="form-group">
+            <div class="col-md-8">
+                <label for="name">名称: </label>
+                <input class="form-control" type="text" name="name" disabled="disabled" value={{ knowledge.title }}><br>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <table class="table-striped">
+                <tr>
+                    <td><label for="name">创建人: </label></td>
+                    <td><input class="form-control" type="text" name="name" disabled="disabled" value={{ knowledge.creater }}></td>
+                </tr>
+                <tr>
+                    <td><label>状态: </label></td>
+                    <td><input class="form-control" type="text" name="name" disabled="disabled" value={{ knowledge.state }}></td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <tr>
+                <td><label>创建时间: </label></td>
+                <td><input class="form-control" type="text" name="name" disabled="disabled" value={{ knowledge.dt_created }}></td>
+            </tr>
+            <tr>
+                <td><label>分类: </label></td>
+                <td><input class="form-control" type="text" name="name" disabled="disabled" value={{ knowledge.state }}></td>
+            </tr>
+        </div>
+    </div><br>
+    <div class="row">
+        <p><i class="fa fa-dashboard"></i><span> 内容</span></p>
+        <div class="col-md-6">
+            <textarea rows="20" cols="100">{{ knowledge.content }}</textarea>
+        </div>
+
+    </div><br>
+    <div class="row">
+        <div class="col-xs-8">
+            <br/>
+            <a href={{ knowledge.attach_file }}>{{ knowledge.attach_file }}</a>
+            <input type="file" name="attach_file">
+        </div>
+    </div>
+    <div class="row no-print">
+        {% if display %}
+            <div class="col-xs-12">
+                <a href="/itsm/knowledges/knowledge_to_change/{{ knowledge.id }}"
+                   class="btn btn-primary pull-right" style="margin-right: 5px;">
+                    <i class="fa fa-success"></i> 转入变更
+                </a>
+                <a href="/itsm/knowledges/knowledge_to_issue/{{ knowledge.id }}"
+                   class="btn btn-primary pull-right" style="margin-right: 5px;">
+                    <i class="fa fa-success"></i> 转入问题
+                </a>
+                <a href="/itsm/knowledges/close/{{ knowledge.id }}"
+                   class="btn btn-primary pull-right" style="margin-right: 5px;">
+                    <i class="fa fa-close"></i> 关闭事件
+                </a>
+                {% if checked %}
+                    <a href="/itsm/knowledges/create_order/{{ knowledge.id }}"
+                       class="btn btn-primary pull-right" style="margin-right: 5px;">
+                        <i class="fa fa-close"></i> 创建订单
+                    </a>
+                {% endif %}
+                <a class="btn btn-primary pull-right" style="margin-right: 5px;"
+                    data-toggle="modal" data-target="#knowledgeUpdateModal">
+                    <i class="fa fa-save"></i> 事件升级
+                </a>
+                <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                    <i class="fa fa-save"></i> {{ button_submit }}
+                </button>
+            </div>
+        {% endif %}
+    </div>
+    </form>
+</section>
+{% endblock %}

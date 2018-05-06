@@ -182,6 +182,10 @@
                     data-toggle="modal" data-target="#issueUpdateModal">
                     问题升级
                 </a>
+                <a class="btn btn-primary pull-right" style="margin-right: 5px;"
+                    data-toggle="modal" data-target="#issueToKnowledgeModal">
+                    转入知识库
+                </a>
                 <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
                     <i class="fa fa-save"></i> {{ button_submit }}
                 </button>
@@ -191,4 +195,5 @@
     </form>
 </section>
 {% include "itsm/modal/issue_upgrade.html" %}
+{% include "itsm/modal/issue_to_knowledge.html" %}
 {% endblock %}
