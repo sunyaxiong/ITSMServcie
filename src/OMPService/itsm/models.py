@@ -21,9 +21,9 @@ class Event(BaseModel):
     )
 
     EMERGENCY_DEGREE = (
-        ("seriousness", "严重"),
-        ("importance", "重要"),
-        ("common", "普通")
+        ("P1", "P1"),
+        ("P2", "P2"),
+        ("P3", "P3")
     )
 
     TYPE = (
