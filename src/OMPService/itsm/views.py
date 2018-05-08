@@ -717,6 +717,93 @@ def sla_event_dash(request):
         return render(request, "itsm/sla_event_dash.html", locals())
 
 
+def sla_change_dash(request):
+
+    page_header = "SLA水平管理-变更分析"
+
+    queryset = Change.objects.all()
+    sum_count = queryset.count()
+    # 变更量统计
+    succ_count = queryset.filter(state="ended").count()
+    fail_count = queryset.filter(state="failed").count()
+
+    # 变更类型
+    req_type = 10
+    incident_type = 40
+
+    reject_count = queryset.filter(state="reject").count()
+    ended_count = queryset.filter(state="ended").count()
+
+    message_alert_queryset = MessageAlert.objects.filter(
+        user=request.user,
+        checked=0,
+    )
+    message_alert_count = message_alert_queryset.count()
+
+    if request.method == "POST":
+        pass
+    else:
+        return render(request, "itsm/sla_change_dash.html", locals())
+
+
+def sla_issue_dash(request):
+
+    page_header = "SLA水平管理-问题分析"
+
+    queryset = Change.objects.all()
+    sum_count = queryset.count()
+    # 变更量统计
+    req_count = queryset.filter().count()
+    incident_count = queryset.filter().count()
+    done_event_count = queryset.filter().count()
+    ing_event_count = queryset.exclude().count()
+
+    late_event = queryset.filter().count()
+    normal_event = queryset.exclude().count()
+    done_p1_event = queryset.filter().count()
+    ing_p1_event = queryset.exclude().count()
+
+    message_alert_queryset = MessageAlert.objects.filter(
+        user=request.user,
+        checked=0,
+    )
+    message_alert_count = message_alert_queryset.count()
+
+    if request.method == "POST":
+        pass
+    else:
+        return render(request, "itsm/sla_issue_dash.html", locals())
+
+
+def sla_release_dash(request):
+
+    page_header = "SLA水平管理-发布分析"
+
+    queryset = Change.objects.all()
+    sum_count = queryset.count()
+    # 变更量统计
+    req_count = queryset.filter().count()
+    incident_count = queryset.filter().count()
+    done_event_count = queryset.filter().count()
+    ing_event_count = queryset.exclude().count()
+
+    late_event = queryset.filter().count()
+    normal_event = queryset.exclude().count()
+    done_p1_event = queryset.filter().count()
+    ing_p1_event = queryset.exclude().count()
+
+    message_alert_queryset = MessageAlert.objects.filter(
+        user=request.user,
+        checked=0,
+    )
+    message_alert_count = message_alert_queryset.count()
+
+    if request.method == "POST":
+        pass
+    else:
+        return render(request, "itsm/sla_release_dash.html", locals())
+
+
 def config(request):
     url = request.META.get('HTTP_REFERER')
 

@@ -95,6 +95,7 @@ class Change(BaseModel):
         ("draft", "草稿"),
         ("ing", "流转中"),
         ("ended", "结束"),
+        ("failed", "失败"),
     )
 
     name = models.CharField(max_length=128, verbose_name="变更名称", null=True, blank=True)

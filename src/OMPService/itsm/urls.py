@@ -44,6 +44,9 @@ from .views import releases
 from .views import knowledges
 from .views import sla_dashboard
 from .views import sla_event_dash
+from .views import sla_change_dash
+from .views import sla_issue_dash
+from .views import sla_release_dash
 from .views import knowledge_detail
 from .views import user_confirm
 from .views import user_confirm_accept
@@ -112,9 +115,9 @@ urlpatterns = [
     # sla管理
     url(r'^sla/$', sla_dashboard),
     url(r'^sla/event_dash/$', sla_event_dash),
-    url(r'^sla/issue_dash/$', sla_dashboard),
-    url(r'^sla/change_dash/$', sla_dashboard),
-    url(r'^sla/release_dash/$', sla_dashboard),
+    url(r'^sla/issue_dash/$', sla_issue_dash),
+    url(r'^sla/change_dash/$', sla_change_dash),
+    url(r'^sla/release_dash/$', sla_release_dash),
 
     # CMDB
     url(r'cmdb/query_vm/$', get_vm_list),

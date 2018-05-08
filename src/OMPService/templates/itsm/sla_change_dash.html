@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% block header %}
+    <li class="active">{{ page_header }}</li>
+{% endblock %}
+{% block PHeader %}
+<h1>
+    SLA - 变更分析
+</h1>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="">
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3>{{ sum_count }}</h3>
+              <p>变更总量</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-bag"></i>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="box box-primary">
+        <div class="box-header with-border">
+          <i class="fa fa-bar-chart-o"></i>
+
+          <h3 class="box-title">变更成功率分析</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+        <div class="box-body">
+          <div id="changeSuccRateChart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" width="509" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 509.5px; height: 300px;"></canvas><canvas class="flot-overlay" width="509" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 509.5px; height: 300px;"></canvas><span class="pieLabel" id="pieLabel0" style="position: absolute; top: 35px; left: 263.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series2<br>10%</div></span><span class="pieLabel" id="pieLabel1" style="position: absolute; top: 161px; left: 327.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series3<br>40%</div></span><span class="pieLabel" id="pieLabel2" style="position: absolute; top: 130px; left: 132.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series4<br>50%</div></span></div>
+        </div>
+        <!-- /.box-body-->
+        <div class="box-footer text-blue">
+            变更成功数量: {{ succ_count }} <br>
+            变更失败数量: {{ fail_count }} <br>
+        </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="box box-primary">
+        <div class="box-header with-border">
+          <i class="fa fa-bar-chart-o"></i>
+
+          <h3 class="box-title">各类型变更数量</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+        <div class="box-body">
+          <div id="changeTypeChart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" width="509" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 509.5px; height: 300px;"></canvas><canvas class="flot-overlay" width="509" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 509.5px; height: 300px;"></canvas><span class="pieLabel" id="pieLabel0" style="position: absolute; top: 35px; left: 263.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series2<br>10%</div></span><span class="pieLabel" id="pieLabel1" style="position: absolute; top: 161px; left: 327.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series3<br>40%</div></span><span class="pieLabel" id="pieLabel2" style="position: absolute; top: 130px; left: 132.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series4<br>50%</div></span></div>
+        </div>
+        <!-- /.box-body-->
+        <div class="box-footer text-blue">
+            服务请求类型: {{ req_type }} <br>
+            故障报修类型: {{ incident_type }} <br>
+        </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="box box-primary">
+        <div class="box-header with-border">
+          <i class="fa fa-bar-chart-o"></i>
+
+          <h3 class="box-title">变更驳回率</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+        <div class="box-body">
+          <div id="changeRejectChart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" width="509" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 509.5px; height: 300px;"></canvas><canvas class="flot-overlay" width="509" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 509.5px; height: 300px;"></canvas><span class="pieLabel" id="pieLabel0" style="position: absolute; top: 35px; left: 263.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series2<br>10%</div></span><span class="pieLabel" id="pieLabel1" style="position: absolute; top: 161px; left: 327.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series3<br>40%</div></span><span class="pieLabel" id="pieLabel2" style="position: absolute; top: 130px; left: 132.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series4<br>50%</div></span></div>
+        </div>
+        <!-- /.box-body-->
+        <div class="box-footer text-blue">
+            变更驳回数量: {{ reject_count }} <br>
+            变更正常数量: {{ ended_count }} <br>
+        </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+
+    </div>
+</div>
+
+{% block script %}
+<!-- plot -->
+<script src="/static/bower_components/Flot/jquery.flot.js"></script>
+<script src="/static/bower_components/Flot/jquery.flot.resize.js"></script>
+<script src="/static/bower_components/Flot/jquery.flot.pie.js"></script>
+<script src="/static/bower_components/Flot/jquery.flot.categories.js"></script>
+    <script src="/static/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+<script>
+  $(function () {
+    /*
+     * 变更成功率
+     * -----------
+     */
+
+    var changeSuccRateChartData = [
+      { label: "成功数量", data: {{ succ_count }}, color: '#3c8dbc' },
+      { label: '失败数量', data: {{ fail_count }}, color: '#0073b7' },
+    ];
+    $.plot('#changeSuccRateChart', changeSuccRateChartData, {
+      series: {
+        pie: {
+          show       : true,
+          radius     : 1,
+          innerRadius: 0.5,
+          label      : {
+            show     : true,
+            radius   : 2 / 3,
+            formatter: labelFormatter,
+            threshold: 0.1
+          }
+
+        }
+      },
+      legend: {
+        show: false
+      }
+    });
+    /*
+     * END
+     */
+
+     /*
+     * 变更类型分析
+     * -----------
+     */
+
+    var changeTypeChartData = [
+      { label: '服务请求类型变更', data: {{ req_type }}, color: '#3c8dbc' },
+      { label: '故障报修类型变更', data: {{ incident_type }}, color: '#0073b7' },
+    ];
+    $.plot('#changeTypeChart', changeTypeChartData, {
+      series: {
+        pie: {
+          show       : true,
+          radius     : 1,
+          innerRadius: 0.5,
+          label      : {
+            show     : true,
+            radius   : 2 / 3,
+            formatter: labelFormatter,
+            threshold: 0.1
+          }
+
+        }
+      },
+      legend: {
+        show: false
+      }
+    });
+    /*
+     * END
+     */
+
+    /*
+     * 变更驳回率
+     * -----------
+     */
+
+    var changeRejectChartData = [
+      { label: '驳回变更数量', data: {{ reject_count }}, color: '#3c8dbc' },
+      { label: '正常变更数量', data: {{ ended_count }}, color: '#0073b7' },
+    ];
+    $.plot('#changeRejectChart', changeRejectChartData, {
+      series: {
+        pie: {
+          show       : true,
+          radius     : 1,
+          innerRadius: 0.5,
+          label      : {
+            show     : true,
+            radius   : 2 / 3,
+            formatter: labelFormatter,
+            threshold: 0.1
+          }
+
+        }
+      },
+      legend: {
+        show: false
+      }
+    });
+    /*
+     * END
+     */
+
+  });
+
+  /*
+   * Custom Label formatter
+   * ----------------------
+   */
+  function labelFormatter(label, series) {
+    return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
+      + label
+      + '<br>'
+      + Math.round(series.percent) + '%</div>'
+  }
+</script>
+{% endblock %}
+{% endblock %}

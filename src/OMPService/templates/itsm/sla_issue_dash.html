@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+{% block header %}
+    <li class="active">{{ page_header }}</li>
+{% endblock %}
+{% block PHeader %}
+<h1>
+    SLA - 问题分析
+</h1>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="">
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3>{{ event_sum_count }}</h3>
+
+              <p>问题总量</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-bag"></i>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="box box-primary">
+        <div class="box-header with-border">
+          <i class="fa fa-bar-chart-o"></i>
+
+          <h3 class="box-title">服务请求-故障报修占比</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+        <div class="box-body">
+          <div id="reqVsIncidentChart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" width="509" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 509.5px; height: 300px;"></canvas><canvas class="flot-overlay" width="509" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 509.5px; height: 300px;"></canvas><span class="pieLabel" id="pieLabel0" style="position: absolute; top: 35px; left: 263.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series2<br>10%</div></span><span class="pieLabel" id="pieLabel1" style="position: absolute; top: 161px; left: 327.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series3<br>40%</div></span><span class="pieLabel" id="pieLabel2" style="position: absolute; top: 130px; left: 132.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series4<br>50%</div></span></div>
+        </div>
+        <!-- /.box-body-->
+        <div class="box-footer text-blue">
+            服务请求数量: {{ req_count }} <br>
+            故障报修数量: {{ incident_count }} <br>
+        </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="box box-primary">
+        <div class="box-header with-border">
+          <i class="fa fa-bar-chart-o"></i>
+
+          <h3 class="box-title">事件解决率</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+        <div class="box-body">
+          <div id="resolutionRateChart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" width="509" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 509.5px; height: 300px;"></canvas><canvas class="flot-overlay" width="509" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 509.5px; height: 300px;"></canvas><span class="pieLabel" id="pieLabel0" style="position: absolute; top: 35px; left: 263.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series2<br>10%</div></span><span class="pieLabel" id="pieLabel1" style="position: absolute; top: 161px; left: 327.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series3<br>40%</div></span><span class="pieLabel" id="pieLabel2" style="position: absolute; top: 130px; left: 132.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series4<br>50%</div></span></div>
+        </div>
+        <!-- /.box-body-->
+        <div class="box-footer text-blue">
+            已完成事件量: {{ done_event_count }} <br>
+            未完成事件量: {{ ing_event_count }} <br>
+        </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="box box-primary">
+        <div class="box-header with-border">
+          <i class="fa fa-bar-chart-o"></i>
+
+          <h3 class="box-title">重大事件分析</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+        <div class="box-body">
+          <div id="P1EventRateChart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" width="509" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 509.5px; height: 300px;"></canvas><canvas class="flot-overlay" width="509" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 509.5px; height: 300px;"></canvas><span class="pieLabel" id="pieLabel0" style="position: absolute; top: 35px; left: 263.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series2<br>10%</div></span><span class="pieLabel" id="pieLabel1" style="position: absolute; top: 161px; left: 327.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series3<br>40%</div></span><span class="pieLabel" id="pieLabel2" style="position: absolute; top: 130px; left: 132.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series4<br>50%</div></span></div>
+        </div>
+        <!-- /.box-body-->
+        <div class="box-footer text-blue">
+            重大事件解决数量: {{ done_p1_event }} <br>
+            故障报修未决数量: {{ ing_p1_event }} <br>
+        </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="box box-primary">
+        <div class="box-header with-border">
+          <i class="fa fa-bar-chart-o"></i>
+
+          <h3 class="box-title">逾期事件占比</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+        <div class="box-body">
+          <div id="lateEventRateChart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" width="509" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 509.5px; height: 300px;"></canvas><canvas class="flot-overlay" width="509" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 509.5px; height: 300px;"></canvas><span class="pieLabel" id="pieLabel0" style="position: absolute; top: 35px; left: 263.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series2<br>10%</div></span><span class="pieLabel" id="pieLabel1" style="position: absolute; top: 161px; left: 327.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series3<br>40%</div></span><span class="pieLabel" id="pieLabel2" style="position: absolute; top: 130px; left: 132.352px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series4<br>50%</div></span></div>
+        </div>
+        <!-- /.box-body-->
+        <div class="box-footer text-blue">
+            逾期事件量: {{ late_event }} <br>
+            正常事件量: {{ normal_event }} <br>
+        </div>
+        </div>
+    </div>
+</div>
+
+{% block script %}
+<!-- plot -->
+<script src="/static/bower_components/Flot/jquery.flot.js"></script>
+<script src="/static/bower_components/Flot/jquery.flot.resize.js"></script>
+<script src="/static/bower_components/Flot/jquery.flot.pie.js"></script>
+<script src="/static/bower_components/Flot/jquery.flot.categories.js"></script>
+    <script src="/static/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+<script>
+  $(function () {
+    /*
+     * 服务请求-故障报修比例
+     * -----------
+     */
+
+    var reqVsIncidentChartData = [
+      { label: '服务请求', data: {{ req_count }}, color: '#3c8dbc' },
+      { label: '故障报修', data: {{ incident_count }}, color: '#0073b7' },
+    ];
+    $.plot('#reqVsIncidentChart', reqVsIncidentChartData, {
+      series: {
+        pie: {
+          show       : true,
+          radius     : 1,
+          innerRadius: 0.5,
+          label      : {
+            show     : true,
+            radius   : 2 / 3,
+            formatter: labelFormatter,
+            threshold: 0.1
+          }
+
+        }
+      },
+      legend: {
+        show: false
+      }
+    });
+    /*
+     * END
+     */
+
+     /*
+     * 事件解决率
+     * -----------
+     */
+
+    var resolutionRateChartData = [
+      { label: '已完成事件', data: {{ done_event_count }}, color: '#3c8dbc' },
+      { label: '未完成事件', data: {{ ing_event_count }}, color: '#0073b7' },
+    ];
+    $.plot('#resolutionRateChart', resolutionRateChartData, {
+      series: {
+        pie: {
+          show       : true,
+          radius     : 1,
+          innerRadius: 0.5,
+          label      : {
+            show     : true,
+            radius   : 2 / 3,
+            formatter: labelFormatter,
+            threshold: 0.1
+          }
+
+        }
+      },
+      legend: {
+        show: false
+      }
+    });
+    /*
+     * END
+     */
+
+    /*
+     * 逾期事件解决率
+     * -----------
+     */
+
+    var lateEventRateChart = [
+      { label: '逾期完成事件', data: {{ late_event }}, color: '#3c8dbc' },
+      { label: '按时完成事件', data: {{ normal_event }}, color: '#0073b7' },
+    ];
+    $.plot('#lateEventRateChart', lateEventRateChart, {
+      series: {
+        pie: {
+          show       : true,
+          radius     : 1,
+          innerRadius: 0.5,
+          label      : {
+            show     : true,
+            radius   : 2 / 3,
+            formatter: labelFormatter,
+            threshold: 0.1
+          }
+
+        }
+      },
+      legend: {
+        show: false
+      }
+    });
+    /*
+     * END
+     */
+
+    /*
+     * 重大事件解决率
+     * -----------
+     */
+
+    var P1EventRateChart = [
+      { label: '重大事件未决', data: {{ done_p1_event }}, color: '#3c8dbc' },
+      { label: '重大事件解决', data: {{ ing_p1_event }}, color: '#0073b7' },
+    ];
+    $.plot('#P1EventRateChart', P1EventRateChart, {
+      series: {
+        pie: {
+          show       : true,
+          radius     : 1,
+          innerRadius: 0.5,
+          label      : {
+            show     : true,
+            radius   : 2 / 3,
+            formatter: labelFormatter,
+            threshold: 0.1
+          }
+
+        }
+      },
+      legend: {
+        show: false
+      }
+    });
+    /*
+     * END
+     */
+
+
+
+  });
+
+  /*
+   * Custom Label formatter
+   * ----------------------
+   */
+  function labelFormatter(label, series) {
+    return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
+      + label
+      + '<br>'
+      + Math.round(series.percent) + '%</div>'
+  }
+</script>
+{% endblock %}
+{% endblock %}
