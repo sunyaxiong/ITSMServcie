@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block header %}
+    <li class="active">{{ page_header }}</li>
+{% endblock %}
+{% block PHeader %}
+<h1>
+    SLA 概览
+</h1>
+{% endblock %}
+{% block content %}
+<div class="row">
+<div class="col-lg-3 col-xs-6">
+  <!-- small box -->
+  <div class="small-box bg-aqua">
+    <div class="inner">
+      <h3>{{ event_count }}</h3>
+
+      <p>事件总量</p>
+    </div>
+    <div class="icon">
+      <i class="ion ion-bag"></i>
+    </div>
+    <a href="/itsm/sla/event_dash/" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+  </div>
+</div>
+<!-- ./col -->
+<div class="col-lg-3 col-xs-6">
+  <!-- small box -->
+  <div class="small-box bg-green">
+    <div class="inner">
+      <h3>{{ change_count }}</h3>
+
+      <p>变更总量</p>
+    </div>
+    <div class="icon">
+      <i class="ion ion-stats-bars"></i>
+    </div>
+    <a href="/itsm/sla/change_dash/" class="small-box-footer">More info
+        <i class="fa fa-arrow-circle-right"></i></a>
+  </div>
+</div>
+<!-- ./col -->
+<div class="col-lg-3 col-xs-6">
+  <!-- small box -->
+  <div class="small-box bg-yellow">
+    <div class="inner">
+      <h3>{{ issue_count }}</h3>
+
+      <p>问题总量</p>
+    </div>
+    <div class="icon">
+      <i class="ion ion-person-add"></i>
+    </div>
+    <a href="/itsm/sla/issue_dash/" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+  </div>
+</div>
+<!-- ./col -->
+<div class="col-lg-3 col-xs-6">
+  <!-- small box -->
+  <div class="small-box bg-red">
+    <div class="inner">
+      <h3>{{ releases_count }}</h3>
+
+      <p>发布总量</p>
+    </div>
+    <div class="icon">
+      <i class="ion ion-pie-graph"></i>
+    </div>
+    <a href="/itsm/sla/release_dash/" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+  </div>
+</div>
+<!-- ./col -->
+</div>
+{% endblock %}

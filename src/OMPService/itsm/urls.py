@@ -42,6 +42,8 @@ from .views import issue_upgrade
 from .views import issue_to_knowledge
 from .views import releases
 from .views import knowledges
+from .views import sla_dashboard
+from .views import sla_event_dash
 from .views import knowledge_detail
 from .views import user_confirm
 from .views import user_confirm_accept
@@ -106,6 +108,13 @@ urlpatterns = [
     # 知识库管理
     url(r'^knowledge_list/$', knowledges),
     url(r'^knowledge/(?P<pk>\d{1,9})', knowledge_detail),
+
+    # sla管理
+    url(r'^sla/$', sla_dashboard),
+    url(r'^sla/event_dash/$', sla_event_dash),
+    url(r'^sla/issue_dash/$', sla_dashboard),
+    url(r'^sla/change_dash/$', sla_dashboard),
+    url(r'^sla/release_dash/$', sla_dashboard),
 
     # CMDB
     url(r'cmdb/query_vm/$', get_vm_list),

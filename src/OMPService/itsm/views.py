@@ -665,6 +665,58 @@ def knowledge_detail(request, pk):
         return render(request, 'itsm/knowledge_detail.html', locals())
 
 
+def sla_dashboard(request):
+
+    page_header = "SLA水平管理"
+
+    event_count = Event.objects.all().count()
+    change_count = Change.objects.all().count()
+    issue_count = Issue.objects.all().count()
+    releases_count = Release.objects.all().count()
+
+    message_alert_queryset = MessageAlert.objects.filter(
+        user=request.user,
+        checked=0,
+    )
+    message_alert_count = message_alert_queryset.count()
+
+    if request.method == "POST":
+        pass
+    else:
+        return render(request, "itsm/sla_dashboard.html", locals())
+
+
+def sla_event_dash(request):
+
+    page_header = "SLA水平管理-事件分析"
+
+    event_queryset = Event.objects.all()
+    event_sum_count = event_queryset.count()
+    # 事件量统计
+    req_count = event_queryset.filter(event_type="request").count()
+    incident_count = event_queryset.filter(event_type="incident").count()
+    done_event_count = event_queryset.filter(state="ended").count()
+    ing_event_count = event_queryset.exclude(state="ended").count()
+
+    late_event = event_queryset.filter(late_flag=1).count()
+    normal_event = event_queryset.exclude(late_flag=1).count()
+    done_p1_event = event_queryset.filter(service_level="P1", state="ended").count()
+    ing_p1_event = event_queryset.exclude(service_level="P1", state="ended").count()
+
+    print(req_count, incident_count, done_event_count, ing_event_count)
+
+    message_alert_queryset = MessageAlert.objects.filter(
+        user=request.user,
+        checked=0,
+    )
+    message_alert_count = message_alert_queryset.count()
+
+    if request.method == "POST":
+        pass
+    else:
+        return render(request, "itsm/sla_event_dash.html", locals())
+
+
 def config(request):
     url = request.META.get('HTTP_REFERER')
 

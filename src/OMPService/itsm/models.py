@@ -57,6 +57,7 @@ class Event(BaseModel):
     app_name = models.CharField("产品名称", max_length=128, null=True, blank=True)
     auto_deploy = models.BooleanField("是否自动化部署订单", default=0)
     leak_checked = models.BooleanField("是否执行漏洞扫描", default=0)
+    late_flag = models.BooleanField("是否逾期", default=0)
 
     def __str__(self):
         return self.name or ""

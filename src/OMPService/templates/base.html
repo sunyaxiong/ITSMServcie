@@ -283,7 +283,7 @@ desired effect
         <li><a href="/itsm/release_list"><i class="fa fa-map"></i> <span>发布管理</span></a></li>
           <li><a href="/itsm/knowledge_list"><i class="fa fa-sitemap"></i> <span>知识库</span></a></li>
         <li><a href="/admin/asset/asset/"><i class="fa fa-database"></i> <span>资产管理(CMDB)</span></a></li>
-        <li><a href="#"><i class="fa fa-bar-chart"></i> <span>SLA水平分析</span></a></li>
+        <li><a href="/itsm/sla/"><i class="fa fa-bar-chart"></i> <span>SLA水平分析</span></a></li>
         <li><a href="http://111.13.61.173"><i class="fa fa-link"></i> <span>云管平台</span></a></li>
         {% if request.user.is_superuser %}
         <li><a href="/admin"><i class="fa fa-link"></i> <span>admin后台管理</span></a></li>
@@ -424,8 +424,10 @@ desired effect
 <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/static/dist/js/adminlte.min.js"></script>
-<script src="/static/js/this_config.js"></script>
 
+{#<script src="/static/js/this_config.js"></script>#}
+{% block script %}
+{% endblock %}
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
