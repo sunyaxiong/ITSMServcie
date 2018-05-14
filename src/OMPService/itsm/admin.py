@@ -10,6 +10,7 @@ from .models import TimeTree
 from .models import ProductInfo
 from .models import SatisfactionLog
 from .models import Knowledge
+from .models import Release
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -35,6 +36,10 @@ class ChangeLogAdmin(admin.ModelAdmin):
 
 class KnowledgeAdmin(admin.ModelAdmin):
     list_display = ("title", "state", "creater")
+
+
+class ReleaseAdmin(admin.ModelAdmin):
+    list_display = ("name", "change", "stage", "initiator")
 
 
 class ConfigAdmin(admin.ModelAdmin):
@@ -68,3 +73,4 @@ admin.site.register(TimeTree, TimeTreeAdmin)
 admin.site.register(ProductInfo, ProductInfoAdmin)
 admin.site.register(SatisfactionLog, SatisfactionAdmin)
 admin.site.register(Knowledge, KnowledgeAdmin)
+admin.site.register(Release, ReleaseAdmin)

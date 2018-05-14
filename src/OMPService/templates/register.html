@@ -30,7 +30,8 @@
 <body class="hold-transition register-page">
 <div class="register-box">
   <div class="register-logo">
-    <a href="#"><b>伟仕云安</b>ITSM服务平台</a>
+    <a href="/accounts/login/"><b>伟仕云安</b>ITSM服务平台</a>
+{#    <a href="/accounts/login/"><img src="../static/js/img/vstecs.png">ITSM服务平台</a>#}
   </div>
 
   <div class="register-box-body">
@@ -57,8 +58,14 @@
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <label>组织</label>
-        <input type="text" class="form-control" placeholder="岗位" name="org">
+        <label>组织</label><br>
+        <select class="form-control" name="org" onChange="editable(this);">
+          {% for i in org_list %}
+          <option>{{ i }}</option>
+          {% endfor %}
+          <option value="">请输入</option>
+        </select>
+{#        <input type="text" class="form-control" placeholder="岗位" name="org">#}
         <span class="glyphicon glyphicon-tag form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
@@ -112,6 +119,30 @@
 <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- iCheck -->
 <script src="/static/plugins/iCheck/icheck.min.js"></script>
+<script language="javascript">
+    function editable(select1){
+       if(select1.value == ""){
+          var newvalue = prompt("请输入","");
+          if(newvalue){
+             addSelected(select1,newvalue,newvalue);
+          }
+       }
+    }
+
+    function addSelected(fld1,value1,text1){
+        if (document.all)    {
+                var Opt = fld1.document.createElement("OPTION");
+                Opt.text = text1;
+                Opt.value = value1;
+                fld1.options.add(Opt);
+                Opt.selected = true;
+        }else{
+                var Opt = new Option(text1,value1,false,false);
+                Opt.selected = true;
+                fld1.options[fld1.options.length] = Opt;
+        }
+    }
+</script>
 <script>
   $(function () {
     $('input').iCheck({

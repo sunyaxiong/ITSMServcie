@@ -26,7 +26,7 @@ class Alert(BaseModel):
 class DeployInstance(BaseModel):
 
     chanel = models.CharField(verbose_name="渠道名称", max_length=128)
-    consumer_number = models.CharField(verbose_name="客户电话", max_length=11)
+    consumer_number = models.CharField(verbose_name="客户电话", max_length=128)
     consumer_name = models.CharField(verbose_name="客户姓名", max_length=128)
     consumer_email = models.EmailField(verbose_name="客户邮箱")
     app_name = models.CharField(verbose_name="应用名称", max_length=128)

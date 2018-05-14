@@ -41,12 +41,8 @@ def logout(request):
 def user_profile(request):
     user = request.user
     url = request.META.get("HTTP_REFERER")
-    no_profile = False
-    try:
-        profile = Profile.objects.get(username=user.username)
-    except Exception as e:
-        logger.info("没有该用户配置文件")
-        no_profile = True
+
+    profile_created, profile = Profile.objects.get_or_create(username=user.username)
 
     if request.method == "POST":
         form = ProfileForm(request.POST)
@@ -58,9 +54,12 @@ def user_profile(request):
             profile.phone = phone
             profile.save()
             return HttpResponseRedirect(url)
+        else:
+            messages.warning(request, "数据收敛失败")
+            return HttpResponseRedirect(url)
     else:
-        if no_profile:
-            messages.warning(request, "用户配置文件加载失败,请维护配置信息")
+        if profile_created:
+            messages.warning(request, "用户配置信息缺失,请维护配置信息")
         form = ProfileForm()
         return render(request, "user_profile.html", locals())
 

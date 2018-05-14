@@ -53,6 +53,7 @@ def register(request):
         if form.is_valid():
             logger.info("用户注册数据收敛成功")
             data = form.data
+            print(":::::: ", data)
             # TODO 执行注册逻辑前,有必要检查用户是否存在,防止用户创建异常
             user_queryset = User.objects.filter(username=data.get("username"))
             username_list = [i.username for i in user_queryset]
@@ -137,7 +138,11 @@ def register(request):
         else:
             return HttpResponse(form.errors)
     else:
-        return render(request, "register.html")
+        # 组织列表可选
+        values = Channel.objects.values("name")
+        org_list = [i["name"] for i in values]
+
+        return render(request, "register.html", locals())
 
 
 @require_http_methods(["GET", "POST"])
