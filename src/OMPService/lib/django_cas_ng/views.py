@@ -37,6 +37,7 @@ from .models import ProxyGrantingTicket, SessionTicket
 from .utils import (get_cas_client, get_service_url,
                     get_protocol, get_redirect_url,
                     get_user_from_session)
+from cas_sync import models
 
 logger = logging.getLogger("django")
 
@@ -53,8 +54,8 @@ def register(request):
         if form.is_valid():
             logger.info("用户注册数据收敛成功")
             data = form.data
-            print(":::::: ", data)
-            # TODO 执行注册逻辑前,有必要检查用户是否存在,防止用户创建异常
+
+            # 执行注册逻辑前,有必要检查用户是否存在,防止用户创建异常
             user_queryset = User.objects.filter(username=data.get("username"))
             username_list = [i.username for i in user_queryset]
             if data.get("username") in username_list:
@@ -80,7 +81,16 @@ def register(request):
                 is_staff=1,
                 is_active=0,
             )
-            logger.info("ITSM用户创建成功")
+            if user:
+                logger.info("ITSM用户创建成功")
+
+                # cas 用户创建逻辑放到审核消息
+                # cas_user, _ = models.app_user.objects.using("cas_db").get_or_create(
+                #     username=user.username,
+                # )
+                # if _:
+                #     cas_user.password = data.get("password")
+                #     cas_user.save(using="cas_db")
 
             # 组织首次创建需要系统管理审核;已存在组织创建用户,需要组织管理员审核
             content = "{}-{}-{}-申请注册云管账户".format(

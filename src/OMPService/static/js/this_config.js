@@ -116,14 +116,15 @@ function user_reject() {
 
 
 $(document).ready(function () {
-        var order_id = $("#order_id").html();
-        $.ajax({
-            type:"GET",
-            url:"/itsm/cloud/order_get/",
-            data:{"order_id": order_id},
-            success: function (ret) {
-                $("#order_status").html(ret["status"])
-            }
-        })
+        // var order_id = $("#order_id").html();
+        // $.ajax({
+        //     type:"GET",
+        //     url:"/itsm/cloud/order_get/",
+        //     data:{"order_id": order_id},
+        //     success: function (ret) {
+        //         $("#order_status").html(ret["status"])
+        //     }
+        // })
 })
+
 

@@ -36,8 +36,10 @@ def get_redirect_url(request):
 def get_service_url(request, redirect_to=None):
     """Generates application django service URL for CAS"""
     protocol = get_protocol(request)
-    # host = request.get_host()
-    host = "123.58.242.207:8081"
+    if django_settings.DEBUG:
+        host = request.get_host()
+    else:
+        host = django_settings.PRODUCT_CAS_HOST
     # print("::::::: ", host)
     service = urllib_parse.urlunparse(
         (protocol, host, request.path, '', '', ''),

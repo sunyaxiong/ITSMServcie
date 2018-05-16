@@ -25,6 +25,7 @@ from .models import Issue
 from .models import IssueProcessLog
 from .models import Release
 from .models import Knowledge
+from cas_sync import models as cas_model
 from .models import Config
 from .models import ProductInfo
 from .models import SatisfactionLog
@@ -840,11 +841,21 @@ def user_confirm_accept(request):
         # 用户激活
         user = User.objects.get(username=message_info.initiator)
         user.is_active = 1
+        user.is_staff = 1
         user.save()
 
         # 消息查阅
         message_info.checked = 1
         message_info.save()
+
+        # cas 用户创建逻辑放到审核消息
+        cas_user, _ = cas_model.app_user.objects.using("cas_db").get_or_create(
+            username=user.username,
+        )
+        if _:
+            cas_user.password = user.password
+            cas_user.save(using="cas_db")
+            logger.info("CAS用户: {} 注册成功".format(cas_user.username))
 
         logger.info("用户信息审核成功")
         return HttpResponseRedirect("/itsm/event_list/")

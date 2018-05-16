@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import UserForm
 from .forms import ProfileForm
 from .models import Profile
+from cas_sync import models as cas_model
 
 logger = logging.getLogger("django")
 
@@ -42,9 +43,19 @@ def user_profile(request):
     user = request.user
     url = request.META.get("HTTP_REFERER")
 
-    profile_created, profile = Profile.objects.get_or_create(username=user.username)
+    profile, profile_created = Profile.objects.get_or_create(username=user.username)
 
     if request.method == "POST":
+        if request.POST.get("destroy"):
+
+            # 用户销毁
+            username = request.user.username
+            try:
+                cas_user = cas_model.app_user.objects.using("cas_db").get(username=username)
+                cas_user.delete(using="cas_db")
+            except Exception as e:
+                logger.info("cas用户: {} 删除异常".format(username), e)
+            return HttpResponseRedirect("/accounts/logout/")
         form = ProfileForm(request.POST)
         if form.is_valid():
             data = form.data
@@ -59,7 +70,7 @@ def user_profile(request):
             return HttpResponseRedirect(url)
     else:
         if profile_created:
-            messages.warning(request, "用户配置信息缺失,请维护配置信息")
+            messages.warning(request, "用户配置文件自动创建,请维护具体信息")
         form = ProfileForm()
         return render(request, "user_profile.html", locals())
 

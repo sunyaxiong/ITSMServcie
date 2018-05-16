@@ -25,7 +25,7 @@ SECRET_KEY = 'w%_kdw&9*_2filppa89j2*&&bl69je6)=$ed1nn$i9ps$@-(vg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.37.165", "127.0.0.1", "0.0.0.0", "localhost", "111.13.61.171"]
+ALLOWED_HOSTS = ["*", ]
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cloudres',
+    'gunicorn',
     'django_celery_results',
     'django_celery_beat',
     'rest_framework',
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'api',
     'asset',
     'lib.django_cas_ng',
+    'cas_sync',
 ]
 
 MIDDLEWARE = [
@@ -63,8 +65,10 @@ AUTHENTICATION_BACKENDS = (
     'django_cas_ng.backends.CASBackend',
 )
 
+# cas conf
+PRODUCT_CAS_HOST = "123.58.242.207:8081"
 CAS_SERVER_URL = "http://52.83.173.240:8080/cas/"
-CAS_REDIRECT_URL = "/itsm/event_list/"
+# CAS_REDIRECT_URL = "http://www.baidu.com"
 
 ROOT_URLCONF = 'OMPService.urls'
 
@@ -103,7 +107,24 @@ DATABASES = {
             'charset': 'utf8mb4',
         },
     },
+    'cas_db': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'cas',
+        'USER': 'root',
+        'PASSWORD': '123123Qwe',
+        "HOST": "52.83.173.240",
+        "PORT": "3306",
+    },
 }
+
+# use multi-database in django
+DATABASE_ROUTERS = ['OMPService.database_router.DatabaseAppsRouter']
+DATABASE_APPS_MAPPING = {
+    # example:
+    # 'app_name':'database_name',
+    'cas_sync': 'cas_db',
+}
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -153,6 +174,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     '/home/syx/workspace/JiajieOMP/src/OMPService/static',
 ]
+
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 
 # Celery 4.1 conf
@@ -257,12 +280,10 @@ LOGGING = {
     },
 }
 
-#邮件配置
-EMAIL_HOST = 'smtp.163.com'               # SMTP地址
-EMAIL_PORT = 25                                 # SMTP端口
-EMAIL_HOST_USER = 'sunyaxiongnn@163.com'            # 我自己的邮箱
-EMAIL_HOST_PASSWORD = 'Sun880519'                  # 我的邮箱密码
-EMAIL_SUBJECT_PREFIX = u'[伟仕云安]'              # 为邮件Subject-line前缀,默认是'[django]'
-EMAIL_USE_TLS = True                             # 与SMTP服务器通信时，是否启动TLS链接(安全链接)。默认是false
-# 管理员站点
-# SERVER_EMAIL = 'xinxinyu2011@163.com'  # The email address that error messages come from, such as those sent to ADMINS and MANAGERS.
+# mail
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'sunyaxiongnn@163.com'
+EMAIL_HOST_PASSWORD = 'Sun880519'
+EMAIL_SUBJECT_PREFIX = u'[vstecs.com]'
+EMAIL_USE_TLS = True
