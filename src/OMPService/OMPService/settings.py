@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'w%_kdw&9*_2filppa89j2*&&bl69je6)=$ed1nn$i9ps$@-(vg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*", ]
 
@@ -99,7 +99,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'jiajie_omp',
         'USER': 'root',
-        'PASSWORD': '123123',
+        'PASSWORD': 'Admin@vstecs.com1',
         'HOST': '',
         'PORT': '3306',
         'OPTIONS': {
@@ -227,26 +227,30 @@ CACHES = {
 if DEBUG:
     CLOUD_HOST = "111.13.61.173"
     CMDB_HOST = "111.13.61.173"
+    access_key = "My00ZjRkMzVkZA=="
+    cloud_secret_key = "228e1f50-3b39-4213-a8d8-17e8bf2aeb1e"
 else:
-    CLOUD_HOST = "172.16.13.157"
-    CMDB_HOST = "172.16.13.157"
+    CLOUD_HOST = "172.16.13.155"
+    CMDB_HOST = "172.16.13.155"
+    access_key = "My00ZjRkMzVkZA=="
+    cloud_secret_key = "228e1f50-3b39-4213-a8d8-17e8bf2aeb1e"
 
 CMDB_CONF = {
-    "access_key": "My00ZjRkMzVkZA==",
+    "access_key": access_key,
     "version": "v1",
     "signature_method": "HmacSHA256",
     "signature_version": "v1"
 }
 
 CLOUD_CONF = {
-    "access_key": "My00ZjRkMzVkZA==",
+    "access_key": access_key,
     "version": "v1",
     "signature_method": "HmacSHA256",
     "signature_version": "v1",
     "user": "sunyaxiong@vstecs.com",
 }
-secret_key = '228e1f50-3b39-4213-a8d8-17e8bf2aeb1e'
-cloud_secret_key = '228e1f50-3b39-4213-a8d8-17e8bf2aeb1e'
+secret_key = cloud_secret_key
+# cloud_secret_key = '228e1f50-3b39-4213-a8d8-17e8bf2aeb1e'
 
 # logging
 LOGGING = {
