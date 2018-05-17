@@ -224,8 +224,12 @@ CACHES = {
 
 
 # fit2cloud api conf
-CLOUD_HOST = "111.13.61.173"
-CMDB_HOST = "111.13.61.173"
+if DEBUG:
+    CLOUD_HOST = "111.13.61.173"
+    CMDB_HOST = "111.13.61.173"
+else:
+    CLOUD_HOST = "172.16.13.157"
+    CMDB_HOST = "172.16.13.157"
 
 CMDB_CONF = {
     "access_key": "My00ZjRkMzVkZA==",
