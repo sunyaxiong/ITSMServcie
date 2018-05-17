@@ -90,6 +90,7 @@ def event_detail(request, pk):
     user_list = User.objects.all()
     degree_choice_list = Event.EMERGENCY_DEGREE
     button_submit = "保存"
+    host = settings.INTERNET_HOST
 
     # 根据事件状态控制前端显示
     button_submit = "提交" if event.state == "draft" else "保存"
