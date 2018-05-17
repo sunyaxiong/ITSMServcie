@@ -11,7 +11,7 @@ from .models import SatisfactionLog
 
 class EventDetailForm(forms.Form):
 
-    emergency_degree = forms.ChoiceField(required=False, choices=Event.EMERGENCY_DEGREE)
+    emergency_degree = forms.ChoiceField(required=False)
     solution = forms.CharField(required=False)
     technician = forms.CharField(required=False)
     attach_file = forms.FileField(required=False)
@@ -23,7 +23,7 @@ class EventDetailForm(forms.Form):
 
 class ChangeDetailForm(forms.Form):
 
-    emergency_degree = forms.ChoiceField(choices=Change.EMERGENCY_DEGREE)
+    emergency_degree = forms.CharField(required=False)
     solution = forms.CharField(required=False)
     node_handler = forms.CharField()
     attach_file = forms.FileField(required=False)

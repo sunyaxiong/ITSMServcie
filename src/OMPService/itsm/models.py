@@ -87,9 +87,9 @@ class Issue(BaseModel):
 
 class Change(BaseModel):
     EMERGENCY_DEGREE = (
-        ("seriousness", "严重"),
-        ("importance", "重要"),
-        ("common", "普通")
+        ("P1", "P1"),
+        ("P2", "P2"),
+        ("P3", "P3"),
     )
 
     STATE = (
@@ -99,7 +99,7 @@ class Change(BaseModel):
         ("failed", "失败"),
     )
 
-    name = models.CharField(max_length=128, verbose_name="变更名称", null=True, blank=True)
+    name = models.CharField(max_length=129, verbose_name="变更名称", null=True, blank=True)
     description = models.TextField(verbose_name="变更描述")
     state = models.CharField(max_length=128, choices=STATE, default="draft", verbose_name="变更状态")
     initiator = models.CharField(max_length=128, null=True, blank=True, verbose_name="发起人")
@@ -109,7 +109,6 @@ class Change(BaseModel):
     node_handler = models.ForeignKey(User, verbose_name="环节处理人", null=True, blank=True)
     emergency_degree = models.CharField(
         verbose_name="紧急度", max_length=128, null=True, blank=True,
-        choices=EMERGENCY_DEGREE
     )
     service_level = models.CharField(verbose_name="SLA", max_length=128, null=True, blank=True)
     approver = models.CharField(verbose_name="变更评审", max_length=128, null=True, blank=True)

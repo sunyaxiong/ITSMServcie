@@ -56,15 +56,15 @@
             <tr>
                 <td><label>紧急度: </label></td>
                 <td><select class="form-control" disabled="disabled" name="emergency_degree" >
-                    <option value={{ change.emergency_degree }}>{{ change.get_emergency_degree_display }}</option>
-                    {% for k, v in degree_choice_list %}
-                        <option value={{ k }}>{{ v }}</option>
+                    <option value={{ change.emergency_degree }}>{{ change.emergency_degree }}</option>
+                    {% for v, k in degree_choice_list %}
+                        <option value={{ v }}>{{ k }}</option>
                     {% endfor %}
                 </select></td>
             </tr>
             <tr>
                 <td><label>变更状态: </label></td>
-                <td><input class="form-control" type="text" name="name" disabled="disabled" value={{ change.state }}></td>
+                <td><input class="form-control" type="text" name="state" disabled="disabled" value={{ change.state }}></td>
             </tr>
         </div>
     </div><br>
@@ -172,8 +172,8 @@
     <div class="row">
         <div class="col-xs-8">
             <br/>
-            <a href={{ change.attach_file }}>{{ change.attach_file }}</a>
-            <input type="file" name="attach_file">
+            <a href={{ change.online_plan }}>{{ change.online_plan }}</a>
+            <input type="file" name="online_plan">
         </div>
     </div>
     <div class="row no-print">

@@ -43,6 +43,7 @@ from lib.fit2cloud import Fit2CloudClient
 
 logger = logging.getLogger("django")
 
+
 @login_required
 def index(request):
     return render(request, 'base.html')
@@ -75,7 +76,7 @@ def events(request):
 def request_list(request):
 
     page_header = "事件管理"
-    # data = Event.objects.filter(event_type="request").order_by("-dt_created")
+
     # 系统管理员全部权限
     if request.user.is_superuser:
         data = Event.objects.filter(event_type="request").order_by("-dt_created")
@@ -255,6 +256,7 @@ def event_to_change(request, pk):
             state="draft",
             node_handler=event.technician,
             initiator=event.technician.username,
+            emergency_degree="P3"
         )
         return HttpResponseRedirect("/itsm/change_list")
     except Exception as e:
@@ -351,6 +353,7 @@ def change_detail(request, pk):
     elif button_submit == "同意":
         action = "/itsm/change/pass/"
 
+    change_form = ChangeDetailForm()
     if request.method == "GET":
 
         return render(request, 'itsm/change_detail.html', locals())
@@ -359,6 +362,7 @@ def change_detail(request, pk):
         # form收敛数据
         change_form = ChangeDetailForm(request.POST)
         if change_form.is_valid():
+            logger.info("变更数据收敛成功")
             data = change_form.data
             if change.state == "draft":
                 change.state = "ing"
@@ -367,63 +371,10 @@ def change_detail(request, pk):
 
             change.save()
             return HttpResponseRedirect("/itsm/change_list/")
+        else:
+            print(change_form)
+            messages.warning(request, change_form.errors)
         return render(request, 'itsm/change_detail.html', locals())
-
-
-def change_add(request):
-    page_header = "变更管理"
-
-    if request.method == "GET":
-        form = ChangeDetailModelForm()
-        return render(request, 'itsm/new_change_detail.html', locals())
-    elif request.method == "POST":
-        form = ChangeDetailModelForm(request.POST)
-
-        form.save()
-        return HttpResponseRedirect("/itsm/change_list")
-
-
-def change_close(request, pk):
-    url = request.META.get('HTTP_REFERER')
-    try:
-        change = Change.objects.get(id=pk)
-        if change.state == "ended":
-            messages.warning(request, "当前变更已关闭")
-            return HttpResponseRedirect(url)
-        if change.node_handler_id is not request.user.id:
-            messages.warning(request, "您不是当前处理人,无法处理该变更")
-            return HttpResponseRedirect(url)
-
-        # 执行关闭
-        change.state = "ended"
-        change.save()
-        return HttpResponseRedirect(url)
-    except Exception as e:
-        messages.warning(request, "变更查询异常: {}".format(e))
-        return HttpResponseRedirect(url)
-
-
-def change_to_config(request):
-    pass
-
-
-def change_reject_back(request):
-
-    url = request.META.get('HTTP_REFERER')
-
-    change_id = request.GET.get("id")
-
-    # 获取变更对象,并修改状态
-    change = Change.objects.filter(id=change_id).first()
-    if change.state == "draft":
-        messages.warning(request, "事件未提交")
-        return HttpResponseRedirect(url)
-    change.state = "draft"
-    change.flow_node = 0
-    change.node_name = "开始"
-    change.save()
-
-    return HttpResponseRedirect(url)
 
 
 def flow_pass(request):
@@ -494,6 +445,62 @@ def flow_pass(request):
             return HttpResponseRedirect(url)
         messages.warning(request, form.errors)
         return HttpResponseRedirect(url)
+
+
+def change_add(request):
+    page_header = "变更管理"
+
+    if request.method == "GET":
+        form = ChangeDetailModelForm()
+        return render(request, 'itsm/new_change_detail.html', locals())
+    elif request.method == "POST":
+        form = ChangeDetailModelForm(request.POST)
+
+        form.save()
+        return HttpResponseRedirect("/itsm/change_list")
+
+
+def change_close(request, pk):
+    url = request.META.get('HTTP_REFERER')
+    try:
+        change = Change.objects.get(id=pk)
+        if change.state == "ended":
+            messages.warning(request, "当前变更已关闭")
+            return HttpResponseRedirect(url)
+        if change.node_handler_id is not request.user.id:
+            messages.warning(request, "您不是当前处理人,无法处理该变更")
+            return HttpResponseRedirect(url)
+
+        # 执行关闭
+        change.state = "ended"
+        change.save()
+        return HttpResponseRedirect(url)
+    except Exception as e:
+        messages.warning(request, "变更查询异常: {}".format(e))
+        return HttpResponseRedirect(url)
+
+
+def change_to_config(request):
+    pass
+
+
+def change_reject_back(request):
+
+    url = request.META.get('HTTP_REFERER')
+
+    change_id = request.GET.get("id")
+
+    # 获取变更对象,并修改状态
+    change = Change.objects.filter(id=change_id).first()
+    if change.state == "draft":
+        messages.warning(request, "事件未提交")
+        return HttpResponseRedirect(url)
+    change.state = "draft"
+    change.flow_node = 0
+    change.node_name = "开始"
+    change.save()
+
+    return HttpResponseRedirect(url)
 
 
 def issues(request):
