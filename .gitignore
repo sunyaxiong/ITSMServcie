@@ -103,3 +103,6 @@ db.sqlite3
 !migrations/__init__.py
 migrations
 volume
+
+# xml
+*.xml

@@ -116,6 +116,7 @@
             </table>
         </div>
     </div><br>
+    {% if event.cloud_order_ended %}
     <div class="row">
         <p><i class="fa fa-dashboard"></i><span> 资源明细</span></p>
         <div class="col-md-6">
@@ -123,7 +124,7 @@
                 <tr>
                     <td><label>云环境: </label></td>
                     <td>
-                        <input class="form-control" type="text" name="name" disabled="disabled" value=aws>
+                        <input class="form-control" type="text" name="name" disabled="disabled" value=>
                     </td>
                 </tr>
                 <tr>
@@ -147,6 +148,7 @@
             </table>
         </div>
     </div><br>
+    {% endif %}
     {% if event.cloud_order %}
     <div class="row">
         <p><i class="fa fa-dashboard"></i><span> 云管订单信息</span></p>
@@ -160,7 +162,7 @@
                                 <span id="order_id">{{ event.cloud_order }}</span>
                             </a>
                         </label><br>
-                        <label><span class="strong" style="color: #3C510C">点击链接修改订单明细</span></label>
+                        <label><span class="strong" style="color: #3C510C">点击链接查看订单明细</span></label>
                     </td>
                 </tr>
             </table>

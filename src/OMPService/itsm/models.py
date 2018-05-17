@@ -54,6 +54,7 @@ class Event(BaseModel):
     attach_file = models.FileField(verbose_name="附件", null=True, blank=True)
     flow_module = models.FileField(verbose_name="流程模板", null=True, blank=True)
     cloud_order = models.CharField(verbose_name="云管订单", max_length=128, null=True, blank=True)
+    cloud_order_ended = models.BooleanField("订单已完成", default=0)
     app_name = models.CharField("产品名称", max_length=128, null=True, blank=True)
     auto_deploy = models.BooleanField("是否自动化部署订单", default=0)
     leak_checked = models.BooleanField("是否执行漏洞扫描", default=0)

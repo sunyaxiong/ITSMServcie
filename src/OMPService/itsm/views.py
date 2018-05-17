@@ -52,9 +52,15 @@ def index(request):
 def events(request):
 
     page_header = "事件管理"
-    data = Event.objects.filter(
-        technician=request.user
-    ).order_by("-dt_created")
+
+    # 系统管理员全部权限
+    if request.user.is_superuser:
+        data = Event.objects.filter().order_by("-dt_created")
+    else:
+        print(2222222)
+        data = Event.objects.filter(
+            technician=request.user
+        ).order_by("-dt_created")
 
     message_alert_queryset = MessageAlert.objects.filter(
         user=request.user,
@@ -69,7 +75,15 @@ def events(request):
 def request_list(request):
 
     page_header = "事件管理"
-    data = Event.objects.filter(event_type="request").order_by("-dt_created")
+    # data = Event.objects.filter(event_type="request").order_by("-dt_created")
+    # 系统管理员全部权限
+    if request.user.is_superuser:
+        data = Event.objects.filter(event_type="request").order_by("-dt_created")
+    else:
+        data = Event.objects.filter(
+            technician=request.user,
+            event_type="request",
+        ).order_by("-dt_created")
 
     return render(request, 'itsm/event_list.html', locals())
 
@@ -78,7 +92,16 @@ def request_list(request):
 def incident_list(request):
 
     page_header = "事件管理"
-    data = Event.objects.filter(event_type="incident").order_by("-dt_created")
+    # data = Event.objects.filter(event_type="incident").order_by("-dt_created")
+
+    # 系统管理员全部权限
+    if request.user.is_superuser:
+        data = Event.objects.filter(event_type="incident").order_by("-dt_created")
+    else:
+        data = Event.objects.filter(
+            technician=request.user,
+            event_type="incident",
+        ).order_by("-dt_created")
 
     return render(request, 'itsm/event_list.html', locals())
 
