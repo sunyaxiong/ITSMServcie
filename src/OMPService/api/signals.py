@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 
 from itsm.models import Event
+from accounts import models as accounts_model
 
 
 @receiver(post_save, sender="api.DeployInstance")
@@ -20,8 +21,21 @@ def deploy_to_event(sender, instance, created, *args, **kwargs):
     :return:
     """
 
-    default_user = User.objects.filter(username="admin")[0]
     event_name = "{}申请部署{}".format(instance.chanel, instance.app_name)
+
+    # TODO org_admin处理订单审批流程
+    try:
+        org_admin = accounts_model.Profile.objects.filter(
+            channel_name=instance.chanel,
+            org_admin=1
+        ).first()
+
+        technician = User.objects.filter(username=org_admin.username).filter()
+
+    except Exception as e:
+        print(e)
+        technician = User.objects.filter(username="admin").first()
+
     if instance.order_number:
         Event.objects.create(
             name=event_name,
@@ -33,7 +47,7 @@ def deploy_to_event(sender, instance, created, *args, **kwargs):
             event_type="request",
             service_level="100",
             emergency_degree="common",
-            technician=default_user,
+            technician=technician,
             cloud_order=instance.order_number,
             auto_deploy=1,
         )
