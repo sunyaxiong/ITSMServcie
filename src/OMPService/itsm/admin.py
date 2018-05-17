@@ -14,12 +14,12 @@ from .models import Release
 
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ("name", "state", "technician", "event_type", "app_name")
+    list_display = ("name", "state", "technician", "event_type", "app_name", "dt_created")
     list_filter = ("state", "event_type")
 
 
 class EventLogAdmin(admin.ModelAdmin):
-    list_display = ("event_obj", "username", "content")
+    list_display = ("event_obj", "username", "content", "dt_created")
 
 
 class IssueAdmin(admin.ModelAdmin):
