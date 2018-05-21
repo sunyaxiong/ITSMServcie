@@ -20,6 +20,7 @@ class Profile(models.Model):
     username = models.CharField("用户名", max_length=128)
     channel_name = models.CharField("渠道名称", max_length=128)
     org_admin = models.BooleanField("组织管理员", default=0)
+    fit_user_type = models.IntegerField("云管用户类型", default=3)
     # user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     # channel = models.ForeignKey(Channel, max_length=30, null=True, blank=True, verbose_name="渠道")
     phone = models.BigIntegerField("手机号", null=True, blank=True)

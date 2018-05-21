@@ -9,6 +9,12 @@ from lib.models import BaseModel
 from cloudres.models import VMInstance
 
 
+event_module = {'flow': [{'node': 0, 'name': '开始'}, {'node': 1, 'notify': '邮件', 'name': '部门主管'}, {'node': 2, 'name': '结束'}], 'name': '事件审批'}
+change_module = {'flow': [{'node': 0, 'name': '开始'}, {'node': 1, 'notify': '邮件', 'name': '部门主管'}, {'node': 2, 'name': '结束'}], 'name': '变更审批'}
+release_module = {'flow': [{'node': 0, 'name': '开始'}, {'node': 1, 'notify': '邮件', 'name': '部门主管'}, {'node': 2, 'name': '结束'}], 'name': '发布审批'}
+issue_module = {'flow': [{'node': 0, 'name': '开始'}, {'node': 1, 'notify': '邮件', 'name': '部门主管'}, {'node': 2, 'name': '结束'}], 'name': '问题审批'}
+
+
 class Event(BaseModel):
 
     EVENT_CHOICE = (
@@ -164,9 +170,9 @@ class Config(BaseModel):
     # event_from = models.ForeignKey(VMInstance, null=True, blank=True, verbose_name="事件源")
     solution = models.TextField(verbose_name="解决方法")
     attach_file = models.FileField(verbose_name="附件", null=True, blank=True)
-    event_module = jsonfield.JSONField(verbose_name="事件模板", null=True, blank=True)
-    issue_module = jsonfield.JSONField(verbose_name="问题模板", null=True, blank=True)
-    change_module = jsonfield.JSONField(verbose_name="变更模板", null=True, blank=True)
+    event_module = jsonfield.JSONField(verbose_name="事件模板", null=True, blank=True, default=event_module)
+    issue_module = jsonfield.JSONField(verbose_name="问题模板", null=True, blank=True, default=issue_module)
+    change_module = jsonfield.JSONField(verbose_name="变更模板", null=True, blank=True, default=change_module)
     sla_module = jsonfield.JSONField(verbose_name="sla配置", null=True, blank=True)
 
     def __str__(self):

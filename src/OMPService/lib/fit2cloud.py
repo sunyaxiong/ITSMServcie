@@ -40,6 +40,7 @@ class Fit2CloudClient(object):
         self.workspace_add_url = "http://{}:28888/rest/api/v1/admin/group/add".format(CLOUD_HOST)
         self.org_add_url = "http://{}:28888/rest/api/v1/admin/organize/add".format(CLOUD_HOST)
         self.org_get_url = "http://{}:28888/rest/api/v1/admin/organize/list".format(CLOUD_HOST)
+        self.org_co_permission_url = "http://{}:28888/rest/api/v1/admin/organize/permission/add".format(CLOUD_HOST)
         self.co_permission_url = "http://{}:28888/rest/api/v1/admin/group/permission/add".format(CLOUD_HOST)
         self.vm_query_url = "http://{}:28080/rest/api/v1/vm/list".format(CMDB_HOST)
         self.disk_query_url = "http://{}:28080/rest/api/v1/disk/list".format(CMDB_HOST)
@@ -192,7 +193,7 @@ class Fit2CloudClient(object):
         res = requests.post(url, post, headers=headers)
         return res.json()
 
-    def co_permission(self, attrs, post):
+    def space_co_permission(self, attrs, post):
         """
         工作空间授权,自动绑定组织用户角色
         :param attrs:
@@ -204,6 +205,25 @@ class Fit2CloudClient(object):
         attrs["signature"] = signature
 
         url = "{}?{}".format(self.co_permission_url, urllib.urlencode(attrs))
+        print("co_url: ", url)
+        print("co_attrs: ", attrs)
+        print("co_post: ", post)
+        headers = {'Content-Type': 'application/json'}
+        res = requests.post(url, post, headers=headers)
+        return res.json()
+
+    def org_co_permission(self, attrs, post):
+        """
+        组织授权,自动绑定组织用户
+        :param attrs:
+        :param post:
+        :return:
+        """
+        attrs.update(self.conf)
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+
+        url = "{}?{}".format(self.org_co_permission_url, urllib.urlencode(attrs))
         print("co_url: ", url)
         print("co_attrs: ", attrs)
         print("co_post: ", post)

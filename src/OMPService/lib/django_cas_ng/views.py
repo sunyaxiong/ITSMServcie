@@ -66,6 +66,10 @@ def register(request):
             org, org_created = Channel.objects.get_or_create(
                 name=data.get("org")
             )
+
+            # 云管用户类型设定
+            fit_user_type = 2 if org_created else 3
+
             profile = Profile.objects.create(
                 username=data.get("username"),
                 channel_name=data.get("org"),
@@ -73,6 +77,7 @@ def register(request):
                 department=data.get("department"),
                 email=data.get("email"),
                 phone=data.get("phone"),
+                fit_user_type=fit_user_type,
             )
             user = User.objects.create(
                 username=data.get("username"),
@@ -83,14 +88,6 @@ def register(request):
             )
             if user:
                 logger.info("ITSM用户创建成功")
-
-                # cas 用户创建逻辑放到审核消息
-                # cas_user, _ = models.app_user.objects.using("cas_db").get_or_create(
-                #     username=user.username,
-                # )
-                # if _:
-                #     cas_user.password = data.get("password")
-                #     cas_user.save(using="cas_db")
 
             # 组织首次创建需要系统管理审核;已存在组织创建用户,需要组织管理员审核
             content = "{}-{}-{}-申请注册云管账户".format(
@@ -153,69 +150,6 @@ def register(request):
         org_list = [i["name"] for i in values]
 
         return render(request, "register.html", locals())
-
-
-@require_http_methods(["GET", "POST"])
-def register1(request):
-    form = RegisterForm()
-    if request.method == 'POST':
-        form = RegisterForm(request.POST)
-
-        if form.is_valid():
-            logger.info("用户注册数据收敛成功")
-            data = form.data
-            channels = Channel.objects.all().values("name")
-            channel_name_list = [i["name"] for i in channels]
-
-            # 是否首次注册组织
-            org_first_regist = True
-            if data.get("org") in channel_name_list:
-                org_first_regist = False
-
-            Profile.objects.create(
-                username=data.get("username"),
-                channel_name=data.get("org"),
-                position=data.get("position"),
-                department=data.get("department"),
-                email=data.get("email"),
-                phone=data.get("phone"),
-            )
-            user = User.objects.create(
-                username=data.get("username"),
-                password=data.get("password"),
-                email=data.get("email"),
-                is_staff=1,
-                is_active=0,
-            )
-            if user:
-                logger.info("本地用户创建成功")
-
-            # 组织首次创建邮件激活;已存在组织创建用户,需要组织管理员审核
-            if org_first_regist:
-                # 邮件激活 send mail
-                subject = "{}您好,欢迎注册,请点击链接激活账户".format(data.get("username"))
-                message = "点击激活: http://111.13.61.171:9999/accounts/active/{}".format(user.id)
-                send_mail(subject, message, settings.EMAIL_HOST_USER, [data.get("email")])
-                logger.info("itsm组织创建成功")
-            else:
-                # 管理员审核消息MessageAlert创建
-                content = "{}-{}-{}-申请注册云管账户".format(
-                    data.get("org"), data.get("department"), data.get("username")
-                )
-                admin_username = Profile.objects.filter(channel_name=data.get("org")).first()
-                admin_user = User.objects.filter(username=admin_username).first()
-                reg_info = MessageAlert.objects.create(
-                    user=admin_user,
-                    content=content,
-                    action_type="reg_info"
-                )
-                logger.info("{}用户审核消息已创建".format(content))
-
-            return HttpResponseRedirect("/")
-        else:
-            return HttpResponse(form.errors)
-    else:
-        return render(request, "register.html")
 
 
 def active(request, active_code):
