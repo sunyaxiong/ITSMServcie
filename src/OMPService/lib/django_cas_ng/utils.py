@@ -39,7 +39,7 @@ def get_service_url(request, redirect_to=None):
     if django_settings.DEBUG:
         host = request.get_host()
     else:
-        host = django_settings.PRODUCT_CAS_HOST
+        host = django_settings.SUCC_REDIRECT_URL
     # print("::::::: ", host)
     service = urllib_parse.urlunparse(
         (protocol, host, request.path, '', '', ''),
