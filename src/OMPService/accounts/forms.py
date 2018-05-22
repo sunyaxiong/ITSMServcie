@@ -30,3 +30,9 @@ class ProfileForm(forms.Form):
         if self.data.get("phone") == "None":
             # raise ValidationError("请指派处理人")
             [].sort()
+
+
+class PassResetForm(forms.Form):
+
+    password = forms.CharField(label="密码"),
+    password1 = forms.CharField(label="密码确认")

@@ -6,7 +6,7 @@ from django.contrib import auth,messages
 from django.contrib.auth.decorators import login_required
 
 from .forms import UserForm
-from .forms import ProfileForm
+from .forms import ProfileForm, PassResetForm
 from .models import Profile
 from cas_sync import models as cas_model
 
@@ -20,8 +20,8 @@ def login(request):
     else:
         uf = UserForm(request.POST)
         if uf.is_valid():
-            username = request.POST.get('username', '')
-            password = request.POST.get('password', '')
+            username = request.POST.get('username')
+            password = request.POST.get('password')
             user = auth.authenticate(username=username, password=password)
             if user is not None and user.is_active:
                 auth.login(request, user)
@@ -74,3 +74,32 @@ def user_profile(request):
         form = ProfileForm()
         return render(request, "user_profile.html", locals())
 
+
+def pwd_restet(request):
+    """
+    cas密码修改
+    :param request:
+    :return:
+    """
+    url = request.META.get("HTTP_REFERER")
+    username = request.user.username
+
+    if request.method == "POST":
+        form = PassResetForm(request.POST)
+        if form.is_valid():
+            data = form.data
+            try:
+                user = cas_model.app_user.objects.using("cas_db").get(
+                    username=username,
+                )
+                user.password = data.get("password")
+                user.save(using="cas_db")
+                return HttpResponseRedirect("/accounts/logout/")
+            except Exception as e:
+                logger.info(e)
+                messages.warning(request, "用户不存在")
+                return HttpResponseRedirect(url)
+        else:
+            logger.info("密码修改数据提交失败")
+            messages.warning(request, "密码提交失败,请重试")
+            return HttpResponseRedirect("url")

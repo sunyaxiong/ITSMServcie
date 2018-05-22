@@ -54,11 +54,17 @@
       </div>
       <!-- /.box-body -->
       <div class="box-footer">
-        <button type="submit" class="btn" style="color: grey;" name="destroy" value="1">账户销毁</button>
+        <button type="submit" class="btn btn-primary" name="destroy"
+         onclick="alert('账户销毁后无法使用平台功能,请谨慎操作')" value="1">账户销毁</button>
+        <a class="btn btn-primary" style="margin-right: 5px;"
+                    data-toggle="modal" data-target="#pwdResetModal">
+                    修改密码
+        </a>
         <button type="submit" class="btn btn-success pull-right">保存</button>
       </div>
       <!-- /.box-footer -->
     </form>
 </div>
 </div>
+{% include "itsm/modal/pwd_reset.html" %}
 {% endblock %}

@@ -1,0 +1,38 @@
+<div class="modal fade" id="pwdResetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					密码修改
+				</h4>
+			</div>
+			<form action="/accounts/pwd_reset/" class="form-horizontal" method="post">{% csrf_token %}
+            <div class="modal-body">
+                <div class="form-group">
+{#                      <input hidden id="messageId" value={{ confirm_message.id }}>#}
+                  <label for="password" class="col-sm-2 control-label">密码</label>
+                  <div class="col-sm-10">
+                    <input name= "password" type="password" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">确认密码</label>
+                  <div class="col-sm-10">
+                    <input name="password1" type="password" class="form-control">
+                  </div>
+                </div>
+			</div>
+			<div class="modal-footer">
+				<a class="btn btn-default" data-dismiss="modal">取消
+				</a>
+				<button type="submit" class="btn btn-primary">
+					修改
+				</button>
+			</div>
+            </form>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>

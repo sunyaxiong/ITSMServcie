@@ -20,7 +20,7 @@ import lib.django_cas_ng.views
 
 from .views import login
 from .views import logout
-from .views import user_profile
+from .views import user_profile, pwd_restet
 from .viewsets import ProfileViewSet, ChannelViewSet, UserViewSet
 
 
@@ -40,5 +40,9 @@ urlpatterns = [
     url(r'^logout/$', lib.django_cas_ng.views.logout, name='cas_ng_logout'),
     url(r'^callback/$', lib.django_cas_ng.views.callback, name='cas_ng_proxy_callback'),
     url(r'^user_profile/$', user_profile, name='user profile'),
+    url(r'^pwd_reset/$', pwd_restet, name='pwd reset'),
+
+    url(r'^login1/$', login, name='mylogin'),
+
 ]
 
