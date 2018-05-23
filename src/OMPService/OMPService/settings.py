@@ -66,7 +66,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # cas conf
-SUCC_REDIRECT_URL = "cmp.ecscloud.com:8081"
+SUCC_REDIRECT_URL = "itsm.ecscloud.com"
 CAS_SERVER_URL = "http://52.83.173.240:8080/cas/"
 # CAS_REDIRECT_URL = "http://www.baidu.com"
 
