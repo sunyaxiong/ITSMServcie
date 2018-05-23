@@ -59,7 +59,7 @@
       </div>
       <div class="form-group has-feedback">
         <label>组织</label><br>
-        <select class="form-control" name="org" onChange="editable(this);">
+        <select class="form-control" id="org" name="org" onChange="editable(this);">
           {% for i in org_list %}
           <option>{{ i }}</option>
           {% endfor %}
@@ -70,8 +70,10 @@
       </div>
       <div class="form-group has-feedback">
         <label>部门</label>
-        <input type="text" class="form-control" placeholder="部门" name="department">
-        <span class="glyphicon glyphicon-tag form-control-feedback"></span>
+{#        <input type="text" class="form-control" placeholder="部门" name="department">#}
+        <select class="form-control" name="department" id="department" onclick=get_dep_list()>
+          <option></option>
+        </select>
       </div>
       <div class="form-group has-feedback">
         <label>岗位角色</label>
@@ -151,6 +153,30 @@
       increaseArea: '20%' // optional
     });
   });
+</script>
+<script>
+function get_dep_list() {
+    var org_name = $("#org").val();
+    $.ajax({
+        type: "GET",
+        url: "/itsm/config/get_department_name_list",
+        data: {
+            "org_name": org_name
+        },
+        success: function (ret) {
+            console.log(ret["department"]);
+            var lst;
+            lst= ret["department"];
+            for (i in lst) {
+                console.log(lst[i]);
+                var ss = '<option>' + lst[i] + '</option>';
+                $("#department").append(ss);
+            }
+{#            $("#department").removeAllChild();#}
+            // window.location.href="/itsm/event_list/";
+        }
+    })
+}
 </script>
 </body>
 </html>

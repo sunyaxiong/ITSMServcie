@@ -869,6 +869,20 @@ def config(request):
         return HttpResponseRedirect(url)
 
 
+def get_department_name_list(request):
+    """
+    根据组织名称获取部门名称列表
+    :param request:
+    :return:
+    """
+    if request.method == "GET":
+
+        data = request.GET
+        org_name = data.get("org_name")
+        department = Config.objects.get(name=org_name).department
+        return JsonResponse(department)
+
+
 def user_confirm(request, pk):
     page_header = "新用户审核"
     confirm_message = MessageAlert.objects.get(id=int(pk))

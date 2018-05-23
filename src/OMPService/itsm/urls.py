@@ -62,6 +62,7 @@ from .views import get_cluster_role_list
 from .views import order_create
 from .views import order_get
 from .views import user_get
+from .views import get_department_name_list
 
 
 router = routers.DefaultRouter()
@@ -102,7 +103,9 @@ urlpatterns = [
 
     # 配置管理
     url(r'^config/$', config),
+    url(r'^config/get_department_name_list/$', get_department_name_list),
     url(r'^config_overview/$', config_overview),
+
 
     # 发布管理
     url(r'^release_list/$', releases),

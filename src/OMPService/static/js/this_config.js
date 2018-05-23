@@ -117,7 +117,6 @@ function user_reject() {
 function department_new() {
 
     var department=$("#newDepartment").val();
-    alert(department);
     $.ajax({
         type: "POST",
         url: "/itsm/config/",
@@ -126,11 +125,10 @@ function department_new() {
         },
         success: function (ret) {
             // console.log(ret);
-            // window.location.href="/itsm/event_list/";
+            window.location.href="/";
         }
     })
 }
-
 
 $(document).ready(function () {
         // var order_id = $("#order_id").html();
