@@ -11,7 +11,7 @@ class Alert(BaseModel):
     f2cServerId = models.CharField("服务器在云管平台的ID", max_length=128)
     instanceId = models.CharField("实例ID", max_length=128, null=True, blank=True)
     instanceName = models.CharField("实例名称", max_length=128, null=True, blank=True)
-    privateIp = models.GenericIPAddressField("私有IP", null=True, blank=True)
+    privateIp = models.CharField("私有IP", max_length=128, null=True, blank=True)
     publicIp = models.CharField("公有IP", max_length=128, null=True, blank=True)
     cloudAccountId = models.CharField("云账户ID", max_length=128)
     userId = models.CharField("用户ID", max_length=128)
