@@ -174,6 +174,7 @@ class Config(BaseModel):
     issue_module = jsonfield.JSONField(verbose_name="问题模板", null=True, blank=True, default=issue_module)
     change_module = jsonfield.JSONField(verbose_name="变更模板", null=True, blank=True, default=change_module)
     sla_module = jsonfield.JSONField(verbose_name="sla配置", null=True, blank=True)
+    department = jsonfield.JSONField("部门维护", null=True, blank=True)
 
     def __str__(self):
         return self.name

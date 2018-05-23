@@ -61,7 +61,6 @@ def user_sync(sender, instance, created, *args, **kwargs):
             "status": "active",
             "userType": instance.fit_user_type,
         }
-        print("::::::　", post)
         user_add_res = Fit2CloudClient(_conf, settings.cloud_secret_key).user_add(
             {"time_stamp": int(round(time.time() * 1000))}, json.dumps(post)
         )

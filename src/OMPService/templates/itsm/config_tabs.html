@@ -1,78 +1,98 @@
 <section class="invoice">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="tab-content">
-                            <div class="tab-pane" id="flow_module">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>工作流模板名称</thead>
-                                        <tbody>
-                                            {% for i in module_name_list %}
-                                            <tr><td>{{ i }}</td></tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="event_type">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>事件类型</thead>
-                                        <tbody>
-                                            <tr><td id="result0">普通</td></tr>
-                                            <tr><td id="result1">重要</td></tr>
-                                            <tr><td id="result2">严重</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="event_status">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>事件状态</thead>
-                                        <tbody>
-                                            <tr><td id="result0">草稿</td></tr>
-                                            <tr><td id="result1">处理中</td></tr>
-                                            <tr><td id="result2">结束</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="change_type">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>变更类型</thead>
-                                        <tbody>
-                                            <tr><td id="result0">普通</td></tr>
-                                            <tr><td id="result1">重要</td></tr>
-                                            <tr><td id="result2">严重</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="sla_conf">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>SLA配置</thead>
-                                        <tbody>
-                                            <tr><td id="result0">10</td></tr>
-                                            <tr><td id="result1">100</td></tr>
-                                            <tr><td id="result2">1000</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="overview">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>配置概览</thead>
-                                        <tbody>
-                                            <p></p>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="tab-content">
+                <div class="tab-pane" id="department_config">
+                    <div class="row">
+                       <h3>部门名称维护</h3>
+                    </div>
+                    <div class="row">
+                        <input id="orgName" value={{ org_name }} hidden>
+                        <input type="text" id="newDepartment">
+                        <a class="btn btn-success" onclick=department_new()>新增</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+{#                            <thead>部门维护</thead>#}
+                            <tbody>
+                                {% for department in department_info.department %}
+                                <tr><td>{{ department }}</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </section>
+                <div class="tab-pane" id="flow_module">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>工作流模板名称</thead>
+                            <tbody>
+                                {% for i in module_name_list %}
+                                <tr><td>{{ i }}</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane" id="event_type">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>事件类型</thead>
+                            <tbody>
+                                <tr><td id="result0">普通</td></tr>
+                                <tr><td id="result1">重要</td></tr>
+                                <tr><td id="result2">严重</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane" id="event_status">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>事件状态</thead>
+                            <tbody>
+                                <tr><td id="result0">草稿</td></tr>
+                                <tr><td id="result1">处理中</td></tr>
+                                <tr><td id="result2">结束</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane" id="change_type">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>变更类型</thead>
+                            <tbody>
+                                <tr><td id="result0">普通</td></tr>
+                                <tr><td id="result1">重要</td></tr>
+                                <tr><td id="result2">严重</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane" id="sla_conf">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>SLA配置</thead>
+                            <tbody>
+                                <tr><td id="result0">10</td></tr>
+                                <tr><td id="result1">100</td></tr>
+                                <tr><td id="result2">1000</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane" id="overview">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>配置概览</thead>
+                            <tbody>
+                                <p></p>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

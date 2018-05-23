@@ -114,6 +114,23 @@ function user_reject() {
     })
 }
 
+function department_new() {
+
+    var department=$("#newDepartment").val();
+    alert(department);
+    $.ajax({
+        type: "POST",
+        url: "/itsm/config/",
+        data: {
+            "department": department
+        },
+        success: function (ret) {
+            // console.log(ret);
+            // window.location.href="/itsm/event_list/";
+        }
+    })
+}
+
 
 $(document).ready(function () {
         // var order_id = $("#order_id").html();

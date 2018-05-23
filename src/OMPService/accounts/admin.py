@@ -6,7 +6,7 @@ from .models import MessageAlert
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ("username", "phone", "email")
+    list_display = ("username", "phone", "email", "channel_name")
 
 
 class ChannelAdmin(admin.ModelAdmin):

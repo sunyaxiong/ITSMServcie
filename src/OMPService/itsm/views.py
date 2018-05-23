@@ -836,16 +836,37 @@ def sla_release_dash(request):
         return render(request, "itsm/sla_release_dash.html", locals())
 
 
+@csrf_exempt
 def config(request):
     url = request.META.get('HTTP_REFERER')
 
+    username = request.user.username
+    org_name = Profile.objects.get(username=username).channel_name
+    department_info = Config.objects.get(name=org_name).department
+
     if request.method == "GET":
+        try:
+            # 获取配置文件
+            res = cache.get("伟仕云安")
+            module_name_list = [i["module_name"] for i in res["module_list"]]
 
-        # 获取配置文件
-        res = cache.get("伟仕云安")
-        module_name_list = [i["module_name"] for i in res["module_list"]]
+            return render(request, 'itsm/config.html', locals())
+        except Exception as e:
+            logger.info(e)
+            messages.warning(request, e)
+            return render(request, 'itsm/config.html', locals())
+    elif request.method == "POST":
+        data = request.POST
+        logger.info("config 收敛成功: ", data)
 
-        return render(request, 'itsm/config.html', locals())
+        # 部门新增逻辑
+        if data.get("department"):
+            config = Config.objects.get(name=org_name)
+            config.department["department"].append(data.get("department"))
+            config.save()
+            logger.info("部门新增完成")
+
+        return HttpResponseRedirect(url)
 
 
 def user_confirm(request, pk):
