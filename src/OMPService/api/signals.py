@@ -95,7 +95,7 @@ def alert_to_event(sender, instance, created, *args, **kwargs):
         print(e)
         technician = User.objects.filter(username="admin").first()
 
-    if not instance.alertGrade == "ok":
+    if not instance.alertGrade == "OK":
         Event.objects.create(
             name=event_name,
             state="draft",
