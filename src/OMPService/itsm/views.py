@@ -842,6 +842,8 @@ def config(request):
     org_name = Profile.objects.get(username=username).channel_name
     if org_name:
         department_obj, created = Config.objects.get_or_create(name=org_name)
+        if created:
+            department_obj.department = {"department": []}
         department_info = department_obj.department
 
     if request.method == "GET":

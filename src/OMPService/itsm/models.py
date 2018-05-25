@@ -164,11 +164,11 @@ class Knowledge(BaseModel):
 class Config(BaseModel):
 
     name = models.CharField(max_length=128, verbose_name="名称")
-    description = models.TextField(verbose_name="描述")
+    description = models.TextField(verbose_name="描述", null=True, blank=True)
     state = models.BooleanField(max_length=128, verbose_name="状态", default=1)
-    handler = models.CharField(max_length=128, verbose_name="处理人")
+    # handler = models.CharField(max_length=128, verbose_name="处理人")
     # event_from = models.ForeignKey(VMInstance, null=True, blank=True, verbose_name="事件源")
-    solution = models.TextField(verbose_name="解决方法")
+    # solution = models.TextField(verbose_name="解决方法")
     attach_file = models.FileField(verbose_name="附件", null=True, blank=True)
     event_module = jsonfield.JSONField(verbose_name="事件模板", null=True, blank=True, default=event_module)
     issue_module = jsonfield.JSONField(verbose_name="问题模板", null=True, blank=True, default=issue_module)
