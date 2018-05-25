@@ -839,7 +839,13 @@ def config(request):
     url = request.META.get('HTTP_REFERER')
 
     username = request.user.username
-    org_name = Profile.objects.get(username=username).channel_name
+
+    profile, pf_created = Profile.objects.get_or_create(username=username)
+    if profile.channel_name:
+        org_name = profile.channel_name
+    else:
+        org_name = None
+
     if org_name:
         department_obj, created = Config.objects.get_or_create(name=org_name)
         if created:

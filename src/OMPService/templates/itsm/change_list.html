@@ -58,15 +58,20 @@
                                         aria-label="CSS grade: activate to sort column ascending" style="width: 112px;">
                                         变更类型
                                     </th>
+                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
+                                        aria-label="CSS grade: activate to sort column ascending" style="width: 112px;">
+                                        创建时间
+                                    </th>
                                 </tr>
                                 </thead>
                                 {% for i in data %}
                                 <tbody>
                                 <tr role="row" class="odd">
                                     <td class="sorting_1"><a href="/itsm/change/{{ i.id }}">{{ i.name }}</a></td>
-                                    <td class="sorting_1">{{ i.state }}</td>
+                                    <td class="sorting_1">{{ i.get_state_display }}</td>
                                     <td class="sorting_1">{{ i.technician }}</td>
-                                    <td class="sorting_1">{{ i.event_type }}</td>
+                                    <td class="sorting_1">{{ i.get_event_type_display }}</td>
+                                    <td class="sorting_1">{{ i.dt_created }}</td>
                                 </tr>
                                 </tbody>
                                 {% endfor %}
