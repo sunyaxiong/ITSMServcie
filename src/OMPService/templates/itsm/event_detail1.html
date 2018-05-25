@@ -179,6 +179,7 @@
         </div>
     </div><br>
     {% endif %}
+    {% if event.event_type == "request" %}
     <div class="row">
         <p><i class="fa fa-dashboard"></i><span>检查项</span></p>
         <div class="col-xs-4">
@@ -191,6 +192,7 @@
             </tr>
         </div>
     </div>
+    {% endif %}
     <div class="row">
         <p class="lead">流转记录:</p>
         <div class="col-xs-8">
