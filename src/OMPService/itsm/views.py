@@ -868,7 +868,7 @@ def config(request):
             config.save()
             logger.info("部门新增完成")
 
-        return HttpResponseRedirect(url)
+        return HttpResponseRedirect("/itsm/config/")
 
 
 def get_department_name_list(request):
