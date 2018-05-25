@@ -27,46 +27,105 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-    <a href="#"><b>ITSM</b></a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="login-box-body">
-    <p class="login-box-msg">登录ITSM管理系统</p>
-
-    <form action="/accounts/login/" method="post">{% csrf_token %}
-      <div class="form-group has-feedback">
-        <input name="username" type="text" class="form-control" placeholder="Email">
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input name="password" type="password" class="form-control" placeholder="Password">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-      </div>
-      <div class="row">
-        <div class="col-xs-8">
-          <div class="checkbox icheck">
-            <label>
-              <input type="checkbox"> 记住密码
-            </label>
+<body>
+<div class="content">
+    <div class="header panel-heading bg-white">
+        <div class="row">
+            <div class="col-md-3">
+                <a><img src="/static/js/img/vstecs1.png"></a>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="row">
+          <div class="col-md-3">
+              <div class="panel panel-info">
+                  <div class="panel-heading">
+                    伟仕云安私有云管理平台
+                  </div>
+                  <form action="/accounts/login1/" method="post">{% csrf_token %}
+                  <div class="panel-body">
+                      <div class="form-group has-feedback">
+                        <label>用户名</label>
+                        <input type="text" class="form-control" placeholder="用户名" name="username">
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                      </div>
+                      <div class="form-group has-feedback">
+                        <label>密码</label>
+                        <input type="password" class="form-control" placeholder="密码" name="password">
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                      </div>
+                  </div>
+                  <div class="panel-footer">
+                      <div class="row">
+                        <div class="col-xs-8">
+                          <div class="checkbox icheck">
+                            <label>
+                              <input type="checkbox"> 我同意 <a href="#">协议</a>
+                            </label>
+                          </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-xs-4">
+                          <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
+                        </div>
+                        <!-- /.col -->
+                      </div>
+                      <div class="row">
+                          <div class="col-md-5">
+                              <a href="/accounts/register/">新用户注册</a>
+                          </div>
+                      </div>
+                  </div>
+                  </form>
+              </div>
           </div>
-        </div>
-        <!-- /.col -->
-        <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
-        </div>
-        <!-- /.col -->
-      </div>
-    </form>
-    <a href="#">忘记密码</a><br>
-    <a href="register.html" class="text-center">注册新用户</a>
-
-  </div>
-  <!-- /.login-box-body -->
+       </div>
+    </div>
+    </br></br></br></br></br></br></br></br>
+    <div class="footer panel-footer">
+        Copyright © 2018 - 2020 All rights reserved</br>
+        Powered by 伟仕云安
+    </div>
 </div>
-<!-- /.login-box -->
+{#<header class="main-header">#}
+{#    <div class="container">#}
+{#        <div class="row">#}
+{#            <div class="col-md-3">#}
+{#                <a><img src="/static/js/img/vstecs1.png"></a>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</header>#}
+{#<div class="container">#}
+{#    <div class="row">#}
+{#        <div class="col-md-3">#}
+{#            <form>#}
+{#                <div class="control-group"><label class="control-label" contenteditable="true" for="inputEmail">邮箱</label>#}
+{#                <div class="controls"><input id="inputEmail" placeholder="Email" type="text" /></div>#}
+{#                </div>#}
+{##}
+{#                <div class="control-group"><label class="control-label" contenteditable="true" for="inputPassword">密码</label>#}
+{##}
+{#                <div class="controls"><input id="inputPassword" placeholder="Password" type="password" /></div>#}
+{#                </div>#}
+{##}
+{#                <div class="control-group">#}
+{#                <div class="controls"><label class="checkbox" contenteditable="true"><input type="checkbox" /> Remember me </label><button class="btn" contenteditable="true" type="submit">登陆</button></div>#}
+{#                </div>#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{#<footer class="main-footer bg-blue" style="color: blue;">#}
+{#    <div class="container">#}
+{#        <div class="row">#}
+{#            powerby ecscloud.com#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#</footer>#}
+{#</div>#}
 
 <!-- jQuery 3 -->
 <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>

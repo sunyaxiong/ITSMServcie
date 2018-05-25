@@ -172,7 +172,7 @@
                 <tr>
                     <td><label>订单状态: </label></td>
                     <td>
-                        <label><span id="order_status"></span></label>
+                        <label>&nbsp;<span class="label label-success" id="order_status"></span></label>
                     </td>
                 </tr>
             </table>
@@ -253,4 +253,19 @@
     </form>
 </section>
 {% include "itsm/modal/event_upgrade.html" %}
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            var order_id = $("#order_id").html();
+            $.ajax({
+                type:"GET",
+                url:"/itsm/cloud/order_get/",
+                data:{"order_id": order_id},
+                success: function (ret) {
+                    $("#order_status").html(ret["status"])
+                }
+            })
+        })
+    </script>
 {% endblock %}

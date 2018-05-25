@@ -1,7 +1,10 @@
 import logging
+import requests
+import json
+import urllib.parse as urllib
 
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import auth,messages
 from django.contrib.auth.decorators import login_required
 
@@ -9,26 +12,42 @@ from .forms import UserForm
 from .forms import ProfileForm, PassResetForm
 from .models import Profile
 from cas_sync import models as cas_model
+from OMPService import settings
 
 logger = logging.getLogger("django")
 
 
 def login(request):
     if request.method == 'GET':
-        uf = UserForm()
+        form = UserForm()
         return render(request, "login.html")
     else:
-        uf = UserForm(request.POST)
-        if uf.is_valid():
+        form = UserForm(request.POST)
+        if form.is_valid():
             username = request.POST.get('username')
             password = request.POST.get('password')
-            user = auth.authenticate(username=username, password=password)
-            if user is not None and user.is_active:
-                auth.login(request, user)
-                return HttpResponseRedirect("/itsm/event_list/")
-            else:
-                # TODO 补全报错提醒
-                return render(request, "login.html")
+            # user = auth.authenticate(username=username, password=password)
+            attrs = {
+                "service": "http://{}".format(settings.SUCC_REDIRECT_URL)
+            }
+            url_attrs = urllib.urlencode(attrs)
+            print(settings.SUCC_REDIRECT_URL)
+            print(url_attrs)
+            cas_login_url = "{}login?{}".format(
+                settings.CAS_SERVER_URL, url_attrs
+            )
+
+            post_data = {
+                "username": username,
+                "password": password,
+            }
+            res = requests.post(cas_login_url, json.dumps(post_data))
+            print(dir(res))
+            print(res.status_code)
+
+            # return JsonResponse({})
+            return HttpResponseRedirect("/")
+
         else:
             return render(request, "login.html")
 

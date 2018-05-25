@@ -44,9 +44,8 @@ from lib.fit2cloud import Fit2CloudClient
 logger = logging.getLogger("django")
 
 
-@login_required
 def index(request):
-    return render(request, 'base.html')
+    return render(request, 'index.html')
 
 
 @login_required
@@ -58,7 +57,6 @@ def events(request):
     if request.user.is_superuser:
         data = Event.objects.filter().order_by("-dt_created")
     else:
-        print(2222222)
         data = Event.objects.filter(
             technician=request.user
         ).order_by("-dt_created")

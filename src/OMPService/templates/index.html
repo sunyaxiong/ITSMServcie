@@ -1,0 +1,137 @@
+<html>
+
+  <head>
+    <title>佳杰科技</title>
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<link href="/static/index/css.css" rel="stylesheet" />
+	<link href="/static/index/softwhy.css" rel="stylesheet" type="text/css" />
+	<script src="/static/index/jquery-1.10.2.js"></script>
+  <script src="/static/index/softwhy.js"></script>
+	<style type="text/css">
+
+	#softwhy a
+	{
+	 text-decoration:underline;
+	 color:red;
+	}
+	.phcolor{ color:#999;}
+	</style>
+  </head>
+  
+  <body style="text-align: center;">
+   <div >
+  		<div class="top">
+    		<div class="top_left" ><img src="/static/index/vstecs.gif" /> </div>
+    		<div class="top_right">
+    			<div id="userName"></div>
+    			<div id="button">
+    				<h3> <div class="top_right_1"><a href="/accounts/login">登录</a></div></h3>
+    				<h3> <div class="top_right_1"><a href="/accounts/register">注册</a></div> </h3>
+   				</div>
+   				 <div id="console" class="menusel" style="width:95px;display: none">
+			     <a href="console">后台管理</a> 
+			   </div>
+			   </div>
+   				 <div id="console1" class="menusel" style="width:95px;display: none">
+			     <a href="console1">用户中心</a> 
+			   </div>
+			   </div>
+   				 <div id="console2" class="menusel" style="width:95px;display: none">
+			     <a href="console2">退出</a> 
+			   </div>
+    		</div>
+    		
+  <div class="banner">
+  <div style="position:relative; height:300px;">
+  <div class="banner1" style="position:relative; z-index:1;"> </div>
+  <div class="bannerWrap1">
+    <ul class="showList">
+      <li class="hand special" img="/static/index/lunbo1.jpg"></li>
+      <li class="hand special" img="/static/index/12345.jpg"></li>
+<!--       <li class="hand" img="images/images/5555.jpg"></li> -->
+<!--       <li class="hand" img="images/images/3333.jpg"></li> -->
+<!--         <li class="hand" img="images/images/4444.jpg"></li> -->
+          
+    </ul>
+  </div>
+</div>
+</div>
+
+<div class="huoban" >
+    <div style="float: left;width: 50%">
+    	<div align="left">
+    		<h2>伟仕云安私有云管理平台</h2><br/>
+			<p>伟仕云安ECSCloud主要面向企业和服务提供商，是目前最先进、最具创新性的基于开放标准的云端中介服务（Cloud Services Brokerage，CSB）平台。</p><br/>
+			<p>伟仕云安ECSCloud对云服务提供商生态系统的服务进行聚合、集成和定制。</p><br/>
+			<p>技术支持电话：4006 855 866</p><br/>
+		</div>
+		<div align="left">
+			<img src="/static/index/pt.png" width="174" height="74"/>
+			<img src="/static/index/pt1.png" width="174" height="74"/>
+		</div>
+	</div>
+    <div class="" style="float: right;width: 40%">
+       	<div align="left">
+       	<h3>订阅我们的简报</h3><br/>
+		<input type="text" placeholder="请输入您的邮箱" style="height: 30px"/> <button type="submit" id="feature_submit" class="dhbutton05">订阅</button>
+		<br/><br/>
+		<p>关注我们</p><br/>
+		<table style="margin-left: 10px">
+			<tbody>
+				<tr>
+					<td style="font-size:10px;width: 120px"><img alt="" src="/static/index/weixin-ir.png" width="96" height="96" title="" align="" /></td>
+					<td style="font-size:10px;width: 120px"><img alt="" src="/static/index/weixin-cnservice.png" width="96" height="96" title="" align="" /></td>
+				</tr>
+				<tr>
+					<td style="font-size:10px;">伟仕云安IR订阅号</td>
+					<td style="font-size:10px;">伟仕云安中国服务号</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+function add(){
+	window.location="news/list2";
+}
+
+$.ajax({
+    type: 'POST',
+    url: "getUser.do",
+    error: function(){
+    	$("#userName").html(""); 
+    },  
+    success: function (data) {
+        if(data!=""&&data.USER!=null){
+        	$("#userName").html("欢迎登录，"+data.USER.NAME);
+    			$("#console").show();
+    			$("#console1").show();
+    			$("#button").hide();
+        }
+    },
+});
+
+$.ajax({
+	type: "POST",
+	url: "image/listImage.do",
+	dataType:"json",
+	cache: false,
+	success: function(data){
+		 $.each(data.list, function(i, list){
+			 $("#image").append("<li><a href='"+list.TOURL+"'>"+list.TITLE+"</a></li>");
+		 });
+	}
+});
+
+
+</script>
+<script src="/static/index/meun.js" type="text/javascript"></script>
+</body>
+</html>

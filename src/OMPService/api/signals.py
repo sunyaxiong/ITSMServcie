@@ -79,7 +79,7 @@ def alert_to_event(sender, instance, created, *args, **kwargs):
     :return:
     """
 
-    default_user = User.objects.filter(username="admin")[0]
+    default_user = User.objects.filter(username=instance.username)[0]
     event_name = "{}-{}-{}".format(instance.alertId, instance.alertGrade, instance.alertName)
     Event.objects.create(
         name=event_name,

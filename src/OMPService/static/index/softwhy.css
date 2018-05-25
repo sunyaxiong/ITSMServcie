@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+ul{ list-style:none; }
+.float{ float:left}
+img{ border:0px;  }
+.hand{ cursor:pointer; _cursor:hand}
+
+.banner1{ position:relative; height:240px; top:-14px; text-align:center; background:url(../images/index-03.jpg) no-repeat center 0; }
+.classBanner{position:relative; height:244px; top:-14px; background:url(../images/about.jpg) no-repeat center 0;}
+.bannerWrap1{ width:1000px; overflow:auto; margin:0 auto; position:relative; top:-70px; z-index:3;}
+.bannerWrap1 ul.showList{ margin:0 auto; float:right  }
+.bannerWrap1 ul.showList li{ width:23px; height:23px; background:url(../images/circle1.png) no-repeat; margin:5px; float:left; color:#5cc; padding-top:3px; text-align:center;  }
+.bannerWrap1 ul.showList li.special{ background:url(../images/circle2.png) no-repeat; color:#048fd5}

@@ -72,7 +72,7 @@ router.register("event", EventViewSet, base_name="EventViewSet")
 
 urlpatterns = [
     url(r'^rest/', include(router.urls)),
-    url(r'^$', events),
+    url(r'^$', index),
 
     # 事件管理
     url(r'^event_list/$', events),
