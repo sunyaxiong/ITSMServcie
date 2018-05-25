@@ -840,7 +840,8 @@ def config(request):
 
     username = request.user.username
     org_name = Profile.objects.get(username=username).channel_name
-    department_info = Config.objects.get(name=org_name).department
+    if org_name:
+        department_info = Config.objects.get(name=org_name).department
 
     if request.method == "GET":
         try:

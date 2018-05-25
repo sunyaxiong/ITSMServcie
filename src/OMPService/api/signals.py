@@ -22,8 +22,8 @@ def deploy_to_event(sender, instance, created, *args, **kwargs):
     """
 
     event_name = "{}申请部署{}".format(instance.chanel, instance.app_name)
-
-    # TODO org_admin处理订单审批流程
+    user = User.objects.get(username=instance.consumer_name)
+    # org_admin处理订单审批流程
     try:
         org_admin = accounts_model.Profile.objects.filter(
             channel_name=instance.chanel,
@@ -62,7 +62,7 @@ def deploy_to_event(sender, instance, created, *args, **kwargs):
             event_type="request",
             service_level="100",
             emergency_degree="common",
-            technician=default_user,
+            technician=technician,
         )
     return None
 
@@ -81,12 +81,16 @@ def alert_to_event(sender, instance, created, *args, **kwargs):
 
     default_user = User.objects.filter(username=instance.username)[0]
     event_name = "{}-{}-{}".format(instance.alertId, instance.alertGrade, instance.alertName)
-    Event.objects.create(
-        name=event_name,
-        state="draft",
-        event_type="incident",
-        initiator="fit2cloud_sys",
-        emergency_degree="importance",
-        technician=default_user,
-    )
+
+    if not instance.alertGrade == "ok":
+        Event.objects.create(
+            name=event_name,
+            state="draft",
+            event_type="incident",
+            initiator="fit2cloud_sys",
+            emergency_degree="importance",
+            technician=default_user,
+        )
+
+    # TODO email alert
     return None
