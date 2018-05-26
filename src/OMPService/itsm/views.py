@@ -848,8 +848,6 @@ def config(request):
 
     if org_name:
         department_obj, created = Config.objects.get_or_create(name=org_name)
-        if created:
-            department_obj.department = {"department": []}
         department_info = department_obj.department
 
     if request.method == "GET":
@@ -873,6 +871,7 @@ def config(request):
             config.department["department"].append(data.get("department"))
             config.save()
             logger.info("部门新增完成")
+            return HttpResponseRedirect("/itsm/config/")
 
         return HttpResponseRedirect("/itsm/config/")
 
@@ -1183,7 +1182,7 @@ def order_get(request):
         _conf = settings.CLOUD_CONF.copy()
         _conf["access_key"] = ak
         _res = Fit2CloudClient(_conf, sk).order_get(_param)
-
+        print("orderinfo: ", _res)
         print(_res["success"])
         if _res["success"]:
             res = {
