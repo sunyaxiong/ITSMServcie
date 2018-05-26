@@ -30,7 +30,7 @@ def deploy_to_event(sender, instance, created, *args, **kwargs):
             org_admin=1
         ).first()
 
-        technician = User.objects.filter(username=org_admin.username).filter()
+        technician = User.objects.filter(username=org_admin.username).first()
 
     except Exception as e:
         print(e)
