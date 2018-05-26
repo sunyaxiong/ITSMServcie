@@ -66,6 +66,7 @@ class Event(BaseModel):
     auto_deploy = models.BooleanField("是否自动化部署订单", default=0)
     leak_checked = models.BooleanField("是否执行漏洞扫描", default=0)
     late_flag = models.BooleanField("是否逾期", default=0)
+    instance_id = models.IntegerField("云管实例ID", null=True, blank=True)
 
     def __str__(self):
         return self.name or ""

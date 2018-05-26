@@ -31,18 +31,19 @@
         <p><i class="fa fa-dashboard"></i><span> 事件明细</span></p>
         <div class="form-group">
             <div class="col-md-8">
+                <input id="instance_id" hidden value={{ event.instance_id }}>
                 <label for="name">事件名称: </label>
                 <input class="form-control" type="text" name="name" disabled="disabled" value={{ event.name }}><br>
             </div>
         </div>
         <div class="col-md-6">
             <table class="table-striped">
+{#                <tr>#}
+{#                    <td><label for="name">服务水平等级: </label></td>#}
+{#                    <td><input class="form-control" type="text" name="name" disabled="disabled" value={{ event.service_level }}></td>#}
+{#                </tr>#}
                 <tr>
-                    <td><label for="name">服务水平等级: </label></td>
-                    <td><input class="form-control" type="text" name="name" disabled="disabled" value={{ event.service_level }}></td>
-                </tr>
-                <tr>
-                    <td><label>更新时间: </label></td>
+                    <td><label>更新时间: </label></td></br>
                     <td><input class="form-control" type="text" name="name" disabled="disabled" value={{ event.dt_updated }}></td>
                 </tr>
             </table>
@@ -143,6 +144,45 @@
                     <td><label>公司归属: </label></td>
                     <td>
                         <input class="form-control" type="text" name="name" disabled="disabled" value="伟仕云安">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div><br>
+    {% endif %}
+    {% if event.event_type == "incident" %}
+    <div class="row">
+        <p><i class="fa fa-dashboard"></i><span>资源明细</span></p>
+        <div class="col-md-6">
+            <table class="table-striped">
+{#                <tr>#}
+{#                    <td><label>云环境: </label></td>#}
+{#                    <td>#}
+{#                        <input class="form-control" type="text" name="name" disabled="disabled" value=>#}
+{#                    </td>#}
+{#                </tr>#}
+                <tr>
+                    <td><label>主机名: </label></td>
+                    <td><label class="form-control" id="hostname" disabled="disabled"></label></td>
+                </tr>
+                <tr>
+                    <td><label>IP地址: </label></td>
+                    <td><label class="form-control" id="localIp" disabled="disabled"></label></td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table class="table-striped">
+                <tr>
+                    <td><label>公司归属: </label></td>
+                    <td>
+                        <label class="form-control" id="groupEnvName" disabled="disabled"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>实例类型: </label></td>
+                    <td>
+                        <label class="form-control" id="instanceType" disabled="disabled"></label>
                     </td>
                 </tr>
             </table>
@@ -267,7 +307,23 @@
                 success: function (ret) {
                     $("#order_status").html(ret["status"])
                 }
-            })
+            });
+
+            // instance list query
+            var instance_id = $("#instance_id").val();
+            $.ajax({
+                type:"GET",
+                url:"/itsm/cloud/resource_info/",
+                data:{"instance_id": instance_id},
+                success: function (ret) {
+                    console.log(ret["localIp"]);
+                    $("#hostname").html(ret["hostname"]);
+                    $("#localIp").html(ret["localIp"]);
+                    $("#instanceType").html(ret["instanceType"]);
+                    $("#groupEnvName").html(ret["groupEnvName"]);
+                }
+            });
+
         })
     </script>
 {% endblock %}

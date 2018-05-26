@@ -327,6 +327,35 @@ def event_to_close(request, pk):
         return HttpResponseRedirect(url)
 
 
+def resource_info(request):
+
+    param = {
+        "time_stamp": int(round(time.time() * 1000)),
+        "currPage": 1,
+        "pageSize": 500,
+    }
+    _conf = settings.CLOUD_CONF.copy()
+    _conf.pop("user")
+    client = Fit2CloudClient(_conf, settings.cloud_secret_key)
+    res = client.get_instance_list(param)
+    data = res.get("data")
+    instance_list = data.get("items")
+    instance_info = {i["id"]: i for i in instance_list}
+    print("info: ", instance_info)
+    print(instance_info[2])
+
+    if request.method == "GET":
+        instance_id = int(request.GET.get("instance_id"))
+        print(instance_id)
+        ret = {
+            "hostname": instance_info[instance_id].get("hostname"),
+            "localIp": instance_info[instance_id].get("localIp"),
+            "groupEnvName": instance_info[instance_id].get("groupEnvName"),
+            "instanceType": instance_info[instance_id].get("instanceType"),
+        }
+        return JsonResponse(ret)
+
+
 def changes(request):
 
     page_header = "变更管理"

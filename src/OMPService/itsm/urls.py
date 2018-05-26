@@ -63,6 +63,7 @@ from .views import order_create
 from .views import order_get
 from .views import user_get
 from .views import get_instance_list
+from .views import resource_info
 from .views import get_department_name_list
 
 
@@ -135,6 +136,7 @@ urlpatterns = [
     url(r'cloud/order_get/$', order_get),
     url(r'cloud/user_get/$', user_get),
     url(r'cloud/get_instance_list/$', get_instance_list),
+    url(r'cloud/resource_info/$', resource_info),
 
     # message alert
     url(r'^user_confirm/(?P<pk>\d{1,9})', user_confirm),
