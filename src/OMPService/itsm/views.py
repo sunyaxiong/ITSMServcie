@@ -311,7 +311,7 @@ def event_to_close(request, pk):
         )
         # 组织邮件
         mail_to = event[0].initiator_email
-        link = "http://111.13.61.171:9999/itsm/satisfaction/?log_id={}".format(sati_log.id)
+        link = "http://itsm.ecscloud.com/itsm/satisfaction/?log_id={}".format(sati_log.id)
         message = "您好,您的事件:{}已经处理完成,请对我们的服务做出评价,感谢您的支持. {}".format(
             event[0].name, link
         )
@@ -964,7 +964,13 @@ def satisfaction_log(request):
             sati_id = data.get("sati_id")
             comment = data.get("comment")
             content = data.get("content")
+            is_ended = data.get("is_ended")
             sati_info = SatisfactionLog.objects.filter(id=int(sati_id), checked=0)
+            if not int(is_ended):
+                try:
+                    sati = sati_info.first().event.state = "processing"
+                except Exception as e:
+                    logger(e)
             if sati_info:
                 sati = sati_info.first()
                 sati.comment = comment
