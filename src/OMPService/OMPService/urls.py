@@ -20,8 +20,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-admin.site.site_header = "伟仕云安CMP后台管理"
-admin.site.site_title = "伟仕云安CMP后台管理"
+admin.site.site_header = "伟仕云安ITSM后台管理"
+admin.site.site_title = "伟仕云安ITSM后台管理"
+admin.site.site_url = None
 
 
 api_patterns = [

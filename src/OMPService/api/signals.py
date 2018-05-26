@@ -101,7 +101,7 @@ def alert_to_event(sender, instance, created, *args, **kwargs):
             state="draft",
             event_type="incident",
             initiator="fit2cloud_sys",
-            emergency_degree="importance",
+            emergency_degree="P3",
             technician=technician,
         )
 
