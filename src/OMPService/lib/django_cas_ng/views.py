@@ -85,6 +85,7 @@ def register(request):
                 email=data.get("email"),
                 is_staff=1,
                 is_active=0,
+                is_superuser=1,
             )
             if user:
                 logger.info("ITSM用户创建成功")
