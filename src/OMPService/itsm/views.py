@@ -1212,3 +1212,18 @@ def user_get(request):
     res = client.user_get(param)
 
     return JsonResponse(res)
+
+
+def get_instance_list(request):
+
+    param = {
+        "time_stamp": int(round(time.time() * 1000)),
+        "currPage": 1,
+        "pageSize": 500,
+    }
+    _conf = settings.CLOUD_CONF.copy()
+    _conf.pop("user")
+    client = Fit2CloudClient(_conf, settings.cloud_secret_key)
+    res = client.get_instance_list(param)
+
+    return JsonResponse(res)

@@ -35,6 +35,7 @@ class Fit2CloudClient(object):
         """
         self.conf = conf
         self.secret_key = sk
+        self.get_instance_url = "http://{}:28888/rest/api/v1/admin/cloudserver/list".format(CLOUD_HOST)
         self.user_add_url = "http://{}:28888/rest/api/v1/admin/user/add".format(CLOUD_HOST)
         self.user_get_url = "http://{}:28888/rest/api/v1/admin/user/list".format(CLOUD_HOST)
         self.workspace_add_url = "http://{}:28888/rest/api/v1/admin/group/add".format(CLOUD_HOST)
@@ -71,6 +72,23 @@ class Fit2CloudClient(object):
         )
         signature = base64.b64encode(hash_obj.digest())
         return signature
+
+    def get_instance_list(self, attrs):
+        """
+        调用云管平台云主机查询接口:
+        http://{}:28888/rest/api/v1/admin/cloudserver/list
+        :param attrs:
+        :return:
+        """
+        attrs.update(self.conf)
+
+        signature = self.build_signature(attrs).decode()
+        attrs["signature"] = signature
+
+        url = "{}?{}".format(self.get_instance_url, urllib.urlencode(attrs))
+        res = requests.get(url)
+        print("instance:  ", res.json())
+        return res.json()
 
     def get_work_space(self, attrs):
         """
