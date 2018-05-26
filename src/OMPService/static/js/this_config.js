@@ -125,7 +125,7 @@ function department_new() {
         },
         success: function (ret) {
             // console.log(ret);
-            window.location.href="/itsm/config/";
+            window.location.href="http://itsm.ecscloud.com/itsm/config/";
         }
     })
 }
