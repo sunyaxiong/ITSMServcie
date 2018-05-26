@@ -231,7 +231,7 @@ if DEBUG:
     cloud_secret_key = "228e1f50-3b39-4213-a8d8-17e8bf2aeb1e"
     INTERNET_HOST = "111.13.61.173"
 else:
-    INTERNET_HOST = "123.58.242.207:8082"
+    INTERNET_HOST = "cmp.ecscloud.com"
     CLOUD_HOST = "172.16.13.155"
     CMDB_HOST = "172.16.13.155"
     access_key = "My00ZjRkMzVkZA=="
