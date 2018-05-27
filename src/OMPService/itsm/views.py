@@ -690,9 +690,13 @@ def issue_to_knowledge(request):
 def releases(request):
 
     page_header = "发布管理"
-    data = Release.objects.filter(
-        technician=request.user
-    ).order_by("-dt_created")
+
+    # 系统管理员全部权限
+    if request.user.is_superuser:
+        data = Release.objects.filter().order_by("-dt_created")
+    else:
+        data = Release.objects.filter().order_by("-dt_created")
+    count = data.count()
 
     message_alert_queryset = MessageAlert.objects.filter(
         user=request.user,
