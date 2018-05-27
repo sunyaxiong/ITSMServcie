@@ -154,12 +154,17 @@
     <div class="row">
         <p><i class="fa fa-dashboard"></i><span>资源明细</span></p>
         <p>
-          {% if not profile.org_admin %}
-            <a href="http://{{ host }}/alert/vm?status=showNull">
+          {% if profile.org_admin %}
+{#            <a href="http://{{ host }}/alert/vm?status=showNull">#}
+            <a href="http://{{ host }}/business-analytics/#/alert/list">
+                <span id="order_id">查看告警明细</span>
+            </a>
+          {% elif request.user.is_superuser %}
+            <a href="http://{{ host }}/business-analytics/#/alert/list">
                 <span id="order_id">查看告警明细</span>
             </a>
           {% else %}
-             <a href="http://{{ host }}/business-analytics/#/alert/list">
+            <a href="http://{{ host }}/alert/vm?status=showNull">
                 <span id="order_id">查看告警明细</span>
             </a>
           {% endif %}
