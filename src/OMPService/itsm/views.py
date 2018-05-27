@@ -341,12 +341,9 @@ def resource_info(request):
     data = res.get("data")
     instance_list = data.get("items")
     instance_info = {i["id"]: i for i in instance_list}
-    print("info: ", instance_info)
-    print(instance_info[2])
 
     if request.method == "GET":
         instance_id = int(request.GET.get("instance_id"))
-        print(instance_id)
         ret = {
             "hostname": instance_info[instance_id].get("hostname"),
             "localIp": instance_info[instance_id].get("localIp"),
