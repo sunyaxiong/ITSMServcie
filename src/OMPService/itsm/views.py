@@ -791,7 +791,7 @@ def sla_dashboard(request):
     event_count = Event.objects.all().count()
     change_count = Change.objects.all().count()
     issue_count = Issue.objects.all().count()
-    releases_count = Release.objects.all().count()
+    releases_count = Change.objects.all().count()
 
     message_alert_queryset = MessageAlert.objects.filter(
         user=request.user,

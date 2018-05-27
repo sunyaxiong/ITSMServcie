@@ -100,7 +100,7 @@ def alert_to_event(sender, instance, created, *args, **kwargs):
             name=event_name,
             state="draft",
             event_type="incident",
-            initiator="fit2cloud_sys",
+            initiator="cmp_sys",
             emergency_degree="P3",
             technician=technician,
             instance_id=instance.f2cServerId
