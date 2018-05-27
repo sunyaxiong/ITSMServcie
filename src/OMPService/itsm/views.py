@@ -1214,7 +1214,6 @@ def order_get(request):
         _conf = settings.CLOUD_CONF.copy()
         _conf["access_key"] = ak
         _res = Fit2CloudClient(_conf, sk).order_get(_param)
-        print("orderinfo: ", _res)
         print(_res["success"])
         if _res["success"]:
             res = {

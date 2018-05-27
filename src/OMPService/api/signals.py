@@ -103,7 +103,7 @@ def alert_to_event(sender, instance, created, *args, **kwargs):
             initiator="fit2cloud_sys",
             emergency_degree="P3",
             technician=technician,
-            instance_id=instance.instanceId
+            instance_id=instance.f2cServerId
         )
 
     # TODO email alert

@@ -20,7 +20,7 @@ class Alert(BaseModel):
     created = models.CharField("告警时间", max_length=128)
 
     def __str__(self):
-        return self.name
+        return self.alertName
 
 
 class DeployInstance(BaseModel):
