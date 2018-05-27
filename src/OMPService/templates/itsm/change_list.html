@@ -69,8 +69,8 @@
                                 <tr role="row" class="odd">
                                     <td class="sorting_1"><a href="/itsm/change/{{ i.id }}">{{ i.name }}</a></td>
                                     <td class="sorting_1">{{ i.get_state_display }}</td>
-                                    <td class="sorting_1">{{ i.technician }}</td>
-                                    <td class="sorting_1">{{ i.get_event_type_display }}</td>
+                                    <td class="sorting_1">{{ i.node_handler.username }}</td>
+                                    <td class="sorting_1">{{ i.event.get_event_type_display }}</td>
                                     <td class="sorting_1">{{ i.dt_created }}</td>
                                 </tr>
                                 </tbody>

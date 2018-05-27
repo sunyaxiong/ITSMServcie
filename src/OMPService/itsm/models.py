@@ -35,7 +35,10 @@ class Event(BaseModel):
 
     TYPE = (
         ("incident", "故障报修"),
-        ("request", "服务请求")
+        ("request", "服务请求"),
+        ("s", "软件配置"),
+        ("h", "系统维护"),
+        ("n", "网络配置"),
     )
 
     name = models.CharField(max_length=128, verbose_name="事件名称", null=True, blank=True)
