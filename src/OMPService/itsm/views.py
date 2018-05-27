@@ -82,9 +82,11 @@ def request_list(request):
         data = Event.objects.filter(event_type="request").order_by("-dt_created")
     else:
         data = Event.objects.filter(
-            technician=request.user,
             event_type="request",
+        ).filter(
+            Q(technician=request.user) | Q(initiator=request.user.username)
         ).order_by("-dt_created")
+
     count = data.count()
 
     return render(request, 'itsm/event_list.html', locals())
@@ -101,8 +103,9 @@ def incident_list(request):
         data = Event.objects.filter(event_type="incident").order_by("-dt_created")
     else:
         data = Event.objects.filter(
-            technician=request.user,
             event_type="incident",
+        ).filter(
+            Q(technician=request.user) | Q(initiator=request.user.username)
         ).order_by("-dt_created")
     count = data.count()
 
