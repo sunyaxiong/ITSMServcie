@@ -114,6 +114,9 @@ def event_detail(request, pk):
     button_submit = "保存"
     host = settings.INTERNET_HOST
 
+    # 用户\管理员监控url不同
+    profile = Profile.objects.filter(username=request.user.username).first()
+
     # 根据事件状态控制前端显示
     button_submit = "提交" if event.state == "draft" else "保存"
     display = 0 if event.state == "ended" else 1

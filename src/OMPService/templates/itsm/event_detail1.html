@@ -153,14 +153,19 @@
     {% if event.event_type == "incident" %}
     <div class="row">
         <p><i class="fa fa-dashboard"></i><span>资源明细</span></p>
+        <p>
+          {% if not profile.org_admin %}
+            <a href="http://{{ host }}/alert/vm?status=showNull">
+                <span id="order_id">查看告警明细</span>
+            </a>
+          {% else %}
+             <a href="http://{{ host }}/business-analytics/#/alert/list">
+                <span id="order_id">查看告警明细</span>
+            </a>
+          {% endif %}
+        </p>
         <div class="col-md-6">
             <table class="table-striped">
-{#                <tr>#}
-{#                    <td><label>云环境: </label></td>#}
-{#                    <td>#}
-{#                        <input class="form-control" type="text" name="name" disabled="disabled" value=>#}
-{#                    </td>#}
-{#                </tr>#}
                 <tr>
                     <td><label>主机名: </label></td>
                     <td><label class="form-control" id="hostname" disabled="disabled"></label></td>
