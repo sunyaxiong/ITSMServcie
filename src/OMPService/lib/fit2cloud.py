@@ -87,7 +87,6 @@ class Fit2CloudClient(object):
 
         url = "{}?{}".format(self.get_instance_url, urllib.urlencode(attrs))
         res = requests.get(url)
-        print("instance:  ", res.json())
         return res.json()
 
     def get_work_space(self, attrs):
