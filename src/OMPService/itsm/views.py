@@ -14,6 +14,7 @@ from django.contrib import messages
 from django.core.cache import cache
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import EmailMultiAlternatives, send_mail
+from django.db.models import Q
 
 from OMPService import settings
 from accounts.models import Profile, MessageAlert
@@ -58,7 +59,7 @@ def events(request):
         data = Event.objects.filter().order_by("-dt_created")
     else:
         data = Event.objects.filter(
-            technician=request.user
+            Q(technician=request.user) | Q(initiator=request.user.username)
         ).order_by("-dt_created")
     count = data.count()
 
