@@ -60,6 +60,7 @@ def events(request):
         data = Event.objects.filter(
             technician=request.user
         ).order_by("-dt_created")
+    count = data.count()
 
     message_alert_queryset = MessageAlert.objects.filter(
         user=request.user,
@@ -83,6 +84,7 @@ def request_list(request):
             technician=request.user,
             event_type="request",
         ).order_by("-dt_created")
+    count = data.count()
 
     return render(request, 'itsm/event_list.html', locals())
 
@@ -101,6 +103,7 @@ def incident_list(request):
             technician=request.user,
             event_type="incident",
         ).order_by("-dt_created")
+    count = data.count()
 
     return render(request, 'itsm/event_list.html', locals())
 
@@ -157,7 +160,7 @@ def event_detail(request, pk):
                     content=data.get("solution"),
                 )
             event.save()
-            return HttpResponseRedirect("/itsm/request_list/")
+            return HttpResponseRedirect("/itsm/event_list/")
         messages.warning(request, event_form.errors)
         return render(request, 'itsm/event_detail1.html', locals())
 
@@ -360,6 +363,7 @@ def changes(request):
 
     page_header = "变更管理"
     data = Change.objects.filter().order_by("-dt_created")
+    count = data.count()
 
     return render(request, 'itsm/change_list.html', locals())
 
@@ -534,6 +538,7 @@ def issues(request):
 
     page_header = "问题管理"
     data = Issue.objects.filter()
+    count = data.count()
     return render(request, "itsm/issue_list.html", locals())
 
 
@@ -543,6 +548,10 @@ def issue_detail(request, pk):
     solution_list = issue.logs.all() if issue.logs else []
     user_list = User.objects.all()
     degree_choice_list = Change.EMERGENCY_DEGREE
+    host = settings.INTERNET_HOST
+
+    # 用户\管理员监控url不同
+    profile = Profile.objects.filter(username=request.user.username).first()
 
     # 根据事件状态控制按钮显隐和名称
     button_submit = "保存"
@@ -551,7 +560,6 @@ def issue_detail(request, pk):
     if request.method == "GET":
 
         # 解决方案列表,循环展示
-        # solution_list = solution.split("#")
         return render(request, 'itsm/issue_detail.html', locals())
     elif request.method == "POST":
 
@@ -559,14 +567,6 @@ def issue_detail(request, pk):
         issue_form = IssueDetailForm(request.POST)
         if issue_form.is_valid():
             data = issue_form.data
-
-            # 拼接最新解决方案,解决方案格式:username + time + text
-            # now = datetime.datetime.now()
-            # if data.get("solution"):
-            #     _solution = data["handler"] \
-            #                 + now.strftime('%Y-%m-%d %H:%M:%S') \
-            #                 + data["solution"]
-            #     issue.solution = solution + "#" + _solution
 
             if data.get("emergency_degree"):
                 issue.emergency_degree = data["emergency_degree"]
@@ -689,6 +689,8 @@ def releases(request):
         checked=0,
     )
     message_alert_count = message_alert_queryset.count()
+
+    count = data.count()
 
     return render(request, 'itsm/release_list.html', locals())
 
