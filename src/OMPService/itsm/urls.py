@@ -41,6 +41,7 @@ from .views import issue_close
 from .views import issue_upgrade
 from .views import issue_to_knowledge
 from .views import releases
+from .views import release_detail
 from .views import knowledges
 from .views import sla_dashboard
 from .views import sla_event_dash
@@ -111,7 +112,7 @@ urlpatterns = [
 
     # 发布管理
     url(r'^release_list/$', releases),
-    url(r'^release/(?P<pk>\d{1,9})', config_overview),
+    url(r'^release/(?P<pk>\d{1,9})', release_detail),
 
     # 知识库管理
     url(r'^knowledge_list/$', knowledges),
