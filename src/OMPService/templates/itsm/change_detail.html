@@ -221,3 +221,25 @@
     </form>
 </section>
 {% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+
+            // instance list query
+            var instance_id = $("#instance_id").val();
+            $.ajax({
+                type:"GET",
+                url:"/itsm/cloud/resource_info/",
+                data:{"instance_id": instance_id},
+                success: function (ret) {
+                    console.log(ret["localIp"]);
+                    $("#hostname").html(ret["hostname"]);
+                    $("#localIp").html(ret["localIp"]);
+                    $("#instanceType").html(ret["instanceType"]);
+                    $("#groupEnvName").html(ret["groupEnvName"]);
+                }
+            });
+
+        })
+    </script>
+{% endblock %}
