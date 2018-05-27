@@ -235,10 +235,21 @@
         <div class="col-xs-4">
             <tr>
             <td><label>是否执行漏洞扫描: </label></td>
-            <td><select class="form-control" name="leak_checked" >
-                <option>否</option>
-                <option>是</option>
-            </select></td>
+            {% if event.leak_checked %}
+            <td>
+                <select class="form-control" name="leak_checked" >
+                    <option>是</option>
+                    <option>否</option>
+                </select>
+            </td>
+            {% else %}
+            <td>
+                <select class="form-control" name="leak_checked" >
+                    <option>否</option>
+                    <option>是</option>
+                </select>
+            </td>
+            {% endif %}
             </tr>
         </div>
     </div>

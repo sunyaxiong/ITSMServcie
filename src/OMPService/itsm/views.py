@@ -264,7 +264,8 @@ def event_to_change(request, pk):
             state="draft",
             node_handler=event.technician,
             initiator=event.technician.username,
-            emergency_degree="P3"
+            emergency_degree="P3",
+            event=event,
         )
         return HttpResponseRedirect("/itsm/change_list")
     except Exception as e:
@@ -282,6 +283,7 @@ def event_to_issue(request, pk):
             name=event.name,
             state="on",
             handler=event.technician,
+            event_from=event,
         )
         return HttpResponseRedirect("/itsm/issue_list")
     except Exception as e:
@@ -378,6 +380,10 @@ def change_detail(request, pk):
     solution_list = change.logs.all().order_by("-dt_created") if change.logs else []
     user_list = User.objects.all()
     degree_choice_list = Change.EMERGENCY_DEGREE
+    host = settings.INTERNET_HOST
+
+    # 用户\管理员监控url不同
+    profile = Profile.objects.filter(username=request.user.username).first()
 
     # 根据事件状态控制按钮显隐和名称
     button_submit = "提交" if change.state == "draft" else "同意"
