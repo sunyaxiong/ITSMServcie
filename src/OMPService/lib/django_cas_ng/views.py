@@ -142,7 +142,7 @@ def register(request):
             except Exception as e:
                 logger.info("邮件发送失败: ", e)
 
-            return HttpResponseRedirect("/accounts/login/")
+            return HttpResponse("账号注册成功,请查收邮件通知.")
         else:
             return HttpResponse(form.errors)
     else:
