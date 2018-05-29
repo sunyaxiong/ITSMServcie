@@ -66,8 +66,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # cas conf
-SUCC_REDIRECT_URL = "itsm.ecscloud.com"
-CAS_SERVER_URL = "http://cas.ecscloud.com/cas/"
+SUCC_REDIRECT_URL = "itsm.ecsits.com"
+CAS_SERVER_URL = "http://cas.ecsits.com/cas/"
 # CAS_REDIRECT_URL = "http://www.baidu.com"
 
 ROOT_URLCONF = 'OMPService.urls'
@@ -231,7 +231,7 @@ if DEBUG:
     cloud_secret_key = "228e1f50-3b39-4213-a8d8-17e8bf2aeb1e"
     INTERNET_HOST = "111.13.61.173"
 else:
-    INTERNET_HOST = "cmp.ecscloud.com"
+    INTERNET_HOST = "cmp.ecscits.com"
     CLOUD_HOST = "172.16.13.155"
     CMDB_HOST = "172.16.13.155"
     access_key = "My00ZjRkMzVkZA=="
