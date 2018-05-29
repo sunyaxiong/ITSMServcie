@@ -112,7 +112,7 @@ DATABASES = {
         'NAME': 'cas',
         'USER': 'root',
         'PASSWORD': '123123Qwe',
-        "HOST": "52.83.173.240",
+        "HOST": "52.83.147.135",
         "PORT": "3306",
     },
 }
