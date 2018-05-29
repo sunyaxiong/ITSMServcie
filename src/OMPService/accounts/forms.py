@@ -15,7 +15,7 @@ class RegisterForm(forms.Form):
     username = forms.CharField(label="用户名", max_length=128)
     email = forms.EmailField(label="邮箱")
     org = forms.CharField(label="组织", max_length=128)
-    position = forms.CharField(label="岗位角色", max_length=128)
+    position = forms.CharField(label="岗位角色", max_length=128, required=False)
     password = forms.CharField(label="用户名", max_length=128)
     password2 = forms.CharField(label="用户名", max_length=128)
 
