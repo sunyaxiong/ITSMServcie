@@ -686,6 +686,11 @@ def issue_to_knowledge(request):
         return HttpResponseRedirect(url)
 
 
+def release1(request):
+    pass
+    # TODO 外键关联change
+
+
 @login_required
 def releases(request):
 
@@ -693,9 +698,9 @@ def releases(request):
 
     # 系统管理员全部权限
     if request.user.is_superuser:
-        data = Change.objects.filter().order_by("-dt_created")
+        data = Change.objects.filter().order_by("dt_created")
     else:
-        data = Change.objects.filter().order_by("-dt_created")
+        data = Change.objects.filter().order_by("dt_created")
     count = data.count()
 
     message_alert_queryset = MessageAlert.objects.filter(
