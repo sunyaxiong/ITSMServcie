@@ -27,6 +27,7 @@ class Profile(models.Model):
     email = models.EmailField("邮箱", null=True, blank=True)
     position = models.CharField("岗位", max_length=128, null=True, blank=True)
     department = models.CharField("部门", max_length=128, null=True, blank=True)
+    last_reset_pass = models.DateField("上次修改密码时间", null=True, blank=True)
 
     def __str__(self):
         return self.username
