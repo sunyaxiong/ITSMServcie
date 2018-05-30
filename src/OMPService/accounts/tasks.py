@@ -19,7 +19,8 @@ def user_check():
             if today - i.last_reset_pass > datetime.timedelta(days=90):
                 print(123)
                 send_mail("密码到期提醒",
-                    "您已经超过90天未修改密码,为保证账户安全,请尽快修改密码",
+                    "尊敬的云平台用户您好,您已经超过90天未修改密码,为保证账户安全,"
+                    "请尽快修改密码: http://itsm.ecscloud.com",
                     settings.EMAIL_HOST_USER, [i.email])
 
 if __name__ == "__main__":

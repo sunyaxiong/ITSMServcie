@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'w%_kdw&9*_2filppa89j2*&&bl69je6)=$ed1nn$i9ps$@-(vg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*", ]
 
@@ -66,8 +66,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # cas conf
-SUCC_REDIRECT_URL = "itsm.ecsits.com"
-CAS_SERVER_URL = "http://cas.ecsits.com/cas/"
+SUCC_REDIRECT_URL = "itsm.ecscloud.com"
+CAS_SERVER_URL = "http://cas.ecscloud.com/cas/"
 # CAS_REDIRECT_URL = "http://www.baidu.com"
 
 ROOT_URLCONF = 'OMPService.urls'
@@ -99,7 +99,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'jiajie_omp',
         'USER': 'root',
-        'PASSWORD': 'Admin@vstecs.com1',
+        'PASSWORD': '123123',
         'HOST': '',
         'PORT': '3306',
         'OPTIONS': {
@@ -231,7 +231,7 @@ if DEBUG:
     cloud_secret_key = "228e1f50-3b39-4213-a8d8-17e8bf2aeb1e"
     INTERNET_HOST = "111.13.61.173"
 else:
-    INTERNET_HOST = "cmp.ecscits.com"
+    INTERNET_HOST = "cmp.ecscloud.com"
     CLOUD_HOST = "172.16.13.155"
     CMDB_HOST = "172.16.13.155"
     access_key = "My00ZjRkMzVkZA=="
