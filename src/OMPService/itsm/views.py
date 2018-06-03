@@ -410,6 +410,13 @@ def change_detail(request, pk):
             if data.get("emergency_degree"):
                 change.emergency_degree = data.get("emergency_degree")
 
+            if data.get("solution"):
+                ChangeProcessLog.objects.create(
+                    event_obj=change,
+                    username=data.get("node_handler"),
+                    content=data.get("solution"),
+                )
+
             change.save()
             return HttpResponseRedirect("/itsm/change_list/")
         else:
