@@ -465,7 +465,7 @@ def flow_pass(request):
                 profile = Profile.objects.get(username=node_username)
                 channel_name = profile.channel_name
                 try:
-                    next_node_handler_profile = Profile.objects.get(channel=channel_name, position=next_node_name)
+                    next_node_handler_profile = Profile.objects.get(channel_name=channel_name, position=next_node_name)
                     next_node_handler_name = next_node_handler_profile.username
                 except Exception as e:
                     messages.warning(request, "{}, {}-{}岗位信息未维护".format(e, channel_name, next_node_name))
