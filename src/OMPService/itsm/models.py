@@ -9,22 +9,22 @@ from lib.models import BaseModel
 from cloudres.models import VMInstance
 
 
-event_module = {'flow': [{'node': 0, 'name': '开始'}, {'node': 1, 'notify': '邮件', 'name': '部门主管'}, {'node': 2, 'name': '结束'}], 'name': '事件审批'}
-change_module = {'flow': [{'node': 0, 'name': '开始'}, {'node': 1, 'notify': '邮件', 'name': '部门主管'}, {'node': 2, 'name': '结束'}], 'name': '变更审批'}
-release_module = {'flow': [{'node': 0, 'name': '开始'}, {'node': 1, 'notify': '邮件', 'name': '部门主管'}, {'node': 2, 'name': '结束'}], 'name': '发布审批'}
-issue_module = {'flow': [{'node': 0, 'name': '开始'}, {'node': 1, 'notify': '邮件', 'name': '部门主管'}, {'node': 2, 'name': '结束'}], 'name': '问题审批'}
+event_module = {"flow": [{"node": 0, "name": "开始"}, {"node": 1, "notify": "邮件", "name": "部门主管"}, {"node": 2, "name": "结束"}], "name": "事件审批"}
+change_module = {"flow": [{"node": 0, "name": "开始"}, {"node": 1, "notify": "邮件", "name": "部门主管"}, {"node": 2, "name": "结束"}], "name": "变更审批"}
+release_module = {"flow": [{"node": 0, "name": "开始"}, {"node": 1, "notify": "邮件", "name": "部门主管"}, {"node": 2, "name": "结束"}], "name": "发布审批"}
+issue_module = {"flow": [{"node": 0, "name": "开始"}, {"node": 1, "notify": "邮件", "name": "部门主管"}, {"node": 2, "name": "结束"}], "name": "问题审批"}
 department = {"department": []}
 
 
 class Event(BaseModel):
 
     EVENT_CHOICE = (
-        ('draft', '草稿'),
-        ('processing', '处理中'),
-        ('issued', '转入问题'),
-        ('changed', '转入变更'),
-        ('checked', '审批完成'),
-        ('ended', '结束')
+        ("draft", "草稿"),
+        ("processing", "处理中"),
+        ("issued", "转入问题"),
+        ("changed", "转入变更"),
+        ("checked", "审批完成"),
+        ("ended", "结束")
     )
 
     EMERGENCY_DEGREE = (
@@ -145,7 +145,7 @@ class Release(BaseModel):
     name = models.CharField("发布名称", max_length=128)
     change = models.ForeignKey(Change, verbose_name="关联变更")
     stage = models.CharField("发布阶段", max_length=128, choices=STAGE)
-    initiator = models.CharField('发起人', max_length=128, null=True, blank=True)
+    initiator = models.CharField("发起人", max_length=128, null=True, blank=True)
     technician = models.ForeignKey(User, max_length=128, verbose_name="处理人", null=True, blank=True)
 
 
@@ -191,12 +191,12 @@ class TimeTree(BaseModel):
     username = models.CharField(max_length=128, null=True, blank=True, verbose_name="操作人")
     userid = models.IntegerField(verbose_name="操作人ID", null=True, blank=True)
     action = models.CharField(max_length=128, null=True, blank=True, verbose_name="操作")
-    CONTENT_TYPE_LIMIT = models.Q(app_label='itsm', model='event'
-                                  ) | models.Q(app_label='itsm', model='config')
-    content_type = models.ForeignKey('contenttypes.ContentType', limit_choices_to=CONTENT_TYPE_LIMIT,
-                                     verbose_name='content type', blank=True, null=True, editable=False)
-    object_uuid = models.UUIDField(verbose_name='object uuid', editable=True, blank=True, null=True)
-    content_object = GenericForeignKey('content_type', 'object_uuid')
+    CONTENT_TYPE_LIMIT = models.Q(app_label="itsm", model="event"
+                                  ) | models.Q(app_label="itsm", model="config")
+    content_type = models.ForeignKey("contenttypes.ContentType", limit_choices_to=CONTENT_TYPE_LIMIT,
+                                     verbose_name="content type", blank=True, null=True, editable=False)
+    object_uuid = models.UUIDField(verbose_name="object uuid", editable=True, blank=True, null=True)
+    content_object = GenericForeignKey("content_type", "object_uuid")
 
 
 class Sla(BaseModel):

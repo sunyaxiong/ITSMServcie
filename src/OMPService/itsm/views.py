@@ -17,7 +17,7 @@ from django.core.mail import EmailMultiAlternatives, send_mail
 from django.db.models import Q
 
 from OMPService import settings
-from accounts.models import Profile, MessageAlert
+from accounts.models import Profile, MessageAlert, Channel
 from .models import Event
 from .models import EventProcessLog
 from .models import Change
@@ -382,6 +382,8 @@ def change_detail(request, pk):
     degree_choice_list = Change.EMERGENCY_DEGREE
     host = settings.INTERNET_HOST
 
+    initiator_obj = Profile.objects.filter(username=change.initiator).first()
+
     # 用户\管理员监控url不同
     profile = Profile.objects.filter(username=request.user.username).first()
 
@@ -446,8 +448,8 @@ def flow_pass(request):
 
                 # 获取模板信息
                 try:
-                    module = change.node_handler.profile.channel.change_module
-                    module_name = module.get("name")
+                    channel = Channel.objects.get(name="伟仕云安")
+                    module = channel.change_module
                 except Exception as e:
                     messages.warning(request, "模板获取失败")
                     return HttpResponseRedirect(url)
@@ -459,9 +461,11 @@ def flow_pass(request):
                     change.state = "ended"
 
                 # TODO 环节处理人,根据模板查询
-                channel = change.node_handler.profile.channel
+                node_username = change.node_handler.username
+                profile = Profile.objects.get(username=node_username)
+                channel_name = profile.channel_name
                 try:
-                    next_node_handler_profile = Profile.objects.get(channel=channel, position=next_node_name)
+                    next_node_handler_profile = Profile.objects.get(channel=channel_name, position=next_node_name)
                 except Exception as e:
                     messages.warning(request, "岗位信息未维护")
                     return HttpResponseRedirect(url)
