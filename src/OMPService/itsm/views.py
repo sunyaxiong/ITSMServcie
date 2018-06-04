@@ -467,7 +467,7 @@ def flow_pass(request):
                 try:
                     next_node_handler_profile = Profile.objects.get(channel=channel_name, position=next_node_name)
                 except Exception as e:
-                    messages.warning(request, "岗位信息未维护")
+                    messages.warning(request, "{}-{}岗位信息未维护".format(channel_name, next_node_name))
                     return HttpResponseRedirect(url)
                 next_node_handler_name = "syx"
                 next_node_handler = User.objects.get(username=next_node_handler_name)
