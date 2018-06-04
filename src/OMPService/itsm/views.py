@@ -466,10 +466,12 @@ def flow_pass(request):
                 channel_name = profile.channel_name
                 try:
                     next_node_handler_profile = Profile.objects.get(channel=channel_name, position=next_node_name)
+                    next_node_handler_name = next_node_handler_profile.username
                 except Exception as e:
-                    messages.warning(request, "{}-{}岗位信息未维护".format(channel_name, next_node_name))
+                    messages.warning(request, "{}, {}-{}岗位信息未维护".format(e, channel_name, next_node_name))
+                    next_node_handler_name = "syx"
                     return HttpResponseRedirect(url)
-                next_node_handler_name = "syx"
+
                 next_node_handler = User.objects.get(username=next_node_handler_name)
 
                 # 修改
@@ -488,7 +490,9 @@ def flow_pass(request):
                 change.node_handler = next_node_handler
                 change.flow_node = next_node
                 change.node_name = next_node_name
-                change.node_handler = next_node_handler_profile.user
+                # node_handler = User.objects.get(username=next_node_handler_profile.username)
+                # change.node_handler = node_handler
+
                 change.save()
             except Exception as e:
                 messages.info(request, "debug: {}".format(e))
