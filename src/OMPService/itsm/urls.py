@@ -33,6 +33,7 @@ from .views import changes
 from .views import change_detail
 from .views import change_add
 from .views import change_to_config
+from .views import change_close
 from .views import flow_pass
 from .views import change_reject_back
 from .views import issues
@@ -96,6 +97,7 @@ urlpatterns = [
     url(r'^change/reject/$', change_reject_back),
     url(r'^changes/add/$', change_add),
     url(r'^changes/change_to_config/(?P<pk>\d{1,9})', change_to_config),
+    url(r'^changes/close/(?P<pk>\d{1,9})', change_close),
 
     # 问题管理
     url(r'^issue_list/$', issues),
