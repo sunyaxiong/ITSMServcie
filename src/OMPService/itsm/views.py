@@ -414,7 +414,7 @@ def change_detail(request, pk):
 
             if data.get("solution"):
                 ChangeProcessLog.objects.create(
-                    event_obj=change,
+                    change_obj=change,
                     username=data.get("node_handler"),
                     content=data.get("solution"),
                 )
