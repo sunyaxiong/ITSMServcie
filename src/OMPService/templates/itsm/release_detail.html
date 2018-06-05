@@ -39,7 +39,7 @@
         <div class="col-md-6">
             <table class="table-striped">
                 <tr>
-                    <td><label for="name">当前阶段: </label></td>
+                    <td><label for="name">发布阶段: </label></td>
                     <td><input class="form-control" type="text" name="emergency_degree" disabled="disabled" value={{ change.state }}></td>
                 </tr>
                 <tr>
@@ -47,20 +47,24 @@
                     <td><input class="form-control" type="text" name="dt_created" disabled="disabled" value={{ change.dt_updated }}></td>
                 </tr>
                 <tr>
-                    <td><label>当前环节名称: </label></td>
+                    <td><label>发布类型: </label></td>
                     <td><input class="form-control" type="text" name="node_name" disabled="disabled" value={{ change.node_name }}></td>
                 </tr>
             </table>
         </div>
         <div class="col-md-4">
+{#            <tr>#}
+{#                <td><label>紧急度: </label></td>#}
+{#                <td><select class="form-control" disabled="disabled" name="emergency_degree" >#}
+{#                    <option value={{ change.emergency_degree }}>{{ change.get_emergency_degree_display }}</option>#}
+{#                    {% for k, v in degree_choice_list %}#}
+{#                        <option value={{ k }}>{{ v }}</option>#}
+{#                    {% endfor %}#}
+{#                </select></td>#}
+{#            </tr>#}
             <tr>
-                <td><label>紧急度: </label></td>
-                <td><select class="form-control" disabled="disabled" name="emergency_degree" >
-                    <option value={{ change.emergency_degree }}>{{ change.get_emergency_degree_display }}</option>
-                    {% for k, v in degree_choice_list %}
-                        <option value={{ k }}>{{ v }}</option>
-                    {% endfor %}
-                </select></td>
+                <td><label>发布来源: </label></td>
+                <td><input class="form-control" type="text" name="name" disabled="disabled" value={{ change.event.event_type }}></td>
             </tr>
             <tr>
                 <td><label>发布状态: </label></td>
@@ -170,8 +174,9 @@
         </div>
     </div>
     <div class="row">
+        <br>
+        <p>发布计划明细</p>
         <div class="col-xs-8">
-            <br/>
             <a href={{ change.attach_file }}>{{ change.attach_file }}</a>
             <input type="file" name="attach_file">
         </div>
