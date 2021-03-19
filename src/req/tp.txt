@@ -15,7 +15,7 @@ django-filter==1.1.0
 django-guardian==1.4.9
 django-jsonfield==1.0.1
 django-redis==4.8.0
-djangorestframework==3.4.7
+djangorestframework==3.11.2
 djangorestframework-filters==0.10.2
 docutils==0.14
 ephem==3.7.6.0
